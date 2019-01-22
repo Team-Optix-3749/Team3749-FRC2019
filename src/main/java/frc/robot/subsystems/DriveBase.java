@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SPI.Port;
 
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -28,6 +30,9 @@ import frc.robot.commands.DriveStick;
 public class DriveBase extends Subsystem {
   private TalonSRX leftSide, rightSide;
   private AHRS gyro;
+
+  private boolean isStraight = false;
+  private double gyroAdjust = 0;
 
   public DriveBase ()
   {
@@ -49,7 +54,7 @@ public class DriveBase extends Subsystem {
     right2.follow(rightSide);
     right3.follow(rightSide);
 
-    gyro = new AHRS(SerialPort.Port.kMXP);
+    gyro = new AHRS(SPI.Port.kMXP);
   }
 
   @Override
@@ -69,6 +74,31 @@ public class DriveBase extends Subsystem {
    */
   public void arcadeDrive (double fwd, double rot)
   {
+    // brutally untested algorithm!
+
+    // if user wants robot to go straight
+    if(rot == 0) {
+      // if it wasn't already going straight
+      if(isStraight == false) {
+        // set angle to 0 as a reference pt
+        // for future changes
+        gyro.reset();
+        isStraight = true;
+      }
+      
+      // anything non-zero is an error (go straight!)
+      double gyroError = gyro.getAngle(); 
+      // based on error, change adjust constant proportionally
+      gyroAdjust += -0.1 * gyroError;
+    } else {
+      // doesn't want to go straight
+      isStraight = false; 
+    }
+    // offset rotational constant to actually move properly
+    rot += gyroAdjust * fwd;
+    
+    // check w/ debugging that gyro is working
+    System.out.println(gyro.getAngle());
     // left and right output to be calculated
     double L, R;
     // gets bigger of either fwd or rot
@@ -114,7 +144,5 @@ public class DriveBase extends Subsystem {
   {
     leftSide.set(ControlMode.PercentOutput, left);
     rightSide.set(ControlMode.PercentOutput, right);
-    
-    // do something with gyro if left == right
   }
 }

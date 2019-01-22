@@ -29,8 +29,7 @@ public class OI
   public OI ()
   {
     ctrl = new XboxController(0);
-
-    button = new JoystickButton(ctrl, 0);
+    button = new JoystickButton(ctrl, 1);
     button.whenPressed(null);
     button.whileHeld(null);
     button.whenReleased(null);
