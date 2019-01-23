@@ -24,8 +24,10 @@ public class RobotMap
   public RobotMap ()
   {
     mapPWM = new HashMap<>();
-		mapCAN = new HashMap<>();
+	mapCAN = new HashMap<>();
     mapCTRL = new HashMap<>();
+
+    // load map values here!
   }
 
   /**
