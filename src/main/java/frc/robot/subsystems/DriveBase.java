@@ -16,23 +16,36 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 import edu.wpi.first.wpilibj.SpeedController;
-
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
 
 /**
- * Add your docs here.
+ * class DriveBase controls the driving mechanism for the robot (6 wheel/6 motor drive! kit bot)
  */
-public class DriveBase extends Subsystem {
+public class DriveBase extends Subsystem
+{
+  // leading motor controllers, have built-in closed loop control
   private TalonSRX leftSide, rightSide;
+  // expensive gyro from Kauai Labs, the purple board on top of the roboRIO
+  // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
 
+  // if the robot is trying going straight currently
   private boolean isStraight = false;
-  private double gyroAdjust = 0;
+  // PID to control driving alignment (no veering!)
+  // PID is a closed-loop control algorithm that uses sensor input to determine motor output
+  private PIDController drivePID;
 
   public DriveBase ()
   {
@@ -42,19 +55,30 @@ public class DriveBase extends Subsystem {
       a VictorSPX is cheaper and has less features, so just having it follow
       is good enough
       */
-    BaseMotorController left2 = new VictorSPX(11);
-    BaseMotorController left3 = new VictorSPX(12);
+    BaseMotorController left2 = new VictorSPX(20);
+    BaseMotorController left3 = new VictorSPX(21);
     left2.follow(leftSide);
     left3.follow(leftSide);
 
     // same thing on the other side
-    rightSide = new TalonSRX(13);
-    BaseMotorController right2 = new VictorSPX(14);
-    BaseMotorController right3 = new VictorSPX(15);
+    rightSide = new TalonSRX(11);
+    BaseMotorController right2 = new VictorSPX(22);
+    BaseMotorController right3 = new VictorSPX(23);
     right2.follow(rightSide);
     right3.follow(rightSide);
 
+    // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
+
+    // pid constants
+    double kp = 0.1, ki = 0.05, kd = 0.1;
+    // use PID controller to calculate PID efficiently but don't give it to motor controller
+    // instead, just use .get() for driving adjustments
+    // consider just using PIDSubsystem
+    drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
+    drivePID.setInputRange(-3, 3);
+    drivePID.setOutputRange(0.3, 0.3);
+    drivePID.setSetpoint(0);
   }
 
   @Override
@@ -74,31 +98,27 @@ public class DriveBase extends Subsystem {
    */
   public void arcadeDrive (double fwd, double rot)
   {
+    // fix robot driving based on if the robot wants to go straight or not
     // brutally untested algorithm!
 
     // if user wants robot to go straight
     if(rot == 0) {
       // if it wasn't already going straight
       if(isStraight == false) {
-        // set angle to 0 as a reference pt
-        // for future changes
-        gyro.reset();
+        // trying to maintain the current angle headin
+        drivePID.setSetpoint(gyro.getAngle());
         isStraight = true;
       }
-      
-      // anything non-zero is an error (go straight!)
-      double gyroError = gyro.getAngle(); 
-      // based on error, change adjust constant proportionally
-      gyroAdjust += -0.1 * gyroError;
     } else {
-      // doesn't want to go straight
-      isStraight = false; 
+      // doesn't want to go straight anymore
+      isStraight = false;
+      // setpoint is anything the gyro says (error = 0, will not adjust anymore??)
+      drivePID.setSetpoint(gyro.getAngle());
     }
+    System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
-    rot += gyroAdjust * fwd;
-    
-    // check w/ debugging that gyro is working
-    System.out.println(gyro.getAngle());
+    rot += drivePID.get();
+
     // left and right output to be calculated
     double L, R;
     // gets bigger of either fwd or rot
@@ -144,5 +164,21 @@ public class DriveBase extends Subsystem {
   {
     leftSide.set(ControlMode.PercentOutput, left);
     rightSide.set(ControlMode.PercentOutput, right);
+    getBlobTables();
   }
+  public void getBlobTables()
+  {
+    double[] defaultValue = new double[0];
+    while(true) {
+        double[] areas = NetworkTableInstance.getDefault().getTable("GRIP")
+          .getSubTable("greenBlob").getEntry("area").getDoubleArray(defaultValue);
+        System.out.print("areas :");
+        for(double area: areas) {
+          System.out.print(area + " ");
+        }
+        System.out.println();
+
+    }
+  }
+
 }
