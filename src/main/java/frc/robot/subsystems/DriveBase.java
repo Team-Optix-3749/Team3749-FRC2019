@@ -115,7 +115,7 @@ public class DriveBase extends Subsystem
     }
     System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
-    // rot += drivePID.get();
+    rot += drivePID.get();
 
     // left and right output to be calculated
     double L, R;
