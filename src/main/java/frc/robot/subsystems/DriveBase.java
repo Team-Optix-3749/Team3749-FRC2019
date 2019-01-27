@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.EmptyPIDOut;
@@ -36,7 +37,7 @@ import frc.robot.commands.DriveStick;
 public class DriveBase extends Subsystem
 {
   // leading motor controllers, have built-in closed loop control
-  private TalonSRX leftSide, rightSide;
+  private SpeedControllerGroup leftSide, rightSide;
   // expensive gyro from Kauai Labs, the purple board on top of the roboRIO
   // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
@@ -49,24 +50,20 @@ public class DriveBase extends Subsystem
 
   public DriveBase ()
   {
-    leftSide = new TalonSRX(10);
+    WPI_TalonSRX leftF = new WPI_TalonSRX(10);
     /*
       have two motor controllers following the TalonSRX
       a VictorSPX is cheaper and has less features, so just having it follow
       is good enough
       */
-    BaseMotorController left2 = new VictorSPX(20);
-    BaseMotorController left3 = new VictorSPX(21);
-    left2.follow(leftSide);
-    left3.follow(leftSide);
+    WPI_VictorSPX leftM = new WPI_VictorSPX(21);
+    leftSide = new SpeedControllerGroup(leftF, leftM);
 
     // same thing on the other side
-    rightSide = new TalonSRX(11);
-    BaseMotorController right2 = new VictorSPX(22);
-    BaseMotorController right3 = new VictorSPX(23);
-    right2.follow(rightSide);
-    right3.follow(rightSide);
-
+    WPI_TalonSRX rightF = new WPI_TalonSRX(11);
+    WPI_VictorSPX rightM = new WPI_VictorSPX(20);
+    rightSide = new SpeedControllerGroup(rightF, rightM);
+    
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
 
@@ -109,6 +106,7 @@ public class DriveBase extends Subsystem
         drivePID.setSetpoint(gyro.getAngle());
         isStraight = true;
       }
+
     } else {
       // doesn't want to go straight anymore
       isStraight = false;
@@ -117,7 +115,7 @@ public class DriveBase extends Subsystem
     }
     System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
-    rot += drivePID.get();
+    // rot += drivePID.get();
 
     // left and right output to be calculated
     double L, R;
@@ -160,25 +158,25 @@ public class DriveBase extends Subsystem
     tankDrive (L, R);
   }
 
+  public double getHeading()
+  {
+      return gyro.getAngle();
+  }
+
   public void tankDrive (double left, double right)
   {
-    leftSide.set(ControlMode.PercentOutput, left);
-    rightSide.set(ControlMode.PercentOutput, right);
-    getBlobTables();
+    leftSide.set(left);
+    rightSide.set(right);
+    locateTarget();
   }
-  public void getBlobTables()
+  public double locateTarget()
   {
+    // figure out how to handle it finding multiple or not finding any :/
     double[] defaultValue = new double[0];
-    while(true) {
-        double[] areas = NetworkTableInstance.getDefault().getTable("GRIP")
-          .getSubTable("greenBlob").getEntry("area").getDoubleArray(defaultValue);
-        System.out.print("areas :");
-        for(double area: areas) {
-          System.out.print(area + " ");
-        }
-        System.out.println();
-
-    }
+    double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
+        .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
+    System.out.println(xPos[0]);
+    return xPos[0];
   }
 
 }
