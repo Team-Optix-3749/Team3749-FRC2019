@@ -3,8 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import java.lang.IllegalArgumentException; 
+import edu.wpi.first.wpilibj.TalonSRX;
+import java.lang.IllegalArguementException; 
 
 public class Elevator {
     TalonSRX elevatorMotor; 
