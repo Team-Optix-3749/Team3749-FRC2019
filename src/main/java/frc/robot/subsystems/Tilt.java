@@ -41,7 +41,7 @@ public class Tilt extends Subsystem
   // PID is a closed-loop control algorithm that uses sensor input to determine motor output
   private PIDController drivePID;
 
-  public DriveBase ()
+  public Tilt()
   {
     WPI_TalonSRX leftF = new WPI_TalonSRX(10);
     /*
