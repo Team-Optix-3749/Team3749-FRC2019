@@ -35,6 +35,7 @@ public class Tilt extends Subsystem
   // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
 
+  
   // if the robot is trying going straight currently
   private boolean isStraight = false;
   // PID to control driving alignment (no veering!)
