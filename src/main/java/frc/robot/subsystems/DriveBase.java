@@ -74,7 +74,6 @@ public class DriveBase extends Subsystem
     // instead, just use .get() for driving adjustments
     // consider just using PIDSubsystem
     drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
-    drivePID.setInputRange(-3, 3);
     drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
   }
