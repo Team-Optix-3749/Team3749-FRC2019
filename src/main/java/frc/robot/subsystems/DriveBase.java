@@ -66,6 +66,7 @@ public class DriveBase extends Subsystem
     
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
+    gyro.reset();
 
     // pid constants
     double kp = 0.1, ki = 0.05, kd = 0.1;
@@ -74,7 +75,7 @@ public class DriveBase extends Subsystem
     // consider just using PIDSubsystem
     drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
     drivePID.setInputRange(-3, 3);
-    drivePID.setOutputRange(0.3, 0.3);
+    drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
   }
 
@@ -102,7 +103,7 @@ public class DriveBase extends Subsystem
     if(rot == 0) {
       // if it wasn't already going straight
       if(isStraight == false) {
-        // trying to maintain the current angle headin
+        // trying to maintain the current angle heading
         drivePID.setSetpoint(gyro.getAngle());
         isStraight = true;
       }
@@ -111,6 +112,7 @@ public class DriveBase extends Subsystem
       // doesn't want to go straight anymore
       isStraight = false;
       // setpoint is anything the gyro says (error = 0, will not adjust anymore??)
+      // hopefully wont change gains with derivative/integral values
       drivePID.setSetpoint(gyro.getAngle());
     }
     System.out.println(fwd + ": " + drivePID.get());
