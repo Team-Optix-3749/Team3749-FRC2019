@@ -21,13 +21,13 @@ public class Elevator {
 
         //check to make sure position is within requirements(set by calibrate())
         if(pos > maxPos || pos < minPos) {
-            throw new IllegalArgumentException();
+            throw new IllegalArguementException();
             //throw an error here
         }
 
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
-    }
+    
     /*
     * This method will be used to set the maximum 
     * and minimum positions for the elevator range
@@ -48,6 +48,7 @@ public class Elevator {
         elevatorMotor = new TalonSRX(42); 
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
+    }
     }
 }
 
