@@ -49,3 +49,5 @@ public class Elevator {
     }
     }
 }
+
+//Add command later on once position/encoder stuff is figured out
