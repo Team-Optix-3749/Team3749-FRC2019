@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -28,7 +27,7 @@ public class DriveStick extends Command
   @Override
   protected void execute()
   {
-    Robot.getDrive().arcadeDrive(Robot.getOI().getCtrl().getY(Hand.kRight), Robot.getOI().getCtrl().getX(Hand.kLeft));
+    Robot.getDrive().arcadeDrive(Robot.getOI().getDriveX(), Robot.getOI().getDriveY());
   }
 
   // Make this return true when this Command no longer needs to run execute()

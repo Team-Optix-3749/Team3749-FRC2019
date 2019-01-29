@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.*;
 
 /**
@@ -35,28 +36,12 @@ public class OI
     button.whenReleased(null);
   }
 
-  /**
-   * method getCtrl gets the xbox controller used to control the robot
-   * @return
-   */
-  public XboxController getCtrl()
+  public double getDriveX()
   {
-    return ctrl;
+    return ctrl.getY(Hand.kRight);
   }
-  /**
-   * method getStick gets the joystick used to control the robot
-   * @return
-   */
-  public double getCtrlAxis(int port)
+  public double getDriveY()
   {
-    return ctrl.getRawAxis(port);
-  }
-  /**
-   * method getStick gets the joystick used to control the robot
-   * @return
-   */
-  public boolean getCtrlButton(int port)
-  {
-    return ctrl.getRawButton(port);
+    return ctrl.getX(Hand.kLeft);
   }
 }
