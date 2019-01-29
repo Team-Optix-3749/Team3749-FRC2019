@@ -1,8 +1,10 @@
+package frc.robot.subsystems;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.TalonSRX;
-import java.lang.IllegalArguementException; 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import java.lang.IllegalArgumentException; 
 
 public class Elevator {
     TalonSRX elevatorMotor; 
@@ -19,13 +21,13 @@ public class Elevator {
 
         //check to make sure position is within requirements(set by calibrate())
         if(pos > maxPos || pos < minPos) {
-            throw new IllegalArguementException;
+            throw new IllegalArgumentException();
             //throw an error here
         }
 
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
-    
+    }
     /*
     * This method will be used to set the maximum 
     * and minimum positions for the elevator range
@@ -46,7 +48,6 @@ public class Elevator {
         elevatorMotor = new TalonSRX(42); 
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
-    }
     }
 }
 

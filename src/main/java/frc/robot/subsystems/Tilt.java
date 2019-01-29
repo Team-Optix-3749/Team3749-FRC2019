@@ -25,7 +25,7 @@ import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
 
 /**
- * class DriveBase controls the driving mechanism for the robot (6 wheel/6 motor drive! kit bot)
+ * class Tilt
  */
 public class Tilt extends Subsystem
 {
@@ -41,7 +41,7 @@ public class Tilt extends Subsystem
   // PID is a closed-loop control algorithm that uses sensor input to determine motor output
   private PIDController drivePID;
 
-  public DriveBase ()
+  public Tilt ()
   {
     WPI_TalonSRX leftF = new WPI_TalonSRX(10);
     /*
@@ -70,3 +70,9 @@ public class Tilt extends Subsystem
     drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
   }
+  @Override
+  public void initDefaultCommand()
+  {
+    setDefaultCommand(new DriveStick());
+  }
+}
