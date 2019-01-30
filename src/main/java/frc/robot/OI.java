@@ -23,6 +23,7 @@ public class OI
   private XboxController ctrl;
   // a default button for specific controls
   private Button button;
+  private Button button2;
 
   /**
    * constructor OI connects the controller and buttons to the different commands
@@ -34,6 +35,9 @@ public class OI
     button.whenPressed(null);
     button.whileHeld(null);
     button.whenReleased(null);
+    
+    button2 = new JoystickButton(ctrl, 3);
+    button2.whenReleased(new SetTilt());
   }
 
   public double getDriveX()
