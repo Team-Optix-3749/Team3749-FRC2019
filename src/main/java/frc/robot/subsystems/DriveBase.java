@@ -28,8 +28,12 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * class DriveBase controls the driving mechanism for the robot (6 wheel/6 motor drive! kit bot)
@@ -37,7 +41,7 @@ import frc.robot.commands.DriveStick;
 public class DriveBase extends Subsystem
 {
   // leading motor controllers, have built-in closed loop control
-  private SpeedControllerGroup leftSide, rightSide;
+  private DifferentialDrive ddrive;
   // expensive gyro from Kauai Labs, the purple board on top of the roboRIO
   // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
@@ -57,16 +61,20 @@ public class DriveBase extends Subsystem
       is good enough
       */
     WPI_VictorSPX leftM = new WPI_VictorSPX(21);
-    leftSide = new SpeedControllerGroup(leftF, leftM);
+    SpeedControllerGroup leftSide = new SpeedControllerGroup(leftF, leftM);
 
     // same thing on the other side
     WPI_TalonSRX rightF = new WPI_TalonSRX(11);
     WPI_VictorSPX rightM = new WPI_VictorSPX(20);
-    rightSide = new SpeedControllerGroup(rightF, rightM);
+    SpeedControllerGroup rightSide = new SpeedControllerGroup(rightF, rightM);
     
+    ddrive = new DifferentialDrive(leftSide, rightSide);
+
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
     gyro.reset();
+
+    SmartDashboard.putNumber("Gyro Compass Heading", gyro.getCompassHeading());
 
     // pid constants
     double kp = 0.1, ki = 0.05, kd = 0.1;
@@ -76,6 +84,8 @@ public class DriveBase extends Subsystem
     drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
     drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
+    
+    SmartDashboard.putData(drivePID);
   }
 
   @Override
@@ -116,47 +126,9 @@ public class DriveBase extends Subsystem
     }
     System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
-    rot += drivePID.get();
+    // rot += drivePID.get();
 
-    // left and right output to be calculated
-    double L, R;
-    // gets bigger of either fwd or rot
-    double max = Math.abs(fwd);
-    if (Math.abs(rot) > max)
-      max = Math.abs(rot);
-    // calc sum and difference btwn
-    double sum = fwd + rot;
-    double dif = fwd - rot;
-
-    // case by case convert fwd and rot input to left and right motor output
-    if (fwd >= 0)
-    {
-      if (rot >= 0)
-      {
-        L = max;
-        R = dif;
-      }
-      else
-      {
-        L = sum;
-        R = max;
-      }
-    }
-    else
-    {
-      if (rot >= 0)
-      {
-        L = sum;
-        R = -max;
-      }
-      else
-      {
-        L = -max;
-        R = dif;
-      }
-    }
-    // use the calculated values in actual output
-    tankDrive (L, R);
+    ddrive.arcadeDrive(fwd, rot);
   }
 
   public double getHeading()
@@ -166,9 +138,8 @@ public class DriveBase extends Subsystem
 
   public void tankDrive (double left, double right)
   {
-    leftSide.set(left);
-    rightSide.set(right);
-    locateTarget();
+    ddrive.tankDrive(left, right);
+    // locateTarget();
   }
   public double locateTarget()
   {

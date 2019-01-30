@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.*;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -34,14 +37,19 @@ public class OI
     button.whenPressed(null);
     button.whileHeld(null);
     button.whenReleased(null);
+
+    //shuffleboard
+    
+    SmartDashboard.putNumber("Joystick X Value", getDriveX());  //get joystick values 
+    SmartDashboard.putNumber("Joystick Y Value", getDriveY());
   }
 
   public double getDriveX()
   {
-    return ctrl.getY(Hand.kRight);
+    return ctrl.getX(Hand.kLeft);
   }
   public double getDriveY()
   {
-    return ctrl.getX(Hand.kLeft);
+    return ctrl.getY(Hand.kRight);
   }
 }

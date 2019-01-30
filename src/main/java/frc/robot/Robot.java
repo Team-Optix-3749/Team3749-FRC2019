@@ -29,9 +29,6 @@ public class Robot extends TimedRobot
   private static DriveBase drive = new DriveBase();
   private static OI oi;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -39,10 +36,8 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit()
   {
+    // setup joysticks and commands
     oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new DriveStick());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
@@ -108,19 +103,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    m_autonomousCommand = m_chooser.getSelected();
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    
   }
 
   /**
@@ -135,14 +118,7 @@ public class Robot extends TimedRobot
   @Override
   public void teleopInit()
   {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null)
-    {
-      m_autonomousCommand.cancel();
-    }
+    
   }
 
   /**
