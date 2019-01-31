@@ -27,6 +27,7 @@ import frc.robot.subsystems.DriveBase;
 public class Robot extends TimedRobot
 {
   private static DriveBase drive = new DriveBase();
+  private static WheelInOut flywheel = new WheelInOut();
   private static OI oi;
 
   Command m_autonomousCommand;
@@ -56,7 +57,16 @@ public class Robot extends TimedRobot
   {
     return drive;
   }
+   /**
+   * a simple getter method for the Flywheel subsystem
+   * @return flywheel
+   */
+   public static WheelInOut getFlywheel()
+   {
+      return flywheel;
+   }
   /**
+  
    * a simple getter method for the DriveBase subsystem
    * @return drive base
    */
