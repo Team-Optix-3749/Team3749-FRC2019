@@ -24,6 +24,7 @@ public class OI
   // a default button for specific controls
   private Button button;
   private Button button2;
+  private Button button3;
 
   /**
    * constructor OI connects the controller and buttons to the different commands
@@ -38,6 +39,12 @@ public class OI
     
     button2 = new JoystickButton(ctrl, 3);
     button2.whenReleased(new SetTilt());
+    
+    button3 = new Button(ctrl, 9)
+    button3.whileHeld(new Intake());
+    
+    button3 = new Button(ctrl, 10)
+    button3.whileHeld(new Unload());
   }
 
   public double getDriveX()
