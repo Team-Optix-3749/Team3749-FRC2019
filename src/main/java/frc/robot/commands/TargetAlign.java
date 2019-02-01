@@ -24,7 +24,7 @@ public class TargetAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double error = Robot.getDrive().getHeading() - Robot.getDrive().locateTarget();
+    double error = Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0];
     // constrained error adjusment (uses only P of PID)
     // needs an entire PID controller
     Robot.getDrive().arcadeDrive(0, Math.abs(error) > 20 ? -0.5 * Math.abs(error)/error : error / -40);
@@ -33,7 +33,7 @@ public class TargetAlign extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()) < 1;
+    return Math.abs(Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0]) < 1;
   }
 
   // Called once after isFinished returns true
