@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.DriveStick;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class Elevator {
+
+public class Elevator extends Subsystem {
 
     TalonSRX elevatorMotor; 
     DigitalInput limitSwitch;
@@ -16,8 +20,13 @@ public class Elevator {
     * what position we want the elevator to 
     * move to
     */
+    @Override    
+    protected void initDefaultCommand() {
+        setDefaultCommand(new DriveStick());
+    }
+
+    public Elevator() {
         
-    Elevator() {
         elevatorMotor = new TalonSRX(42); 
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
@@ -25,9 +34,10 @@ public class Elevator {
     void setPosition(int pos) {
 
         //check to make sure position is within requirements(set by calibrate())
-        if(pos > maxPos || pos < minPos) {
-            throw new IllegalArgumentException();
-            //throw an error here
+        if(pos > maxPos) {
+            pos = maxPos;
+        } else if(pos < minPos) {
+            pos = minPos;
         }
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
