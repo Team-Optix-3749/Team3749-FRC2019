@@ -1,29 +1,15 @@
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
 
-class ElevatorStick extends Command {
-    TalonSRX elevatorMotorInnter; 
-    DigitalInput limitSwitchInner;
-
-
-    ElevatorStick(TalonSRX EM, DigitalInput LS ) {
-        elevatorMotorInnter = EM;
-        limitSwitchInner = LS;
-        requires(Robot.getDrive());
-    }
-
+public class ElevatorSetPosition extends Command {
     @Override
     protected void initialize() {
-        
+    
     }
 
     @Override 
     protected void execute() {
-        
+
     }
 
     @Override
@@ -34,6 +20,10 @@ class ElevatorStick extends Command {
     @Override
     protected void end() {
 
+    }
+
+    void calibrate() {
+        //find maxPos and minPos
     }
 
     // Called when another command which requires one or more of the same

@@ -2,9 +2,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-class Calibrate extends Command {
+class CalibrateElevator extends Command {
 
-    Calibrate() {
+    CalibrateElevator() {
 
     }
 
