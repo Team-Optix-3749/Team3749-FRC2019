@@ -22,6 +22,5 @@ public class EmptyPIDOut implements PIDOutput
     public void pidWrite (double output)
     {
         // do nothing!
-        
     }
 }

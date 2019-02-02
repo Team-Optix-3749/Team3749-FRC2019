@@ -55,4 +55,12 @@ public class OI
   {
     return ctrl.getX(Hand.kLeft);
   }
+
+  /**
+   * This method returns the joystick tilt on the contoller
+   */
+  public double getTilt()
+  {
+    return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
+  }
 }
