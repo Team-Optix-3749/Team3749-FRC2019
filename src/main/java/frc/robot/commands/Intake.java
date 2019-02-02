@@ -1,4 +1,10 @@
+package frc.robot.commands;
+
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
+
 public class Intake extends Command
+
 {
 	public Intake()
 	{
@@ -10,7 +16,7 @@ public class Intake extends Command
 	protected void execute()
 	{
 		if(!Robot.getFlywheel().hasCargo())
-			Robot.getFlywheel().intake()
+			Robot.getFlywheel().intake();
 	}
 
 	protected boolean isFinished()

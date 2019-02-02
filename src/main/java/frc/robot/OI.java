@@ -40,10 +40,10 @@ public class OI
     button2 = new JoystickButton(ctrl, 3);
     button2.whenReleased(new SetTilt());
     
-    button3 = new Button(ctrl, 9)
+    button3 = new Button(ctrl, 9);
     button3.whileHeld(new Intake());
     
-    button3 = new Button(ctrl, 10)
+    button3 = new Button(ctrl, 10);
     button3.whileHeld(new Unload());
   }
 
