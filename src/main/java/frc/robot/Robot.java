@@ -26,6 +26,7 @@ public class Robot extends TimedRobot
   private static WheelInOut flywheel = new WheelInOut();
   private static Tilt tilt = new Tilt();    //tilt subsytem
   private static OI oi;
+  private static RobotMap map;
   private static Elevator elevator = new Elevator();
 
   /**
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot
   public void robotInit()
   {
     oi = new OI();
+    map = new RobotMap();
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
@@ -80,6 +82,15 @@ public class Robot extends TimedRobot
     return oi;
   }
 
+  /**
+
+   * a simple getter method for the DriveBase subsystem
+   * @return drive base
+   */
+  public static RobotMap getMap()
+  {
+    return map;
+  }
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,

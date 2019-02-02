@@ -7,18 +7,28 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Robot;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SPI.Port;
 
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
@@ -42,18 +52,20 @@ public class DriveBase extends Subsystem
 
   public DriveBase ()
   {
-    WPI_TalonSRX leftF = new WPI_TalonSRX(10);
     /*
       have two motor controllers following the TalonSRX
       a VictorSPX is cheaper and has less features, so just having it follow
       is good enough
       */
-    WPI_VictorSPX leftM = new WPI_VictorSPX(21);
+    WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
+    WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
+    // WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
     leftSide = new SpeedControllerGroup(leftF, leftM);
 
     // same thing on the other side
-    WPI_TalonSRX rightF = new WPI_TalonSRX(11);
-    WPI_VictorSPX rightM = new WPI_VictorSPX(20);
+    WPI_TalonSRX rightF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_rf"));
+    WPI_VictorSPX rightM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rm"));
+    // WPI_VictorSPX rightB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rb"));
     rightSide = new SpeedControllerGroup(rightF, rightM);
     
     // gyro based on SPI (faster than other input)
@@ -66,7 +78,6 @@ public class DriveBase extends Subsystem
     // instead, just use .get() for driving adjustments
     // consider just using PIDSubsystem
     drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
-    drivePID.setInputRange(-3, 3);
     drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
   }
@@ -163,14 +174,13 @@ public class DriveBase extends Subsystem
     rightSide.set(right);
     locateTarget();
   }
-  public double[] locateTarget()
+  public double locateTarget()
   {
     // figure out how to handle it finding multiple or not finding any :/
     double[] defaultValue = new double[0];
     double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
         .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
     System.out.println(xPos[0]);
-    return xPos;
+    return xPos[0];
   }
-
 }
