@@ -2,16 +2,24 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Robot;
 
 class ElevatorStick extends Command {
+    TalonSRX elevatorMotorInnter; 
+    DigitalInput limitSwitchInner;
 
-    ElevatorStick() {
 
+    ElevatorStick(TalonSRX EM, DigitalInput LS ) {
+        elevatorMotorInnter = EM;
+        limitSwitchInner = LS;
+        requires(Robot.getDrive());
     }
 
     @Override
     protected void initialize() {
-    
+        
     }
 
     @Override 

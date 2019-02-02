@@ -2,8 +2,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.WheelInOut;
 
 public class Intake extends Command
+
 {
 	public Intake()
 	{
@@ -20,8 +22,7 @@ public class Intake extends Command
 
 	protected boolean isFinished()
 	{
-		if(Robot.getFlywheel().hasCargo())
-			return true;
+		return Robot.getFlywheel().hasCargo();
 	}
 
 	protected void end() 

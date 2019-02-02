@@ -3,9 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import java.lang.IllegalArguementException; 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import java.lang.IllegalArguementException; 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Elevator {
 
@@ -30,18 +29,19 @@ public class Elevator {
 
         //check to make sure position is within requirements(set by calibrate())
         if(pos > maxPos || pos < minPos) {
-            throw new IllegalArguementException();
+            throw new IllegalArgumentException();
             //throw an error here
         }
-
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
+        elevatorMotor.set(ControlMode.Position, pos);
     
     /*
     * This method will be used to set the maximum 
     * and minimum positions for the elevator range
     * using limit switches
     */
+    /*
     void calibrate() {
         //use current position and set it to the minimum
         while (limitSwitch.get()) {
@@ -51,8 +51,9 @@ public class Elevator {
         //check current position of the robot and hold it 
         
 
-    }
+    } */
 
+} 
 }
 
 //Add command later on once position/encoder stuff is figured out

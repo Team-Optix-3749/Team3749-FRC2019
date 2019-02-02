@@ -20,8 +20,7 @@ public class Unload extends Command
 
 	protected boolean isFinished()
 	{
-		if(!Robot.getFlywheel().hasCargo())
-			return true;
+		return (!Robot.getFlywheel().hasCargo());
 	}
 
 	protected void end() 

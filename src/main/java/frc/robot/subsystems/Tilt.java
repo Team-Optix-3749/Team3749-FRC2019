@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -34,17 +35,46 @@ public class Tilt extends Subsystem
 {
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
+  private int position;
   
   public Tilt ()
   {
     motor = new TalonSRX(40);
-  motor.config_Kp(0.001);
+    motor.config_kP(0, 0.001);
+    motor.config_kI(0, 0);
   }
   @Override
   public void initDefaultCommand()
   {
     setDefaultCommand(new TiltStick());
   }
+  public void moveUp(int pos)
+  {
+    position+=pos;
+    update();
+  }
+  public void moveDown(int pos)
+  {
+    position-=pos;
+    update();
+  }
+  public void setPosition(int pos)
+  {
+    position=pos;
+    update();
+  }
+  public int getPosition()
+  {
+    return motor.getSelectedSensorPosition(0);
+  }
+  private void update()
+  {
+    motor.setSelectedSensorPosition(position, 0, 50);
+  }
+  //public void update()
+  //{
+
+  //}
   /*
   long position;
   motor.set(ControlMode.PercentOutput, -0.1);

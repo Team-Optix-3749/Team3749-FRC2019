@@ -23,30 +23,28 @@ public class OI
 {
   // controller used for main controls (xbox controller)
   private XboxController ctrl;
-  // a default button for specific controls
-  private Button button;
-  private Button button2;
-  private Button button3;
-
+  private Button xButton;
+  private Button leftBumper;
+  private Button rightBumper;
   /**
    * constructor OI connects the controller and buttons to the different commands
    */
   public OI ()
   {
     ctrl = new XboxController(0);
-    button = new JoystickButton(ctrl, 1);
+    Button button = new JoystickButton(ctrl, 1);
     button.whenPressed(null);
     button.whileHeld(null);
     button.whenReleased(null);
     
-    button2 = new JoystickButton(ctrl, 3);
-    // button2.whenReleased(new SetTilt());
+    xButton = new JoystickButton(ctrl, 3);
+    // xButton.whenReleased(new SetTilt());
     
-    button3 = new JoystickButton(ctrl, 9);
-    button3.whileHeld(new Intake());
+    leftBumper = new JoystickButton(ctrl, 5);
+    leftBumper.whileHeld(new Intake());
     
-    button3 = new JoystickButton(ctrl, 10);
-    button3.whileHeld(new Unload());
+    rightBumper = new JoystickButton(ctrl, 6);
+    rightBumper.whileHeld(new Unload());
   }
 
   public double getDriveX()
