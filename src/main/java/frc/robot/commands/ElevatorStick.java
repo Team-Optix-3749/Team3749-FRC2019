@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Robot;
 
 class ElevatorStick extends Command {
     TalonSRX elevatorMotorInnter; 

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -24,13 +23,12 @@ public class WheelInOut extends Subsystem
 		intakeMotor2.setInverted(true);
 	}
 
-	private void setSpeed(double newSpeed) 
+	public void setSpeed(double newSpeed) 
 	{
 		speed = newSpeed;
 		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
-
 
 	public void intake()
 	{
@@ -54,7 +52,14 @@ public class WheelInOut extends Subsystem
 		setSpeed(.3);
 	}
 
-	boolean hasCargo() {return flywheelSwitch.get();}	
+	public void stop()
+	{
+		setSpeed(0);
+	}
+
+	public boolean hasCargo() {
+		return flywheelSwitch.get();
+	}	
 
 	@Override
 	 protected void initDefaultCommand() {

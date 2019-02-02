@@ -1,4 +1,5 @@
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -19,13 +20,12 @@ public class Unload extends Command
 
 	protected boolean isFinished()
 	{
-		if(!Robot.getFlywheel().hasCargo())
-			return true;
+		return (!Robot.getFlywheel().hasCargo());
 	}
 
 	protected void end() 
 	{
-		Robot.getFlywheel().setSpeed(0);
+		Robot.getFlywheel().stop();
 	}	
 
 	protected void interrupted() 

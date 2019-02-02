@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TargetAlign extends Command {
-  public TargetAlign() {
+public class TiltStick extends Command {
+  public TiltStick() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -23,17 +23,15 @@ public class TargetAlign extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    double error = Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0];
-    // constrained error adjusment (uses only P of PID)
-    // needs an entire PID controller
-    Robot.getDrive().arcadeDrive(0, Math.abs(error) > 20 ? -0.5 * Math.abs(error)/error : error / -40);
+  protected void execute() 
+  {
+    Robot.getTilt().move((int)(100 * (Robot.getOI().getTilt())));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0]) < 1;
+    return false;
   }
 
   // Called once after isFinished returns true
