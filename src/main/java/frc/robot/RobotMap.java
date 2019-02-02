@@ -14,10 +14,11 @@ import java.util.HashMap;
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
+ * @author Rupin Mittal
  */
 public class RobotMap
 {
-  private static HashMap <String, Integer> mapPWM; //the PWM port map
+    private static HashMap <String, Integer> mapPWM; //the PWM port map
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
 
