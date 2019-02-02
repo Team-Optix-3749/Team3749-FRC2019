@@ -25,6 +25,8 @@ public class OI
   private XboxController ctrl;
   // a default button for specific controls
   private Button button;
+  private Button button2;
+  private Button button3;
 
   /**
    * constructor OI connects the controller and buttons to the different commands
@@ -36,19 +38,23 @@ public class OI
     button.whenPressed(null);
     button.whileHeld(null);
     button.whenReleased(null);
-
-    //shuffleboard
     
-    SmartDashboard.putNumber("Joystick X Value", getDriveX());  //get joystick values 
-    SmartDashboard.putNumber("Joystick Y Value", getDriveY());
+    button2 = new JoystickButton(ctrl, 3);
+    // button2.whenReleased(new SetTilt());
+    
+    button3 = new JoystickButton(ctrl, 9);
+    button3.whileHeld(new Intake());
+    
+    button3 = new JoystickButton(ctrl, 10);
+    button3.whileHeld(new Unload());
   }
 
   public double getDriveX()
   {
-    return ctrl.getX(Hand.kLeft);
+    return ctrl.getY(Hand.kRight);
   }
   public double getDriveY()
   {
-    return ctrl.getY(Hand.kRight);
+    return ctrl.getX(Hand.kLeft);
   }
 }
