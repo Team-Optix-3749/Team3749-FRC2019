@@ -68,6 +68,10 @@ public class Robot extends TimedRobot
    {
       return flywheel;
    }
+   /**
+    * a simple getter method for the Elevator subsystem 
+    * @return Elevator
+    */
   /**
   
    * a simple getter method for the DriveBase subsystem
@@ -95,6 +99,11 @@ public class Robot extends TimedRobot
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
+
+  public static Elevator getElevator() {
+    return elevator;
+  }
+
   @Override
   public void robotPeriodic()
   {
