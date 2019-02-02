@@ -42,20 +42,16 @@ public class Tilt extends Subsystem
     motor = new TalonSRX(40);
     motor.config_kP(0, 0.001);
     motor.config_kI(0, 0);
+    motor.config_kD(0, 0);
   }
   @Override
   public void initDefaultCommand()
   {
     setDefaultCommand(new TiltStick());
   }
-  public void moveUp(int pos)
+  public void move(int pos)
   {
     position+=pos;
-    update();
-  }
-  public void moveDown(int pos)
-  {
-    position-=pos;
     update();
   }
   public void setPosition(int pos)

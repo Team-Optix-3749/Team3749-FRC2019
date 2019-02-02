@@ -31,7 +31,6 @@ public class WheelInOut extends Subsystem
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
 
-
 	public void intake()
 	{
 		if(intakeMotor1.getInverted())
