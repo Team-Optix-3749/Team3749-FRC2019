@@ -26,6 +26,7 @@ public class Robot extends TimedRobot
   private static WheelInOut flywheel = new WheelInOut();
   private static Tilt tilt = new Tilt();    //tilt subsytem
   private static OI oi;
+  private static Elevator elevator = new Elevator();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -65,6 +66,10 @@ public class Robot extends TimedRobot
    {
       return flywheel;
    }
+   /**
+    * a simple getter method for the Elevator subsystem 
+    * @return Elevator
+    */
   /**
   
    * a simple getter method for the DriveBase subsystem
@@ -83,6 +88,11 @@ public class Robot extends TimedRobot
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
+
+  public static Elevator getElevator() {
+    return elevator;
+  }
+
   @Override
   public void robotPeriodic()
   {
