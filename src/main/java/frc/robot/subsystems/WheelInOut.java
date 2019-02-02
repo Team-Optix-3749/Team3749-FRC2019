@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -31,7 +30,6 @@ public class WheelInOut extends Subsystem
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
 
-
 	public void intake()
 	{
 		if(intakeMotor1.getInverted())
@@ -52,6 +50,11 @@ public class WheelInOut extends Subsystem
 		}
 		
 		setSpeed(.3);
+	}
+
+	public void stop()
+	{
+		setSpeed(0);
 	}
 
 	public boolean hasCargo() {
