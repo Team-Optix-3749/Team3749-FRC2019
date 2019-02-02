@@ -33,15 +33,16 @@ public class Elevator {
             throw new IllegalArguementException();
             //throw an error here
         }
-
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
+        elevatorMotor.set(ControlMode.Position, pos);
     
     /*
     * This method will be used to set the maximum 
     * and minimum positions for the elevator range
     * using limit switches
     */
+    /*
     void calibrate() {
         //use current position and set it to the minimum
         while (limitSwitch.get()) {
@@ -51,8 +52,9 @@ public class Elevator {
         //check current position of the robot and hold it 
         
 
-    }
+    } */
 
+} 
 }
 
 //Add command later on once position/encoder stuff is figured out
