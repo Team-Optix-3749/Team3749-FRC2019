@@ -24,7 +24,7 @@ public class Robot extends TimedRobot
 {
   private static DriveBase drive = new DriveBase();
   private static WheelInOut flywheel = new WheelInOut();
-
+  private static Tilt tilt = new Tilt();    //tilt subsytem
   private static OI oi;
   private static RobotMap map;
 
@@ -40,6 +40,15 @@ public class Robot extends TimedRobot
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
+  }
+
+  /**
+   * This method gets the Tilt subsystem
+   * @return tilt
+   */
+  public static Tilt getTilt()
+  {
+    return tilt;
   }
 
   /**
