@@ -20,15 +20,23 @@ public class RobotMap
 {
     private static HashMap <String, Integer> mapPWM; //the PWM port map
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
+	private static HashMap <String, Integer> mapDIO; //the CAN port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
 
   public RobotMap ()
   {
     mapPWM = new HashMap<>();
 	mapCAN = new HashMap<>();
+    mapDIO = new HashMap<>();
     mapCTRL = new HashMap<>();
 
-    // load map values here!
+	// loading map values for drive
+	setCAN("drive_lf", 10);
+	setCAN("drive_lm", 21);
+	setCAN("drive_lb", 22);
+	setCAN("drive_rf", 11);
+	setCAN("drive_rm", 20);
+	setCAN("drive_rb", 23);
   }
 
   /**
@@ -49,6 +57,15 @@ public class RobotMap
 	public void setCAN (String name, int port)
 	{
 		mapCAN.put(name, port);
+	}
+	/**
+	* Method to set a DIO port
+	* @param String		name of what port is for (what you call it throughout the program)
+	* @param int 		the port number
+	*/
+	public void setDIO (String name, int port)
+	{
+		mapDIO.put(name, port);
 	}
 	
 	/**
@@ -79,6 +96,14 @@ public class RobotMap
 		return mapCAN.get(name);
 	}
 	
+	/**
+	* Method to get a DIO port
+	* @param String		name of what port is for (what you call it throughout the program)
+	*/
+	public int getDIO (String name)
+	{
+		return mapDIO.get(name);
+	}
 	/**
 	* Method to get a CTRL port
 	* @param String		name of what port is for (what you call it throughout the program)

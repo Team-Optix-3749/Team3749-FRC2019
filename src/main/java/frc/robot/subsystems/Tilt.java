@@ -42,24 +42,6 @@ public class Tilt extends Subsystem
   }
   private void update()
   {
-    motor.setSelectedSensorPosition(position, 0, 50);
+    motor.setSelectedSensorPosition(position, 0, 20);
   }
-  //public void update()
-  //{
-
-  //}
-  /*
-  long position;
-  motor.set(ControlMode.PercentOutput, -0.1);
-  motor.set(ControlMode.Position, position);
-  motor.setSelectedSensorPosition(0, 0, 50);
-  motor.getSelectedSensorPosition(0)
-  
-  moveUp()
-  moveDown()
-  setPosition()
-  update()
-  getPosition()
-  // 
-  */
 }

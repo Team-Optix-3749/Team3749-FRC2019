@@ -30,10 +30,10 @@ public class OI
   public OI ()
   {
     ctrl = new XboxController(0);
-    Button button = new JoystickButton(ctrl, 1);
-    button.whenPressed(null);
-    button.whileHeld(null);
-    button.whenReleased(null);
+    // Button button = new JoystickButton(ctrl, 1);
+    // button.whenPressed(null);
+    // button.whileHeld(null);
+    // button.whenReleased(null);
     
     xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());

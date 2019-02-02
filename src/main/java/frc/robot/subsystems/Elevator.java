@@ -18,7 +18,6 @@ public class Elevator {
     */
         
     Elevator() {
-        
         elevatorMotor = new TalonSRX(42); 
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
