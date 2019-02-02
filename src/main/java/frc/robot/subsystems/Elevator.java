@@ -31,7 +31,7 @@ public class Elevator extends Subsystem {
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
     }
-    void setPosition(int pos) {
+    public void setPosition(int pos) {
 
         //check to make sure position is within requirements(set by calibrate())
         if(pos > maxPos) {
