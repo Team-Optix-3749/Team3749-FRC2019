@@ -18,8 +18,8 @@ public class WheelInOut extends Subsystem
 	{
 		flywheelSwitch = new DigitalInput(1);
 		speed = 0;
-		intakeMotor1 = new TalonSRX(1);
-		intakeMotor2 = new TalonSRX(2);
+		intakeMotor1 = new TalonSRX(Robot.getMap().getCAN("wheel_left"));
+		intakeMotor2 = new TalonSRX(Robot.getMap().getCAN("wheel_right"));
 		intakeMotor2.setInverted(true);
 	}
 
@@ -29,7 +29,12 @@ public class WheelInOut extends Subsystem
 		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
-
+	public void printTest()
+	{
+		if(intakeMotor1.getInverted() == true)
+			System.out.println("left motor inverted");
+		System.out.println(speed);
+	}
 	public void intake()
 	{
 		if(intakeMotor1.getInverted())
@@ -39,6 +44,7 @@ public class WheelInOut extends Subsystem
 		}
 		
 		setSpeed(.3);
+		printTest();
 	}
 	
 	public void unload()
