@@ -44,6 +44,6 @@ public class Tilt extends Subsystem
   }
   private void update()
   {
-    motor.setSelectedSensorPosition(position, 0, 20);
+    motor.setSelectedSensorPosition((int)position, 0, 20);
   }
 }

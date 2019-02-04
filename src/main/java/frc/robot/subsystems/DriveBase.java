@@ -174,13 +174,13 @@ public class DriveBase extends Subsystem
     rightSide.set(right);
     locateTarget();
   }
-  public double locateTarget()
+  public double[] locateTarget()
   {
     // figure out how to handle it finding multiple or not finding any :/
     double[] defaultValue = new double[0];
     double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
         .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
-    System.out.println(xPos[0]);
-    return xPos[0];
+    System.out.println(xPos);
+    return xPos;
   }
 }

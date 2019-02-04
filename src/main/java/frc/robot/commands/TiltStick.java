@@ -25,7 +25,7 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    Robot.getTilt().move((int)(100 * (Robot.getOI().getTilt())));
+    Robot.getTilt().move((100 * (Robot.getOI().getTilt())));
   }
 
   // Make this return true when this Command no longer needs to run execute()
