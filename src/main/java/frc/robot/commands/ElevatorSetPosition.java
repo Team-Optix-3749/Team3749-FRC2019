@@ -22,12 +22,14 @@ public class ElevatorSetPosition extends Command {
     protected void execute() {
         
         if(xbox.getAButton()) {
-            elevator.setPosition(100); //enter a number greater than the max it will autocorrect
+            elevator.setPosition(1); //enter a number greater than the max it will autocorrect
         }
 
         if(xbox.getBButton()) {
             elevator.setPosition(0); //enter a number below the minimum so it wil autocorrect
         }
+       
+         // add other set positions such as hatch/cargo positions?
     }
 
     @Override
