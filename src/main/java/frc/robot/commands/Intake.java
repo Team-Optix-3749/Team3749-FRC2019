@@ -17,6 +17,8 @@ public class Intake extends Command
 	{
 		if(!Robot.getFlywheel().hasCargo())
 			Robot.getFlywheel().intake();
+		else
+			Robot.getFlywheel().stop();
 	}
 
 	protected boolean isFinished()
