@@ -15,6 +15,7 @@ public class Tilt extends Subsystem
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
   private double position;
+  private final double ENCODER_CONSTANT;
   
   public Tilt ()
   {
@@ -30,12 +31,13 @@ public class Tilt extends Subsystem
   }
   public void move(double pos)
   {
-    position+=pos;
+    position+= (pos / 90) * ENCODER_CONSTANT;
     update();
   }
+  
   public void setPosition(double pos)
   {
-    position=pos;
+    position= (pos / 90) * ENCODER_COSTANT;
     update();
   }
   public int getPosition()
