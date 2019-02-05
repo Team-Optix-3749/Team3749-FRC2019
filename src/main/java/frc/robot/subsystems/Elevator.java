@@ -41,6 +41,16 @@ public class Elevator extends Subsystem {
         return limitSwitch;
     }
     
+    public double getMaxPosition() {
+        return maxPos; 
+    }
+    
+    public void setMaxPosition(int max) {
+        if(int<=1 && int>=0){
+            maxPos = max; 
+        }
+    }
+    
     public void setPosition(double pos) { //set a value from 0-1
 
         //check to make sure position is within requirements(set by calibrate())
