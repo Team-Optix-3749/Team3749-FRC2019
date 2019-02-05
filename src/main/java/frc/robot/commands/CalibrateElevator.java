@@ -9,13 +9,10 @@ class CalibrateElevator extends Command {
     TalonSRX motor;
     DigitalInput switch;
 
-    CalibrateElevator() {
-
-    }
-
     @Override
     protected void initialize() {
-    
+        motor = Elevator.getElevator();
+        switch = Elevator.getLimitSwitch();
     }
 
     @Override 
