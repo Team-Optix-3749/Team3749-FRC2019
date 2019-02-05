@@ -15,7 +15,7 @@ public class Elevator extends Subsystem {
 
     private int maxPos = 1; //the maximum position to which the elevator can go to
     final int minPos = 0; //the minimum position to which the elevator can go to 
-    private double encoderScale = 99,999; //need to CHANGE used last year's number but number may need to change
+    private double encoderScale = 99.999; //need to CHANGE used last year's number but number may need to change
     /*
     * This method will be used to determine
     * what position we want the elevator to 
@@ -40,7 +40,7 @@ public class Elevator extends Subsystem {
         } else if(pos < minPos && pos < 0) {
             pos = minPos;
         }
-        int scaledPos = pos * encoderscale;
+        int scaledPos = (int)(pos * encoderScale);
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
         elevatorMotor.set(ControlMode.Position, scaledPos);
