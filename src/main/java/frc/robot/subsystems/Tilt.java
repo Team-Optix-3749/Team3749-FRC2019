@@ -16,6 +16,7 @@ public class Tilt extends Subsystem
   private TalonSRX motor;
   private double position;
   private final double ENCODER_CONSTANT;
+  private DigitalInput switchie;
   
   public Tilt ()
   {
