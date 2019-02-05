@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 class CalibrateTilt extends Command
 {
+   
    CalibrateTilt()
    {
    }
@@ -21,7 +22,7 @@ class CalibrateTilt extends Command
    @Override
    protected boolean isFinished()
    {
-      return true;
+      return switchie.get();
    }
    
    @Override 
