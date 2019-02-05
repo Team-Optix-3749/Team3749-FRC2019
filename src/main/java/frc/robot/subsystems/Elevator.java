@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class Elevator extends Subsystem {
 
     private TalonSRX elevatorMotor; 
-     DigitalInput limitSwitch;
+    private DigitalInput limitSwitch;
 
     private int maxPos = 1; //the maximum position to which the elevator can go to
     final int minPos = 0; //the minimum position to which the elevator can go to 
@@ -32,6 +32,15 @@ public class Elevator extends Subsystem {
         //instantiate the elevator motor idk what id to use so I used the one from last year
         limitSwitch = new DigitalInput(1);
     }
+    
+    public TalonSRX getElevator() {
+        return elevatorMotor;
+    }
+    
+    public DigitalInput getLimitSwitch() {
+        return limitSwitch;
+    }
+    
     public void setPosition(double pos) { //set a value from 0-1
 
         //check to make sure position is within requirements(set by calibrate())
