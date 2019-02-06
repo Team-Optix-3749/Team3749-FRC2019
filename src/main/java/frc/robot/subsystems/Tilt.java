@@ -50,7 +50,11 @@ public class Tilt extends Subsystem
     motor.setSelectedSensorPosition((int)position, 0, 20);
   }
   
-  public static DigitalInput getswitchie() {
+  public static boolean getSwitchieStatus() {
     return switchie; 
+  }
+  
+  public static TalonSRX getmotor() {
+    return motor; 
   }
 }
