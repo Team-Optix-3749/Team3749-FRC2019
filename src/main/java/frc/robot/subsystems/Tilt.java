@@ -49,4 +49,8 @@ public class Tilt extends Subsystem
   {
     motor.setSelectedSensorPosition((int)position, 0, 20);
   }
+  
+  public DigitalInput getswitchie() {
+    return switchie; 
+  }
 }
