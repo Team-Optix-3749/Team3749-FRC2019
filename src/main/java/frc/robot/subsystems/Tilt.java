@@ -51,7 +51,7 @@ public class Tilt extends Subsystem
   }
   
   public static boolean getSwitchieStatus() {
-    return switchie; 
+    return true; 
   }
   
   public static TalonSRX getmotor() {
