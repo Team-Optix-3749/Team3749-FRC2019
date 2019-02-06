@@ -38,12 +38,16 @@ public class Tilt extends Subsystem
   
   public void setPosition(double pos)
   {
-    position= (pos / 90) * ENCODER_COSTANT;
+    position= (pos / 90) * ENCODER_CONSTANT;
     update();
   }
   public int getPosition()
   {
     return motor.getSelectedSensorPosition(0);
+  }
+  public void reset()
+  {
+    setPosition(0);
   }
   private void update()
   {
