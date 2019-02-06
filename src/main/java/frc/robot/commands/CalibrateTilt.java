@@ -6,6 +6,7 @@ import frc.robot.subsystems.Tilt;
 class CalibrateTilt extends Command
 {
 DigitalInput switchie2;
+TalonSRX motor2; 
    
    CalibrateTilt()
    {
@@ -16,17 +17,19 @@ DigitalInput switchie2;
    protected void initialize()
    {
       switchie2 = Tilt.getswitchie(); 
+      motor2 = Tilt.getmotor();
    }
    
    @Override
    protected void execute()
    {
+   
    }
    
    @Override
    protected boolean isFinished()
    {
-      return switchie.get();
+      return switchie2.get();
    }
    
    @Override 
@@ -42,4 +45,5 @@ DigitalInput switchie2;
    protected void interrupted()
    {
    }
+   
 }
