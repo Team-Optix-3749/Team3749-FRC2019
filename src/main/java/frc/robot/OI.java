@@ -54,7 +54,7 @@ public class OI
     return ctrl.getX(Hand.kLeft);
   }
   
-  public boolean getXButton() {
+  public boolean getX() {
     return ctrl.getXButton();
   }
 
