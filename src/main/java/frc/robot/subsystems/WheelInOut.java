@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Spark;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -10,8 +11,8 @@ import frc.robot.Robot;
 
 public class WheelInOut extends Subsystem
 {
-	private TalonSRX intakeMotor1;
-	private TalonSRX intakeMotor2;
+	private Spark intakeMotor1;
+	private Spark intakeMotor2;
 	private DigitalInput flywheelSwitch;
 	private double speed;
 
@@ -19,44 +20,31 @@ public class WheelInOut extends Subsystem
 	{
 		flywheelSwitch = new DigitalInput(1);
 		speed = 0;
-		intakeMotor1 = new TalonSRX(Robot.getMap().getCAN("wheel_left"));
-		intakeMotor2 = new TalonSRX(Robot.getMap().getCAN("wheel_right"));
+		intakeMotor1 = new Spark(4);// TalonSRX(Robot.getMap().getCAN("wheel_left"));
+		intakeMotor2 = new Spark(5);// TalonSRX(Robot.getMap().getCAN("wheel_right"));
 		intakeMotor2.setInverted(true);
 	}
 
 	public void setSpeed(double newSpeed) 
 	{
 		speed = newSpeed;
-		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
-		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
+		intakeMotor1.set(newSpeed);
+		intakeMotor2.set(-newSpeed);
 	}
-	public void printTest()
-	{
-		if(intakeMotor1.getInverted() == true)
-			System.out.println("left motor inverted");
-		System.out.println(speed);
-	}
+
 	public void intake()
 	{
-		if(intakeMotor1.getInverted())
-		{
-			intakeMotor1.setInverted(false);
-			intakeMotor2.setInverted(true);
-		}
-		
-		setSpeed(.3);
-		printTest();
+		setSpeed(1.0);
 	}
 	
 	public void unload()
 	{
-		if(!intakeMotor1.getInverted())
-		{
-			intakeMotor1.setInverted(false);
-			intakeMotor2.setInverted(true);
-		}
-		
-		setSpeed(.3);
+		//if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
+		//{
+			//intakeMotor1.setInverted(true);
+			//intakeMotor2.setInverted(false);
+		//}
+		setSpeed(-1.0);
 	}
 
 	public void stop()

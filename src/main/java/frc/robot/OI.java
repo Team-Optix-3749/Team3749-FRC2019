@@ -39,10 +39,10 @@ public class OI
     // xButton.whenReleased(new SetTilt());
     
     leftBumper = new JoystickButton(ctrl, 5);
-    leftBumper.whileHeld(new Intake());
+    leftBumper.whileHeld(new Unload());
     
     rightBumper = new JoystickButton(ctrl, 6);
-    rightBumper.whileHeld(new Unload());
+    rightBumper.whileHeld(new Intake());
   }
 
   public double getDriveX()

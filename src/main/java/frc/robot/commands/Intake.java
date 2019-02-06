@@ -15,6 +15,7 @@ public class Intake extends Command
 
 	protected void execute()
 	{
+		/*
 		if(!Robot.getFlywheel().hasCargo())
 		{
 			Robot.getFlywheel().intake();
@@ -22,20 +23,22 @@ public class Intake extends Command
 		}
 		else
 			Robot.getFlywheel().stop();
+		*/Robot.getFlywheel().intake();
+			
 	}
 
 	protected boolean isFinished()
 	{
-		return Robot.getFlywheel().hasCargo();
+		return true;//Robot.getFlywheel().hasCargo();
 	}
 
 	protected void end() 
 	{
-		Robot.getFlywheel().stop();
+		Robot.getFlywheel().setSpeed(0);
 	}	
 
 	protected void interrupted() 
 	{
-        	end();
+    
 	}
 }

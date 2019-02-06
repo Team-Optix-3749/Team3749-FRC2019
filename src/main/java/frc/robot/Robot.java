@@ -22,12 +22,12 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot
 {
-  private static DriveBase drive = new DriveBase();
+  private static DriveBase drive;// = new DriveBase();
   private static WheelInOut flywheel = new WheelInOut();
-  private static Tilt tilt = new Tilt();    //tilt subsytem
+  private static Tilt tilt;// = new Tilt();    //tilt subsytem
   private static OI oi;
   private static RobotMap map;
-  private static Elevator elevator = new Elevator();
+  private static Elevator elevator;// = new Elevator();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -39,8 +39,8 @@ public class Robot extends TimedRobot
     oi = new OI();
     map = new RobotMap();
     // start running camera from roboRIO
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setBrightness(20);
+    // UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    // camera.setBrightness(20);
   }
 
   /**

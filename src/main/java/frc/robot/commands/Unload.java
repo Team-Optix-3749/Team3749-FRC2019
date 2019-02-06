@@ -14,22 +14,21 @@ public class Unload extends Command
 
 	protected void execute()
 	{
-		if(Robot.getFlywheel().hasCargo())
-			Robot.getFlywheel().unload();
+		Robot.getFlywheel().unload();
 	}
 
 	protected boolean isFinished()
 	{
-		return (!Robot.getFlywheel().hasCargo());
+		return true;//(!Robot.getFlywheel().hasCargo());
 	}
 
 	protected void end() 
 	{
-		Robot.getFlywheel().stop();
+		Robot.getFlywheel().setSpeed(0);
 	}	
 
 	protected void interrupted() 
 	{
-
+		
 	}
 }
