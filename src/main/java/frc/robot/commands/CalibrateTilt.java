@@ -5,9 +5,8 @@ import frc.robot.subsystems.Tilt;
 
 class CalibrateTilt extends Command
 {
+private double encoderconstant;
 
-TalonSRX motor2; 
-   
    CalibrateTilt()
    {
    
@@ -16,13 +15,14 @@ TalonSRX motor2;
    @Override
    protected void initialize()
    {
-      motor2 = Tilt.getmotor();
+  
    }
    
    @Override
    protected void execute()
    {
-   
+   //have the motor go all the way down then calculate the encoder constant
+   System.out.println(encoderconstant);
    }
    
    @Override
