@@ -40,7 +40,7 @@ public class Tilt extends Subsystem
   
   public void setPosition(double pos)
   {
-    position= (pos / 90) * ENCODER_CONSTANT;
+    position= pos * ENCODER_CONSTANT;
     update();
   }
   public int getPosition()
