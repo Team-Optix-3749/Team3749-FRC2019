@@ -34,7 +34,7 @@ public class Tilt extends Subsystem
   }
   public void move(double pos)
   {
-    position+= (pos / 90) * ENCODER_CONSTANT;
+    position+= pos  * ENCODER_CONSTANT;
     update();
   }
   
@@ -56,12 +56,12 @@ public class Tilt extends Subsystem
     motor.setSelectedSensorPosition((int)position, 0, 20);
   }
   
-  public static boolean isSwitchieClosed() {
+  public  boolean isSwitchieClosed() {
     return switchie.get(); 
   }
   
-  public void moveMotor() {
-    motor.set(motorSpeed);
+  public void moveMotor(double speed) {
+    motor.set(speed);
   }
   
   public double getMotorEncoderValue() {
