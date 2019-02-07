@@ -11,8 +11,8 @@ import frc.robot.Robot;
 
 public class WheelInOut extends Subsystem
 {
-	private Spark intakeMotor1;
-	private Spark intakeMotor2;
+	private TalonSRX intakeMotor1;
+	private TalonSRX intakeMotor2;
 	private DigitalInput flywheelSwitch;
 	private double speed;
 
@@ -20,31 +20,37 @@ public class WheelInOut extends Subsystem
 	{
 		flywheelSwitch = new DigitalInput(1);
 		speed = 0;
-		intakeMotor1 = new Spark(4);// TalonSRX(Robot.getMap().getCAN("wheel_left"));
-		intakeMotor2 = new Spark(5);// TalonSRX(Robot.getMap().getCAN("wheel_right"));
+		intakeMotor1 = new TalonSRX(Robot.getMap().getCAN("wheel_left"));
+		intakeMotor2 = new TalonSRX(Robot.getMap().getCAN("wheel_right"));
 		intakeMotor2.setInverted(true);
 	}
 
 	public void setSpeed(double newSpeed) 
 	{
 		speed = newSpeed;
-		intakeMotor1.set(newSpeed);
-		intakeMotor2.set(-newSpeed);
+		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
+		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
 
+	public double getSpeed() {return speed;}
 	public void intake()
 	{
-		setSpeed(1.0);
+		if(intakeMotor1.getInverted() && !intakeMotor2.getInverted())
+		{
+			intakeMotor1.setInverted(false);
+			intakeMotor2.setInverted(true);
+		}
+		setSpeed(0.3);
 	}
 	
 	public void unload()
 	{
-		//if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
-		//{
-			//intakeMotor1.setInverted(true);
-			//intakeMotor2.setInverted(false);
-		//}
-		setSpeed(-1.0);
+		if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
+		{
+			intakeMotor1.setInverted(true);
+			intakeMotor2.setInverted(false);
+		}
+		setSpeed(1.0);
 	}
 
 	public void stop()

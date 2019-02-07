@@ -3,10 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Intake extends Command
-
+public class StopWheel extends Command
 {
-	public Intake()
+	public StopWheel()
 	{
 		requires(Robot.getFlywheel());
 	}	
@@ -15,21 +14,12 @@ public class Intake extends Command
 
 	protected void execute()
 	{
-		/*
-		if(!Robot.getFlywheel().hasCargo())
-		{
-			Robot.getFlywheel().intake();
-			Robot.getFlywheel().printTest();
-		}
-		else
-			Robot.getFlywheel().stop();
-		*/Robot.getFlywheel().intake();
-			
+		Robot.getFlywheel().setSpeed(0);
 	}
 
 	protected boolean isFinished()
 	{
-		return Robot.getFlywheel().hasCargo();
+		return Robot.getFlywheel().getSpeed() == 0;
 	}
 
 	protected void end() 
