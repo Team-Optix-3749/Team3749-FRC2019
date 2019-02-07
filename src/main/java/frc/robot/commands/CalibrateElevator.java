@@ -9,6 +9,11 @@ class CalibrateElevator extends Command {
     TalonSRX motor;
     DigitalInput switch;
     private Elevatormechanism elevate;
+    
+    CalibrateElevator(Elevator e)
+    {
+        elevate = e;
+    }
 
     @Override
     protected void initialize() {
