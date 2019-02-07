@@ -33,10 +33,10 @@ public class RobotMap
 	// loading map values for drive
 	setCAN("drive_lf", 10);
 	setCAN("drive_lm", 21);
-	setCAN("drive_lb", 22);
+	setCAN("drive_lb", 23);
 	setCAN("drive_rf", 11);
 	setCAN("drive_rm", 20);
-	setCAN("drive_rb", 23);
+	setCAN("drive_rb", 22);
   }
 
   /**

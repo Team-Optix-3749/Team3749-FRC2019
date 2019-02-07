@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Spark;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -30,33 +31,26 @@ public class WheelInOut extends Subsystem
 		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
-	public void printTest()
-	{
-		if(intakeMotor1.getInverted() == true)
-			System.out.println("left motor inverted");
-		System.out.println(speed);
-	}
+
+	public double getSpeed() {return speed;}
 	public void intake()
 	{
-		if(intakeMotor1.getInverted())
+		if(intakeMotor1.getInverted() && !intakeMotor2.getInverted())
 		{
 			intakeMotor1.setInverted(false);
 			intakeMotor2.setInverted(true);
 		}
-		
-		setSpeed(.3);
-		printTest();
+		setSpeed(0.3);
 	}
 	
 	public void unload()
 	{
-		if(!intakeMotor1.getInverted())
+		if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
 		{
-			intakeMotor1.setInverted(false);
-			intakeMotor2.setInverted(true);
+			intakeMotor1.setInverted(true);
+			intakeMotor2.setInverted(false);
 		}
-		
-		setSpeed(.3);
+		setSpeed(1.0);
 	}
 
 	public void stop()
