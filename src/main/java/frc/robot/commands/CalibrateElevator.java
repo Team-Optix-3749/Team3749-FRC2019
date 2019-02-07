@@ -6,8 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 class CalibrateElevator extends Command {
-    TalonSRX motor;
-    DigitalInput switch;
+    private TalonSRX motor;
+    private DigitalInput switch;
     private Elevatormechanism elevate;
     
     CalibrateElevator(Elevator e)
