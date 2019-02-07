@@ -34,8 +34,8 @@ private Tilt tiltmechanism;
    @Override 
    protected void end()
    {
-   t.getMotorEncoderValue(); 
-   //calculate encoder constant
+   encoderconstant = t.getMotorEncoderValue(); 
+   encoderconstant = encoderconstant/90; 
    System.out.println(encoderconstant);
    }
    
