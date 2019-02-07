@@ -18,6 +18,8 @@ public class Tilt extends Subsystem
   private final double ENCODER_CONSTANT;
   private DigitalInput switchie;
   
+  private int motorSpeed; 
+  
   public Tilt ()
   {
     motor = new TalonSRX(40);
@@ -58,7 +60,11 @@ public class Tilt extends Subsystem
     return switchie.get(); 
   }
   
-  public static TalonSRX getmotor() {
-    return motor; 
+  public void moveMotor() {
+    motor.set(motorSpeed);
+  }
+  
+  public double getMotorEncoderValue() {
+    return motor.getSelectedSensorPosition(); 
   }
 }
