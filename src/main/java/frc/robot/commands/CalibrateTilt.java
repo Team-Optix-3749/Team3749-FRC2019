@@ -2,15 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Tilt;
+import frc.robot.Robot; 
 
 class CalibrateTilt extends Command
 {
 private double encoderconstant;
-private Tilt tiltmechanism; 
+private Tilt tiltmechanism = Robot.getTilt(); 
 
-   CalibrateTilt(Tilt t)
+   CalibrateTilt()
    {
-   tiltmechanism = t; 
    }
 
    @Override
@@ -22,13 +22,13 @@ private Tilt tiltmechanism;
    @Override
    protected void execute()
    {
-   t.moveMotor();
+   t.moveMotor(0.3);
    }
    
    @Override
    protected boolean isFinished()
    {
-      return Tilt.isSwitchieClosed();
+      return t.isSwitchieClosed();
    }
    
    @Override 
