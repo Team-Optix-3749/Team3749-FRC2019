@@ -57,16 +57,16 @@ public class DriveBase extends Subsystem
       a VictorSPX is cheaper and has less features, so just having it follow
       is good enough
       */
-    WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
-    WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
-    // WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
-    leftSide = new SpeedControllerGroup(leftF, leftM);
+    WPI_TalonSRX leftF = new WPI_TalonSRX(10);//Robot.getMap().getCAN("drive_lf"));
+    WPI_VictorSPX leftM = new WPI_VictorSPX(21);//Robot.getMap().getCAN("drive_lm"));
+    WPI_VictorSPX leftB = new WPI_VictorSPX(23);//Robot.getMap().getCAN("drive_lb"));
+    leftSide = new SpeedControllerGroup(leftF, leftM, leftB);
 
     // same thing on the other side
-    WPI_TalonSRX rightF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_rf"));
-    WPI_VictorSPX rightM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rm"));
-    // WPI_VictorSPX rightB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rb"));
-    rightSide = new SpeedControllerGroup(rightF, rightM);
+    WPI_TalonSRX rightF = new WPI_TalonSRX(11);//Robot.getMap().getCAN("drive_rf"));
+    WPI_VictorSPX rightM = new WPI_VictorSPX(20);//Robot.getMap().getCAN("drive_rm"));
+    WPI_VictorSPX rightB = new WPI_VictorSPX(22);//Robot.getMap().getCAN("drive_rb"));
+    rightSide = new SpeedControllerGroup(rightF, rightM, rightB);
     
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
@@ -120,7 +120,7 @@ public class DriveBase extends Subsystem
     }
     System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
-    rot += drivePID.get();
+    // rot += drivePID.get();
 
     // left and right output to be calculated
     double L, R;

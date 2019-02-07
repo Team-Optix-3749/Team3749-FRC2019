@@ -47,11 +47,11 @@ public class OI
     rightBumper.whenReleased(new StopWheel());
   }
 
-  public double getDriveX()
+  public double getDriveY()
   {
     return ctrl.getY(Hand.kRight);
   }
-  public double getDriveY()
+  public double getDriveX()
   {
     return ctrl.getX(Hand.kLeft);
   }
