@@ -24,7 +24,7 @@ class CalibrateElevator extends Command {
     @Override 
     protected void execute() 
     {
-        
+        elevate.moveMotor();
     }
 
     @Override
