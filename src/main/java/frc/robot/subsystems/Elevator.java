@@ -50,6 +50,10 @@ public class Elevator extends Subsystem {
             maxPos = max; 
         }
     }
+    public double getMotorEncoderValue()
+    {
+        return motor.getSelectedSensorPosition();
+    }
     
     public void setPosition(double pos) { //set a value from 0-1
 
