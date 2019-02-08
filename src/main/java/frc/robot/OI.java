@@ -47,6 +47,16 @@ public class OI
     rightBumper.whenReleased(new StopWheel());
   }
 
+  public void resetController ()
+  {
+
+  }
+
+  public void teleopInit()
+  {
+    
+  }
+
   public double getDriveY()
   {
     return ctrl.getY(Hand.kRight);
