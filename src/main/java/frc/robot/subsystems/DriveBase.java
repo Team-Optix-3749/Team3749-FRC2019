@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
 
@@ -81,6 +82,8 @@ public class DriveBase extends Subsystem
     drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
     drivePID.setOutputRange(-0.3, 0.3);
     drivePID.setSetpoint(0);
+
+    SmartDashboard.putData("Drive PID", drivePID);
   }
 
   @Override
