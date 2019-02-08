@@ -22,7 +22,13 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot
 {
-  private static DriveBase drive = new DriveBase();
+  //Booleans
+  public static boolean fw = false;
+  public static boolean t = false;
+  public static boolean e = false;
+  public static boolean d = true;
+
+  private static DriveBase drive; // = new DriveBase();
   private static WheelInOut flywheel;// = new WheelInOut();
   private static Tilt tilt;// = new Tilt();    //tilt subsytem
   private static OI oi;
@@ -36,6 +42,10 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit()
   {
+    if(d) { drive = new DriveBase(); }
+    if(fw) { flywheel = new WheelInOut(); }
+    if(t) { tilt = new Tilt(); }
+    if(e) { elevator = new Elevator(); }
     oi = new OI();
     map = new RobotMap();
     // start running camera from roboRIO
