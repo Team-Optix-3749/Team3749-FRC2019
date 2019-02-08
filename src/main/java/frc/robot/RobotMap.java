@@ -37,7 +37,14 @@ public class RobotMap
 	setCAN("drive_rf", 11);
 	setCAN("drive_rm", 20);
 	setCAN("drive_rb", 22);
+
+	// intake/grabber wheel map
+	setCAN("wheel_left", 24);
+	setCAN("wheel_right", 25);
+
+	setDIO("switch_intake", 1);
   }
+
 
   /**
 	* Method to set a PWM port

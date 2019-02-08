@@ -7,7 +7,7 @@ import frc.robot.Robot;
 class CalibrateTilt extends Command
 {
 private double encoderconstant;
-private Tilt tiltmechanism = Robot.getTilt(); 
+private Tilt t = Robot.getTilt(); 
 
    CalibrateTilt()
    {

@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 class CalibrateElevator extends Command {
     private TalonSRX motor;
-    private DigitalInput switch;
-    private Elevatormechanism elevate;
+    private DigitalInput sw;
+    private Elevator elevate;
     
     CalibrateElevator(Elevator e)
     {
@@ -17,19 +17,19 @@ class CalibrateElevator extends Command {
 
     @Override
     protected void initialize() {
-        motor = Elevator.getElevator();
-        switch = Elevator.getLimitSwitch();
+        motor = elevate.getElevator();
+        sw = elevate.getLimitSwitch();
     }
 
     @Override 
     protected void execute() 
     {
-        elevate.moveMotor();
+        // elevate.moveMotor();
     }
 
     @Override
     protected boolean isFinished() {
-        
+        return true;
     }
 
     @Override

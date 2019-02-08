@@ -46,7 +46,7 @@ public class Elevator extends Subsystem {
     }
     
     public void setMaxPosition(int max) {
-        if(int<=1 && int>=0){
+        if(max<=1 && max>=0){
             maxPos = max; 
         }
     }

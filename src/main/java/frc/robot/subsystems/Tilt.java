@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.EmptyPIDOut;
 //import frc.robot.commands.TiltStick;
@@ -15,7 +17,7 @@ public class Tilt extends Subsystem
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
   private double position;
-  private final double ENCODER_CONSTANT;
+  private final double ENCODER_CONSTANT = 0;
   private DigitalInput switchie;
   
   private int motorSpeed; 
@@ -61,7 +63,7 @@ public class Tilt extends Subsystem
   }
   
   public void moveMotor(double speed) {
-    motor.set(speed);
+    motor.set(ControlMode.PercentOutput, speed);
   }
   
   public double getMotorEncoderValue() {
