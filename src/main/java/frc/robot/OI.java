@@ -39,12 +39,15 @@ public class OI
     // xButton.whenReleased(new SetTilt());
     
     leftBumper = new JoystickButton(ctrl, 5);
-    leftBumper.whenPressed(new Unload());
-    leftBumper.whenReleased(new StopWheel());
-    
+    if(Robot.fw) {
+      leftBumper.whenPressed(new Unload());
+      leftBumper.whenReleased(new StopWheel());
+    }
     rightBumper = new JoystickButton(ctrl, 6);
-    rightBumper.whenPressed(new Intake());
-    rightBumper.whenReleased(new StopWheel());
+    if(Robot.fw) {
+      rightBumper.whenPressed(new Intake());
+      rightBumper.whenReleased(new StopWheel());
+    }
   }
 
   public void resetController ()

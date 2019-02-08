@@ -57,7 +57,8 @@ public class DriveBase extends Subsystem
       a VictorSPX is cheaper and has less features, so just having it follow
       is good enough
       */
-    WPI_TalonSRX leftF = new WPI_TalonSRX(10);//Robot.getMap().getCAN("drive_lf"));
+    WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
+    //WPI_TalonSRX leftF = new WPI_TalonSRX(10);//Robot.getMap().getCAN("drive_lf"));
     WPI_VictorSPX leftM = new WPI_VictorSPX(21);//Robot.getMap().getCAN("drive_lm"));
     WPI_VictorSPX leftB = new WPI_VictorSPX(23);//Robot.getMap().getCAN("drive_lb"));
     leftSide = new SpeedControllerGroup(leftF, leftM, leftB);

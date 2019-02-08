@@ -23,7 +23,8 @@ public class Intake extends Command
 		}
 		else
 			Robot.getFlywheel().stop();
-		*/Robot.getFlywheel().intake();
+		*/
+		Robot.getFlywheel().intake();
 			
 	}
 
