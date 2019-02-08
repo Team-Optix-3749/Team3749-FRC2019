@@ -22,12 +22,6 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot
 {
-  //Booleans
-  public static boolean fw = false;
-  public static boolean t = false;
-  public static boolean e = false;
-  public static boolean d = true;
-
   private static DriveBase drive; // = new DriveBase();
   private static WheelInOut flywheel;// = new WheelInOut();
   private static Tilt tilt;// = new Tilt();    //tilt subsytem
@@ -42,15 +36,36 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit()
   {
-    if(d) { drive = new DriveBase(); }
-    if(fw) { flywheel = new WheelInOut(); }
-    if(t) { tilt = new Tilt(); }
-    if(e) { elevator = new Elevator(); }
     oi = new OI();
     map = new RobotMap();
+
+    // starts and sets up the camera with display settings
+    initCamera();
+
+    if (map.getToggle("drive_en"))
+    {
+      drive = new DriveBase();
+    }
+    if (map.getToggle("wheelio_en"))
+    {
+      flywheel = new WheelInOut();
+    }
+    if (map.getToggle("tilt_en"))
+    {
+      tilt = new Tilt();
+    }
+    if (map.getToggle("elevator_en"))
+    {
+      elevator = new Elevator();
+    }
+  }
+
+  public void initCamera()
+  {
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
+    camera.setExposureManual(20);
   }
 
   /**

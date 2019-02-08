@@ -20,8 +20,9 @@ public class RobotMap
 {
     private static HashMap <String, Integer> mapPWM; //the PWM port map
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
-	private static HashMap <String, Integer> mapDIO; //the CAN port map
+	private static HashMap <String, Integer> mapDIO; //the DIO port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
+	private static HashMap <String, Boolean> mapToggle; //the controller port map
 
   public RobotMap ()
   {
@@ -29,6 +30,7 @@ public class RobotMap
 	mapCAN = new HashMap<>();
     mapDIO = new HashMap<>();
     mapCTRL = new HashMap<>();
+    mapToggle = new HashMap<>();
 
 	// loading map values for drive
 	setCAN("drive_lf", 10);
@@ -43,6 +45,11 @@ public class RobotMap
 	setCAN("wheel_right", 25);
 
 	setDIO("switch_intake", 1);
+
+	setToggle("tilt_en", false);
+	setToggle("drive_en", true);
+	setToggle("wheelio_en", false);
+	setToggle("elevator_en", false);
   }
 
 
@@ -84,6 +91,15 @@ public class RobotMap
 	{
 		mapCTRL.put(name, port);
 	}
+	/**
+	* Method to set a toggle value
+	* @param String		name of what port is for (what you call it throughout the program)
+	* @param int 		the value
+	*/
+	public void setToggle (String name, boolean val)
+	{
+		mapToggle.put(name, val);
+	}
 	
 	/**
 	* Method to get a PWM port
@@ -118,5 +134,13 @@ public class RobotMap
 	public int getCTRL (String name)
 	{
 		return mapCTRL.get(name);
+	}
+	/**
+	* Method to get a toggleable setting
+	* @param String		name of setting it is for (what you call it throughout the program)
+	*/
+	public boolean getToggle (String name)
+	{
+		return mapToggle.get(name);
 	}
 }
