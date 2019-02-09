@@ -74,7 +74,7 @@ public class Elevator extends Subsystem {
         int scaledPos = (int)(pos * encoderScale);
         //use the current position and an encoder to move the elevator to the position
         //asked by the method
-        elevatorMotor.set(ControlMode.Position, scaledPos);
+        elevatorMotor.set(ControlMode.Position, scaledPos); } }
     //Add a get method?
     /*
     * This method will be used to set the maximum 
@@ -91,9 +91,9 @@ public class Elevator extends Subsystem {
         //check current position of the robot and hold it 
         
 
-    } */
+    } */ 
 
-} 
-}
+ 
+    
 
 //Add command later on once position/encoder stuff is figured out
