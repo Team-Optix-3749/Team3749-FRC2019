@@ -9,6 +9,7 @@ class CalibrateElevator extends Command {
     private TalonSRX motor;
     private DigitalInput sw;
     private Elevator elevate;
+    private double enc_constant;
     
     CalibrateElevator(Elevator e)
     {
@@ -24,17 +25,19 @@ class CalibrateElevator extends Command {
     @Override 
     protected void execute() 
     {
-        // elevate.moveMotor();
+        elevate.moveMotor(90);
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return sw.get();
     }
 
     @Override
-    protected void end() {
-
+    protected void end() 
+    {
+        enc_constant = e.getMotorEncoderValue()/100;
+        System.out.println(enc_constant);
     }
 
     void calibrate() {

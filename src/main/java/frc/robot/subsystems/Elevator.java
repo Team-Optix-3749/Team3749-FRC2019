@@ -45,11 +45,23 @@ public class Elevator extends Subsystem {
         return maxPos; 
     }
     
+    public void moveMotor(double speed) {
+    elevatorMotor.set(ControlMode.PercentOutput, speed);
+    }
+    
     public void setMaxPosition(int max) {
         if(max<=1 && max>=0){
             maxPos = max; 
         }
     }
+    public double getMotorEncoderValue()
+    {
+        return elevatorMotor.getSelectedSensorPosition();
+    }
+    
+    public boolean isSwitchClosed() {
+    return limitSwitch.get(); 
+  }
     
     public void setPosition(double pos) { //set a value from 0-1
 
