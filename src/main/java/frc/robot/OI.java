@@ -39,12 +39,11 @@ public class OI
     // xButton.whenReleased(new SetTilt());
     
     leftBumper = new JoystickButton(ctrl, 5);
+    rightBumper = new JoystickButton(ctrl, 6);
     if(Robot.getMap().getToggle("wheelio_en")) {
       leftBumper.whenPressed(new Unload());
       leftBumper.whenReleased(new StopWheel());
-    }
-    rightBumper = new JoystickButton(ctrl, 6);
-    if(Robot.getMap().getToggle("wheelio_en")) {
+      
       rightBumper.whenPressed(new Intake());
       rightBumper.whenReleased(new StopWheel());
     }

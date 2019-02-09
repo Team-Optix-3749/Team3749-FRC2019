@@ -47,7 +47,7 @@ public class RobotMap
 	setDIO("switch_intake", 1);
 
 	setToggle("tilt_en", false);
-	setToggle("drive_en", true);
+	setToggle("drive_en", false);
 	setToggle("wheelio_en", false);
 	setToggle("elevator_en", false);
   }
