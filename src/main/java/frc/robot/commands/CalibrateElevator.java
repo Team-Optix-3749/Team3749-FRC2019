@@ -36,7 +36,7 @@ class CalibrateElevator extends Command {
     @Override
     protected void end() 
     {
-        enc_constant = e.getMotorEncoderValue()/100;
+        enc_constant = elevate.getMotorEncoderValue()/100;
         System.out.println(enc_constant);
     }
 
