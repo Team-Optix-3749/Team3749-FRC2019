@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorSetPosition extends Command {
+public class TiltSetPosition extends Command {
    private int position;
 
-   ElevatorSetPosition(int pos) {
-        requires(Robot.getElevator());
-        position = pos;
+   TiltSetPosition(int pos) {
+      requires(Robot.getTilt());
+      position = pos;
    }
 
     @Override
@@ -20,19 +20,19 @@ public class ElevatorSetPosition extends Command {
 
     @Override 
     protected void execute() {
-        Robot.getElevator().setPosition(position);
+      Robot.getTilt().setPosition(position);
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+      return true;
     }
 
     @Override
     protected void end() {
 
     }
-
+    
     @Override
     protected void interrupted() {
 
