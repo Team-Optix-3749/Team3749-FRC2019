@@ -64,7 +64,7 @@ public class WheelInOut extends Subsystem
 	}	
 
 	@Override
-	 protected void initDefaultCommand() {
-
+	protected void initDefaultCommand() {
+		
 	}
 }

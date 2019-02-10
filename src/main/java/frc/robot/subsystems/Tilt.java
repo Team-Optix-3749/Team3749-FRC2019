@@ -19,9 +19,9 @@ public class Tilt extends Subsystem
   // setpoint for motor in encoder units
   private double position;
 
-  // range of encoder raw values -> 0 to ENCODER_IN
+  // range of encoder raw values -> 0 to ENCODER_IN are the limits
   private final double ENCODER_IN = 135000;
-  // preferred range of encoder values (degrees, percent, etc) -> 0 to ENCODER_OUT
+  // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
   // limit switch at top of mvmt
@@ -38,7 +38,7 @@ public class Tilt extends Subsystem
 
     reset();
 
-    switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
+    // switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -79,7 +79,7 @@ public class Tilt extends Subsystem
   }
   
   public boolean atTop() {
-    return switchie.get(); 
+    return switchie == null ? false : switchie.get(); 
   }
   
   public void rawMove(double speed) {

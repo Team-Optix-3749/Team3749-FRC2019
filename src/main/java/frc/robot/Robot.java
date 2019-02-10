@@ -41,6 +41,7 @@ public class Robot extends TimedRobot
   public void robotInit()
   {
     map = new RobotMap();
+    // for testing a sensor
     // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
@@ -106,17 +107,16 @@ public class Robot extends TimedRobot
     */
   /**
   
-   * a simple getter method for the DriveBase subsystem
+   * a simple getter method for the operator interface (for controls)
    * @return drive base
    */
   public static OI getOI()
   {
     return oi;
   }
-//CAAAAAADDDDD 
   /**
 
-   * a simple getter method for the DriveBase subsystem
+   * a simple getter method for the robot map
    * @return drive base
    */
   public static RobotMap getMap()
@@ -135,7 +135,6 @@ public class Robot extends TimedRobot
   public static Elevator getElevator() {
     return elevator;
   }
-//yikes - shivi 
   @Override
   public void robotPeriodic()
   {
@@ -150,7 +149,6 @@ public class Robot extends TimedRobot
   public void disabledInit()
   {
   }
-//how's life - shivi
   @Override
   public void disabledPeriodic()
   {
@@ -173,7 +171,6 @@ public class Robot extends TimedRobot
   {
     
   }
-  //this is so much funnnn - shivi
   /**
    * This function is called periodically during autonomous.
    */
@@ -182,7 +179,6 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-//"Hi pranav" - Shivi
   @Override
   public void teleopInit()
   {
@@ -197,7 +193,6 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-// ur fave robotics person <3 
   /**
    * This function is called periodically during test mode.
    */
@@ -205,7 +200,7 @@ public class Robot extends TimedRobot
   public void testPeriodic()
   {
     // System.out.println("START");
-    // System.out.println("Value-shivi: " + sensor.getValue());
-    // System.out.println("Voltage-shivi: " + sensor.getVoltage());
+    // System.out.println("Value: " + sensor.getValue());
+    // System.out.println("Voltage: " + sensor.getVoltage());
   }
 }

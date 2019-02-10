@@ -9,7 +9,7 @@ import frc.robot.Robot;
 import frc.robot.commands.TiltStick;
 
 /**
- * class Elevator
+ * class Tilt
  */
 public class Elevator extends Subsystem
 {
@@ -19,9 +19,9 @@ public class Elevator extends Subsystem
   // setpoint for motor in encoder units
   private double position;
 
-  // range of encoder raw values -> 0 to ENCODER_IN
+  // range of encoder raw values -> 0 to ENCODER_IN are the limits
   private final double ENCODER_IN = 135000;
-  // preferred range of encoder values (degrees, percent, etc) -> 0 to ENCODER_OUT
+  // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
   // limit switch at top of mvmt
@@ -31,14 +31,14 @@ public class Elevator extends Subsystem
   {
     motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
 
-    // PID constants
-    motor.config_kP(0, toEncoder(0.01));
-    motor.config_kI(0, toEncoder(0));
-    motor.config_kD(0, toEncoder(0));
+    // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
+    motor.config_kP(0, 0.01 * ENCODER_OUT / ENCODER_IN);
+    motor.config_kI(0, 0);
+    motor.config_kD(0, 0);
 
     reset();
 
-    switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
+    // switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -71,15 +71,15 @@ public class Elevator extends Subsystem
   }
   private void update()
   {
-     if (position > ENCODER_IN)
-       position = ENCODER_IN;
-     if (position < 0)
-       position = 0;
+    if (position > ENCODER_IN)
+      position = ENCODER_IN;
+    if (position < 0)
+      position = 0;
     motor.set(ControlMode.Position, position);
   }
   
   public boolean atTop() {
-    return switchie.get(); 
+    return switchie == null ? false : switchie.get(); 
   }
   
   public void rawMove(double speed) {
@@ -88,10 +88,12 @@ public class Elevator extends Subsystem
 
   private double fromEncoder (double in)
   {
+    // become bigger
     return in * ENCODER_OUT / ENCODER_IN;
   }
   private double toEncoder (double in)
   {
+    // become smaller
     return in * ENCODER_IN / ENCODER_OUT;
   }
 }
