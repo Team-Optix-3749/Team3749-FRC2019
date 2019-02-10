@@ -17,18 +17,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SPI.Port;
 
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.EmptyPIDOut;
@@ -59,15 +52,14 @@ public class DriveBase extends Subsystem
       is good enough
       */
     WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
-    //WPI_TalonSRX leftF = new WPI_TalonSRX(10);//Robot.getMap().getCAN("drive_lf"));
-    WPI_VictorSPX leftM = new WPI_VictorSPX(21);//Robot.getMap().getCAN("drive_lm"));
-    WPI_VictorSPX leftB = new WPI_VictorSPX(23);//Robot.getMap().getCAN("drive_lb"));
+    WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
+    WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
     leftSide = new SpeedControllerGroup(leftF, leftM, leftB);
 
     // same thing on the other side
-    WPI_TalonSRX rightF = new WPI_TalonSRX(11);//Robot.getMap().getCAN("drive_rf"));
-    WPI_VictorSPX rightM = new WPI_VictorSPX(20);//Robot.getMap().getCAN("drive_rm"));
-    WPI_VictorSPX rightB = new WPI_VictorSPX(22);//Robot.getMap().getCAN("drive_rb"));
+    WPI_TalonSRX rightF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_rf"));
+    WPI_VictorSPX rightM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rm"));
+    WPI_VictorSPX rightB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rb"));
     rightSide = new SpeedControllerGroup(rightF, rightM, rightB);
     
     // gyro based on SPI (faster than other input)
@@ -75,7 +67,7 @@ public class DriveBase extends Subsystem
     gyro.reset();
 
     // pid constants
-    double kp = 0.1, ki = 0.05, kd = 0.1;
+    double kp = 0.1, ki = 0, kd = 0;
     // use PID controller to calculate PID efficiently but don't give it to motor controller
     // instead, just use .get() for driving adjustments
     // consider just using PIDSubsystem
@@ -103,9 +95,12 @@ public class DriveBase extends Subsystem
    */
   public void arcadeDrive (double fwd, double rot)
   {
-    // fix robot driving based on if the robot wants to go straight or not
-    // brutally untested algorithm!
-
+    // if user is trying to go forward, it might not be 100% accurate
+    if (rot < 0.1)
+    {
+      rot = 0;
+      System.out.println("Driving straight");
+    }
     // if user wants robot to go straight
     if(rot == 0) {
       // if it wasn't already going straight

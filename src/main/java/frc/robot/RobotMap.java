@@ -26,6 +26,7 @@ public class RobotMap
 
   public RobotMap ()
   {
+	// get the 5 different maps
     mapPWM = new HashMap<>();
 	mapCAN = new HashMap<>();
     mapDIO = new HashMap<>();
@@ -33,6 +34,8 @@ public class RobotMap
     mapToggle = new HashMap<>();
 
 	// loading map values for drive
+	// first character = left or right
+	// second character = front, middle, or back
 	setCAN("drive_lf", 10);
 	setCAN("drive_lm", 21);
 	setCAN("drive_lb", 23);
@@ -44,9 +47,16 @@ public class RobotMap
 	setCAN("wheel_left", 24);
 	setCAN("wheel_right", 25);
 
-	setDIO("switch_intake", 1);
+	// main subsystem srx motor ports
+	setCAN("tilt", 12);
+	setCAN("elevator", 13);
 
-	setToggle("tilt_en", false);
+	// limit switches
+	setDIO("switch_intake", 2);
+	setDIO("tilt_switch", 1);
+
+	// whether a subsystem is installed and in use
+	setToggle("tilt_en", true);
 	setToggle("drive_en", false);
 	setToggle("wheelio_en", false);
 	setToggle("elevator_en", false);
@@ -128,7 +138,7 @@ public class RobotMap
 		return mapDIO.get(name);
 	}
 	/**
-	* Method to get a CTRL port
+	* Method to get a controller port
 	* @param String		name of what port is for (what you call it throughout the program)
 	*/
 	public int getCTRL (String name)

@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.*;
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot
   public void robotInit()
   {
     map = new RobotMap();
-    sensor = new AnalogInput(0);
+    // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
     // initCamera();
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot
       elevator = new Elevator();
     }
 
+    // must be at end (after subsystems and RobotMap)
     oi = new OI();
   }
 
@@ -111,7 +113,7 @@ public class Robot extends TimedRobot
   {
     return oi;
   }
-
+//CAAAAAADDDDD 
   /**
 
    * a simple getter method for the DriveBase subsystem
@@ -133,7 +135,7 @@ public class Robot extends TimedRobot
   public static Elevator getElevator() {
     return elevator;
   }
-
+//yikes - shivi 
   @Override
   public void robotPeriodic()
   {
@@ -148,7 +150,7 @@ public class Robot extends TimedRobot
   public void disabledInit()
   {
   }
-
+//how's life - shivi
   @Override
   public void disabledPeriodic()
   {
@@ -171,7 +173,7 @@ public class Robot extends TimedRobot
   {
     
   }
-
+  //this is so much funnnn - shivi
   /**
    * This function is called periodically during autonomous.
    */
@@ -180,7 +182,7 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-
+//"Hi pranav" - Shivi
   @Override
   public void teleopInit()
   {
@@ -195,16 +197,15 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-
+// ur fave robotics person <3 
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic()
   {
-    System.out.println("START");
-    System.out.println(sensor.getVoltage());
-    System.out.println(sensor.pidGet());
-    System.out.println(sensor.getValue());
+    // System.out.println("START");
+    // System.out.println("Value-shivi: " + sensor.getValue());
+    // System.out.println("Voltage-shivi: " + sensor.getVoltage());
   }
 }

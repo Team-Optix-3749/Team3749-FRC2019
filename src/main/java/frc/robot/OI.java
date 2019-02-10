@@ -21,9 +21,6 @@ public class OI
 {
   // controller used for main controls (xbox controller)
   private XboxController ctrl;
-  private Button xButton;
-  private Button leftBumper;
-  private Button rightBumper;
   /**
    * constructor OI connects the controller and buttons to the different commands
    */
@@ -35,12 +32,14 @@ public class OI
     // button.whileHeld(null);
     // button.whenReleased(null);
     
-    xButton = new JoystickButton(ctrl, 3);
+    JoystickButton xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());
     
-    leftBumper = new JoystickButton(ctrl, 5);
-    rightBumper = new JoystickButton(ctrl, 6);
+    
     if(Robot.getMap().getToggle("wheelio_en")) {
+      JoystickButton leftBumper = new JoystickButton(ctrl, 5);
+      JoystickButton rightBumper = new JoystickButton(ctrl, 6);
+
       leftBumper.whenPressed(new Unload());
       leftBumper.whenReleased(new StopWheel());
       
@@ -61,22 +60,27 @@ public class OI
 
   public double getDriveY()
   {
-    return ctrl.getY(Hand.kRight);
+    return ctrl.getY(Hand.kLeft);
   }
   public double getDriveX()
   {
     return ctrl.getX(Hand.kLeft);
   }
-  
-  public boolean getX() {
-    return ctrl.getXButton();
-  }
 
   /**
    * This method returns the joystick tilt on the contoller
    */
-  public double getTilt()
+  public double getTiltY()
   {
+    //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
     return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
+  }
+  /**
+   * This method returns the joystick tilt on the contoller
+   */
+  public double getElevatorY()
+  {
+    //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
+    return ctrl.getY(Hand.kRight);
   }
 }

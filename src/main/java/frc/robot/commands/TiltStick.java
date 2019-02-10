@@ -12,8 +12,7 @@ import frc.robot.Robot;
 
 public class TiltStick extends Command {
   public TiltStick() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.getTilt());
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +24,9 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    Robot.getTilt().move((100 * (Robot.getOI().getTilt())));
+    Robot.getTilt().rawMove(Robot.getOI().getTiltY() * 0.5);
+    System.out.println("Sensor Position: " + Robot.getTilt().getPosition());
+    System.out.println("Sensor Setpoint: " + Robot.getTilt().getSetpoint());
   }
 
   // Make this return true when this Command no longer needs to run execute()
