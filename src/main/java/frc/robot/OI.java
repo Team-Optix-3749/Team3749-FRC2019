@@ -32,7 +32,7 @@ public class OI
     // button.whileHeld(null);
     // button.whenReleased(null);
     
-    JoystickButton xButton = new JoystickButton(ctrl, 3);
+    //JoystickButton xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());
     
     
@@ -40,12 +40,34 @@ public class OI
       JoystickButton leftBumper = new JoystickButton(ctrl, 5);
       JoystickButton rightBumper = new JoystickButton(ctrl, 6);
 
-      leftBumper.whenPressed(new Unload());
-      leftBumper.whenReleased(new StopWheel());
-      
-      rightBumper.whenPressed(new Intake());
+      rightBumper.whenPressed(new Unload());
       rightBumper.whenReleased(new StopWheel());
+      
+      leftBumper.whenPressed(new Intake());
+      leftBumper.whenReleased(new StopWheel());
     }
+    //A
+    JoystickButton A = new JoystickButton(ctrl, 1);
+    A.whenPressed(new ElevatorSetPosition(100));
+    A.whenPressed(new TiltSetPosition(100));
+    //X
+    JoystickButton X = new JoystickButton(ctrl,3);
+    X.whenPressed(new TiltSetPosition(0));
+    //Y
+    JoystickButton Y = new JoystickButton(ctrl,4);
+    Y.whenPressed(new TiltSetPosition(100));
+    //B
+    JoystickButton B = new JoystickButton(ctrl,2);
+    B.whenPressed(new ElevatorSetPosition(0));
+    //back
+    JoystickButton menu = new JoystickButton(ctrl,8);
+    //start
+    JoystickButton select = new JoystickButton(ctrl,7);
+
+    //press down left stick
+    JoystickButton left = new JoystickButton(ctrl,9);
+    //press down right stick
+    JoystickButton right = new JoystickButton(ctrl,10);
   }
 
   public void resetController ()
@@ -82,5 +104,6 @@ public class OI
   {
     //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
     return ctrl.getY(Hand.kRight);
+    //hugo first - wrote the book "off a cliff"
   }
 }

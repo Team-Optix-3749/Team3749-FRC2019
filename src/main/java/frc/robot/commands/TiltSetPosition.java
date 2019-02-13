@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class TiltSetPosition extends Command {
    private int position;
 
-   TiltSetPosition(int pos) {
+   public TiltSetPosition(int pos) {
       requires(Robot.getTilt());
       position = pos;
    }

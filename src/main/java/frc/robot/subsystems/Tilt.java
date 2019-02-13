@@ -20,7 +20,7 @@ public class Tilt extends Subsystem
   private double position;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
-  private final double ENCODER_IN = 135000;
+  private final double ENCODER_IN = 120000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
@@ -32,13 +32,23 @@ public class Tilt extends Subsystem
     motor = new TalonSRX(Robot.getMap().getCAN("tilt"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0.01 * ENCODER_OUT / ENCODER_IN);
-    motor.config_kI(0, 0);
-    motor.config_kD(0, 0);
+    motor.config_kP(0, 0.025);
+    motor.config_kI(0, 0.0000005);
+    motor.config_kD(0, 0.00002);
+
+    // positive input is negative sensor readings
+    // need to flip sensor phase
+    motor.setSensorPhase(true);
+    motor.setInverted(false);
+
+    motor.configClosedloopRamp(1);
+
+    position = 0;
+    //minesweeper - 17 sec easy mode
 
     reset();
 
-    // switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
+    switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -76,8 +86,10 @@ public class Tilt extends Subsystem
      if (position < 0)
        position = 0;
     motor.set(ControlMode.Position, position);
+    System.out.println(motor.getClosedLoopError());
+    System.out.println(motor.getMotorOutputPercent());
   }
-  
+  //pravnav pateeel
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 
   }

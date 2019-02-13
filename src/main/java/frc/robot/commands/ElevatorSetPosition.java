@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class ElevatorSetPosition extends Command {
    private int position;
 
-   ElevatorSetPosition(int pos) {
+   public ElevatorSetPosition(int pos) {
         requires(Robot.getElevator());
         position = pos;
    }

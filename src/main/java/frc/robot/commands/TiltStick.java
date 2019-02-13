@@ -24,7 +24,7 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    Robot.getTilt().rawMove(Robot.getOI().getTiltY() * 0.5);
+    Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
     System.out.println("Sensor Position: " + Robot.getTilt().getPosition());
     System.out.println("Sensor Setpoint: " + Robot.getTilt().getSetpoint());
   }
@@ -33,6 +33,9 @@ public class TiltStick extends Command {
   @Override
   protected boolean isFinished() {
     return false;
+    //we shoud actually use a wii remote instead of x box.
+    //lemme explain - tilt for turning robot, 1, for back, 2 for go
+    //front pad for height of ball, low for hatch, a for flywheels
   }
 
   // Called once after isFinished returns true

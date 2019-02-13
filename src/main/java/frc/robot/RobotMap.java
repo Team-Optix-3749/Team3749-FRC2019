@@ -48,7 +48,7 @@ public class RobotMap
 	setCAN("wheel_right", 25);
 
 	// main subsystem srx motor ports
-	setCAN("tilt", 12);
+	setCAN("tilt", 42);
 	setCAN("elevator", 13);
 
 	// limit switches
