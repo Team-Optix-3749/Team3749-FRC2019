@@ -44,7 +44,6 @@ public class Tilt extends Subsystem
     motor.configClosedloopRamp(1);
 
     position = 0;
-    //minesweeper - 17 sec easy mode
 
     reset();
 
@@ -89,7 +88,6 @@ public class Tilt extends Subsystem
     System.out.println(motor.getClosedLoopError());
     System.out.println(motor.getMotorOutputPercent());
   }
-  //pravnav pateeel
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 
   }

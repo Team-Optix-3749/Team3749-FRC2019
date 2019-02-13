@@ -9,7 +9,7 @@ import frc.robot.Robot;
 import frc.robot.commands.TiltStick;
 
 /**
- * class Tilt
+ * class Elevator
  */
 public class Elevator extends Subsystem
 {
@@ -20,7 +20,7 @@ public class Elevator extends Subsystem
   private double position;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
-  private final double ENCODER_IN = 135000;
+  private final double ENCODER_IN = 120000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
@@ -32,14 +32,22 @@ public class Elevator extends Subsystem
     motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0.01 * ENCODER_OUT / ENCODER_IN);
-    motor.config_kI(0, 0);
-    motor.config_kD(0, 0);
+    motor.config_kP(0, 0.025);
+    motor.config_kI(0, 0.0000005);
+    motor.config_kD(0, 0.00002);
+
+    // positive input is negative sensor readings
+    // need to flip sensor phase
+    motor.setSensorPhase(true);
+    motor.setInverted(false);
+
+    motor.configClosedloopRamp(1);
+
+    position = 0;
 
     reset();
 
-    // switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
-    //life update: andrew didn't bring me chickfila
+    switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -72,13 +80,14 @@ public class Elevator extends Subsystem
   }
   private void update()
   {
-    if (position > ENCODER_IN)
-      position = ENCODER_IN;
-    if (position < 0)
-      position = 0;
+     if (position > ENCODER_IN)
+       position = ENCODER_IN;
+     if (position < 0)
+       position = 0;
     motor.set(ControlMode.Position, position);
+    System.out.println(motor.getClosedLoopError());
+    System.out.println(motor.getMotorOutputPercent());
   }
-  
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 
   }
