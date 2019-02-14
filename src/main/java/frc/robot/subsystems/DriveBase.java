@@ -17,7 +17,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.*;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -83,7 +84,6 @@ public class DriveBase extends Subsystem
   {
     setDefaultCommand(new DriveStick());
   }
-
   /**
    * method arcadeDrive converts a forward amount and left/right rotation amount to
    * left and right motor outputs for drive system
@@ -175,11 +175,29 @@ public class DriveBase extends Subsystem
   }
   public double[] locateTarget()
   {
-    // figure out how to handle it finding multiple or not finding any :/
-    double[] defaultValue = new double[0];
-    double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
-        .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
-    System.out.println(xPos);
-    return xPos;
+    
+    // // figure out how to handle it finding multiple or not finding any :/
+    // double[] defaultValue = new double[0];
+    // double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
+    //     .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
+    // if(xPos.length == 0) {
+    //   //xPos is empty!! aah!! 
+    //   return null;
+    // }
+    // System.out.println(xPos);
+    // return xPos;
+
+    //adding listener code
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("GRIP").getSubTable("greenBlob");
+    NetworkTableEntry xEntry = table.getEntry("x");
+    inst.startClientTeam(3749);
+
+    //what is value???????
+
+    //src = https://wpilib.screenstepslive.com/s/currentCS/m/75361/l/843364-listening-for-value-changes
+    table.addEntryListener("x", (table,key,entry,value,flags) -> {
+      System.out.println("X changed value: " + value.getValue());
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
   }
 }

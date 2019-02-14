@@ -56,8 +56,8 @@ public class RobotMap
 	setDIO("tilt_switch", 1);
 
 	// whether a subsystem is installed and in use
-	setToggle("tilt_en", true);
-	setToggle("drive_en", false);
+	setToggle("tilt_en", false);
+	setToggle("drive_en", true);
 	setToggle("wheelio_en", false);
 	setToggle("elevator_en", false);
   }
