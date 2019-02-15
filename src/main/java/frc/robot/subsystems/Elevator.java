@@ -51,10 +51,10 @@ public class Elevator extends Subsystem
     switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
   }
   @Override
-  public void initDefaultCommand()
-  {
+  public void initDefaultCommand() {
     setDefaultCommand(new ElevatorStick());
   }
+
   public void setVelocity(double pos)
   {
     position += toEncoder(pos);
