@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class TargetAlign extends Command {
+  private double heading;
+  private final double TARGET_HEADING = 60;
+  private double MAX_VELOCITY = 0.3;
+
   public TargetAlign() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.getDrive());
   }
 
   // Called just before this Command runs the first time
@@ -24,16 +27,22 @@ public class TargetAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double error = Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0];
-    // constrained error adjusment (uses only P of PID)
-    // needs an entire PID controller
+    if (Robot.getDrive().locateTarget() != -1)
+      heading = Robot.getDrive().locateTarget();
+
+    double error = heading - TARGET_HEADING;
+    double adj = error * 0.02;
+    if (adj > MAX_VELOCITY)
+      adj = MAX_VELOCITY;
+    if (adj < -MAX_VELOCITY)
+      adj = -MAX_VELOCITY;
     Robot.getDrive().arcadeDrive(0, Math.abs(error) > 20 ? -0.5 * Math.abs(error)/error : error / -40);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(Robot.getDrive().getHeading() - Robot.getDrive().locateTarget()[0]) < 1;
+    return Math.abs(Robot.getDrive().getHeading() - heading) < 5;
   }
 
   // Called once after isFinished returns true

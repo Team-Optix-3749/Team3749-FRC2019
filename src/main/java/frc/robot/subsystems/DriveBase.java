@@ -171,20 +171,31 @@ public class DriveBase extends Subsystem
   {
     leftSide.set(left);
     rightSide.set(right);
-    locateTarget();
   }
-  public double[] locateTarget()
+  public double locateTarget()
   {
-    // figure out how to handle it finding multiple or not finding any :/
     double[] defaultValue = new double[0];
     double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
         .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
+    double[] sizes = NetworkTableInstance.getDefault().getTable("GRIP")
+    .getSubTable("greenBlob").getEntry("size").getDoubleArray(defaultValue);
     if(xPos.length == 0) {
-      //xPos is empty!! aah!! 
-      return null;
+      // didn't locate anything, send error flag
+      return -1;
     }
-    System.out.println(xPos);
-    return xPos;
+    double biggest = 0;
+    int i = 0;
+    for (int j = 0; j < sizes.length; j ++)
+    {
+      if (sizes[j] > biggest)
+      {
+        biggest = sizes[j];
+        i = j;
+      }
+    }
+
+    // return the position of the biggest blob found
+    return xPos[i];
 
     //adding listener code
     // NetworkTableInstance inst = NetworkTableInstance.getDefault();
