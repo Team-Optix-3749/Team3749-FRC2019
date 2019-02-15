@@ -14,18 +14,21 @@ public class GetVisionTarget extends Command
 
 	protected void execute()
 	{
-		  if((Robot.getDrive().locateTarget()).length == 1)
-      {
-        if((Robot.getDrive().locateTarget())[0] != 60.0) //ARBITRARY X VALUE
-        {
-          if((Robot.getDrive().locateTarget())[0] > 60.0)
-          {
-            rot = .3;
-            while((Robot.getDrive().locateTarget())[0] != 60)
-            {
-              rot -= 1;
-              Robot.getDrive().arcadeDrive(0, rot)
-              
+		if((Robot.getDrive().locateTarget()) != -1)
+		{
+			if((Robot.getDrive().locateTarget()) != 60.0) //ARBITRARY X VALUE
+			{
+				if((Robot.getDrive().locateTarget()) > 60.0)
+				{
+					rot = .3;
+					while((Robot.getDrive().locateTarget()) != 60)
+					{
+						rot -= 1;
+						Robot.getDrive().arcadeDrive(0, rot);
+					}
+				}
+			}
+		}
 	}
 
 	protected boolean isFinished()
