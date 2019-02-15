@@ -32,9 +32,9 @@ public class Elevator extends Subsystem
     motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0.025);
-    motor.config_kI(0, 0.0000005);
-    motor.config_kD(0, 0.00002);
+    motor.config_kP(0, 0);//0.025);
+    motor.config_kI(0, 0);//0.0000005);
+    motor.config_kD(0, 0);//0.00002);
 
     // positive input is negative sensor readings
     // need to flip sensor phase

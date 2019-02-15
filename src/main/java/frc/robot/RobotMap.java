@@ -52,14 +52,14 @@ public class RobotMap
 	setCAN("elevator", 13);
 
 	// limit switches
-	setDIO("switch_intake", 2);
+	setDIO("switch_intake", 0);
 	setDIO("tilt_switch", 1);
 
 	// whether a subsystem is installed and in use
 	setToggle("tilt_en", true);
-	setToggle("drive_en", false);
-	setToggle("wheelio_en", false);
-	setToggle("elevator_en", false);
+	setToggle("drive_en", true);
+	setToggle("wheelio_en", true);
+	setToggle("elevator_en", true);
   }
 
 

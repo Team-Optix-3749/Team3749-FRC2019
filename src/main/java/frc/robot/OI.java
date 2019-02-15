@@ -35,8 +35,8 @@ public class OI
     //JoystickButton xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());
     
-    
-    if(Robot.getMap().getToggle("wheelio_en")) {
+    if(Robot.getMap().getToggle("wheelio_en"))
+    {
       JoystickButton leftBumper = new JoystickButton(ctrl, 5);
       JoystickButton rightBumper = new JoystickButton(ctrl, 6);
 
@@ -46,28 +46,32 @@ public class OI
       leftBumper.whenPressed(new Intake());
       leftBumper.whenReleased(new StopWheel());
     }
-    //A
+    
     JoystickButton A = new JoystickButton(ctrl, 1);
-    A.whenPressed(new ElevatorSetPosition(100));
-    A.whenPressed(new TiltSetPosition(100));
-    //X
     JoystickButton X = new JoystickButton(ctrl,3);
-    X.whenPressed(new TiltSetPosition(0));
-    //Y
     JoystickButton Y = new JoystickButton(ctrl,4);
-    Y.whenPressed(new TiltSetPosition(100));
-    //B
     JoystickButton B = new JoystickButton(ctrl,2);
-    B.whenPressed(new ElevatorSetPosition(0));
-    //back
     JoystickButton menu = new JoystickButton(ctrl,8);
-    //start
-    JoystickButton select = new JoystickButton(ctrl,7);
-
     //press down left stick
-    JoystickButton left = new JoystickButton(ctrl,9);
+    JoystickButton select = new JoystickButton(ctrl,7);
     //press down right stick
     JoystickButton right = new JoystickButton(ctrl,10);
+
+    if(Robot.getMap().getToggle("elevator_en"))
+    {
+      A.whenPressed(new ElevatorSetPosition(100));
+    }
+    if(Robot.getMap().getToggle("tilt_en"))
+    {
+      A.whenPressed(new TiltSetPosition(100));
+      X.whenPressed(new TiltSetPosition(0));
+      Y.whenPressed(new TiltSetPosition(100));
+    
+    }
+    if(Robot.getMap().getToggle("drive_en"))
+    {
+      B.whenPressed(new ElevatorSetPosition(0));
+    }
   }
 
   public void resetController ()
@@ -104,6 +108,5 @@ public class OI
   {
     //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
     return ctrl.getY(Hand.kRight);
-    //hugo first - wrote the book "off a cliff"
   }
 }
