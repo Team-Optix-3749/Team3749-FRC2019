@@ -49,11 +49,6 @@ public class DriveBase extends Subsystem
 
   public DriveBase ()
   {
-    /*
-      have two motor controllers following the TalonSRX
-      a VictorSPX is cheaper and has less features, so just having it follow
-      is good enough
-      */
     WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
     WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
     WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
@@ -66,6 +61,7 @@ public class DriveBase extends Subsystem
     rightSide = new SpeedControllerGroup(rightF, rightM, rightB);
     
     drive = new DifferentialDrive(leftSide, rightSide);
+
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
     gyro.reset();
@@ -120,13 +116,13 @@ public class DriveBase extends Subsystem
       // hopefully wont change gains with derivative/integral values
       drivePID.setSetpoint(gyro.getAngle());
     }
-    System.out.println(fwd + ": " + drivePID.get());
+    
+    if (Robot.getMap().getSys("drive") == 2)
+      System.out.println("Forward power = " + fwd + ", adjust = " + drivePID.get());
     // offset rotational constant to actually move properly
     // rot += drivePID.get();
-    if (Robot.getMap().getSys("drive") == 2)
-      System.out.println("Drive PID adjust: " + drivePID.get());
 
-    drive.arcadeDrive(fwd, rot);
+    drive.arcadeDrive(fwd, rot, false);
   }
 
   public double getHeading()
@@ -136,7 +132,7 @@ public class DriveBase extends Subsystem
 
   public void tankDrive (double left, double right)
   {
-    drive.tankDrive(left, right);
+    drive.tankDrive(left, right, false);
   }
   public double locateTarget()
   {
