@@ -85,8 +85,12 @@ public class Tilt extends Subsystem
      if (position < 0)
        position = 0;
     motor.set(ControlMode.Position, position);
-    // System.out.println(motor.getClosedLoopError());
-    // System.out.println(motor.getMotorOutputPercent());
+
+    if (Robot.getMap().getSys("tilt") == 2)
+    {
+      System.out.println("Tilt error: " + motor.getClosedLoopError());
+      System.out.println("Tilt motor output" + motor.getMotorOutputPercent());
+    }
   }
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 

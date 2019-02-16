@@ -63,6 +63,7 @@ public class WheelInOut extends Subsystem
 
 	public boolean hasCargo() 
 	{
+		// reversed polarity -> limit switch is usually true, but returns false if closed
 		return !flywheelSwitch.get();
 	}	
 

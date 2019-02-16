@@ -25,6 +25,11 @@ public class ElevatorStick extends Command {
   protected void execute() 
   {
     Robot.getElevator().rawMove(Robot.getOI().getElevatorY() * 0.5);
+    if (Robot.getMap().getSys("elevator") == 2)
+    {
+      System.out.println("Elevator Position: " + Robot.getElevator().getPosition());
+      System.out.println("Elevator Setpoint: " + Robot.getElevator().getSetpoint());
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

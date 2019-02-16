@@ -34,7 +34,7 @@ public class OI
     //JoystickButton xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());
     
-    if(Robot.getMap().getSys("wheelio_en") != 0)
+    if(Robot.getMap().getSys("wheelio") != 0)
     {
       JoystickButton leftBumper = new JoystickButton(ctrl, 5);
       JoystickButton rightBumper = new JoystickButton(ctrl, 6);
@@ -56,19 +56,19 @@ public class OI
     //press down right stick
     JoystickButton right = new JoystickButton(ctrl,10);
 
-    if(Robot.getMap().getSys("elevator_en") != 0)
+    if(Robot.getMap().getSys("elevator") != 0)
     {
       A.whenPressed(new ElevatorSetPosition(100));
       B.whenPressed(new ElevatorSetPosition(0));
     }
-    if(Robot.getMap().getSys("tilt_en") != 0)
+    if(Robot.getMap().getSys("tilt") != 0)
     {
       A.whenPressed(new TiltSetPosition(100));
       X.whenPressed(new TiltSetPosition(0));
       Y.whenPressed(new TiltSetPosition(100));
     
     }
-    if(Robot.getMap().getSys("drive_en") != 0)
+    if(Robot.getMap().getSys("drive") != 0)
     {
     }
   }
@@ -97,7 +97,6 @@ public class OI
    */
   public double getTiltY()
   {
-    //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
     return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
   }
   /**
@@ -105,7 +104,6 @@ public class OI
    */
   public double getElevatorY()
   {
-    //System.out.println(ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft));
     return ctrl.getY(Hand.kRight);
   }
 }

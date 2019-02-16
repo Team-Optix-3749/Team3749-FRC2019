@@ -57,10 +57,10 @@ public class RobotMap
 
 	// whether a subsystem is installed and in use
 	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
-	setSys("tilt_en", 1);
-	setSys("drive_en", 1);
-	setSys("wheelio_en", 1);
-	setSys("elevator_en", 1);
+	setSys("tilt", 1);
+	setSys("drive", 1);
+	setSys("wheelio", 1);
+	setSys("elevator", 1);
   }
 
 

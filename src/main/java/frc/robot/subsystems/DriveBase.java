@@ -123,6 +123,8 @@ public class DriveBase extends Subsystem
     System.out.println(fwd + ": " + drivePID.get());
     // offset rotational constant to actually move properly
     // rot += drivePID.get();
+    if (Robot.getMap().getSys("drive") == 2)
+      System.out.println("Drive PID adjust: " + drivePID.get());
 
     drive.arcadeDrive(fwd, rot);
   }

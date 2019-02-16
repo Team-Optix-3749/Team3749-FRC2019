@@ -86,8 +86,12 @@ public class Elevator extends Subsystem
      if (position < 0)
        position = 0;
     motor.set(ControlMode.Position, position);
-    System.out.println(motor.getClosedLoopError());
-    System.out.println(motor.getMotorOutputPercent());
+
+    if (Robot.getMap().getSys("elevator") == 2)
+    {
+      System.out.println("Elevator error: " + motor.getClosedLoopError());
+      System.out.println("Elevator motor out: " + motor.getMotorOutputPercent());
+    }
   }
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 

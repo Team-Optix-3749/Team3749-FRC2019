@@ -47,13 +47,13 @@ public class Robot extends TimedRobot
     // starts and sets up the camera with display settings
     // initCamera();
 
-    if (map.getSys("drive_en") != 0)
+    if (map.getSys("drive") != 0)
       drive = new DriveBase();
-    if (map.getSys("wheelio_en") != 0)
+    if (map.getSys("wheelio") != 0)
       flywheel = new WheelInOut();
-    if (map.getSys("tilt_en") != 0)
+    if (map.getSys("tilt") != 0)
       tilt = new Tilt();
-    if (map.getSys("elevator_en") != 0)
+    if (map.getSys("elevator") != 0)
       elevator = new Elevator();
 
     // must be at end (after subsystems and RobotMap)

@@ -25,8 +25,11 @@ public class TiltStick extends Command {
   protected void execute() 
   {
     Robot.getTilt().rawMove(Robot.getOI().getTiltY() * 0.5);
-    System.out.println("Sensor Position: " + Robot.getTilt().getPosition());
-    System.out.println("Sensor Setpoint: " + Robot.getTilt().getSetpoint());
+    if (Robot.getMap().getSys("tilt") == 2)
+    {
+      System.out.println("Tilt Position: " + Robot.getTilt().getPosition());
+      System.out.println("Tilt Setpoint: " + Robot.getTilt().getSetpoint());
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
