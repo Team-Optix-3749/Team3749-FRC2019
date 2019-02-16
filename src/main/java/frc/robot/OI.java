@@ -85,7 +85,7 @@ public class OI
 
   public double getDriveY()
   {
-    return ctrl.getY(Hand.kLeft);
+    return -ctrl.getY(Hand.kLeft);
   }
   public double getDriveX()
   {

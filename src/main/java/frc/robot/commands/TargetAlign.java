@@ -14,7 +14,6 @@ public class TargetAlign extends Command {
   private double heading;
   private final double TARGET_HEADING = 60;
   private double MAX_VELOCITY = 0.3;
-
   public TargetAlign() {
     requires(Robot.getDrive());
   }

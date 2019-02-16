@@ -21,7 +21,7 @@ public class Elevator extends Subsystem
   private double position;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
-  private final double ENCODER_IN = 120000;
+  private final double ENCODER_IN = 100;//120000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 

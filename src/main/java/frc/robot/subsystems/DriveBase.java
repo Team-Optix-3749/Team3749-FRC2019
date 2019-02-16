@@ -43,9 +43,8 @@ public class DriveBase extends Subsystem
 
   // if the robot is trying going straight currently
   private boolean isStraight = false;
-  // PID to control driving alignment (no veering!)
-  // PID is a closed-loop control algorithm that uses sensor input to determine motor output
-  private PIDController drivePID;
+  private double setpoint;
+  private double adjust;
 
   public DriveBase ()
   {
@@ -66,16 +65,8 @@ public class DriveBase extends Subsystem
     gyro = new AHRS(SPI.Port.kMXP);
     gyro.reset();
 
-    // pid constants
-    double kp = 0.1, ki = 0, kd = 0;
-    // use PID controller to calculate PID efficiently but don't give it to motor controller
-    // instead, just use .get() for driving adjustments
-    // consider just using PIDSubsystem
-    drivePID = new PIDController(kp, ki, kd, gyro, new EmptyPIDOut());
-    drivePID.setOutputRange(-0.3, 0.3);
-    drivePID.setSetpoint(0);
-
-    SmartDashboard.putData("Drive PID", drivePID);
+    setpoint = 0;
+    adjust = 0;
   }
 
   @Override
@@ -95,9 +86,9 @@ public class DriveBase extends Subsystem
   public void arcadeDrive (double fwd, double rot)
   {
     // if user is trying to go forward, it might not be 100% accurate
-    if (rot < 0.1)
+    if (Math.abs(rot) < 0.1)
     {
-      rot = 0;
+      // rot = 0;
       System.out.println("Driving straight");
     }
     // if user wants robot to go straight
@@ -105,22 +96,21 @@ public class DriveBase extends Subsystem
       // if it wasn't already going straight
       if(isStraight == false) {
         // trying to maintain the current angle heading
-        drivePID.setSetpoint(gyro.getAngle());
+        setpoint = gyro.getAngle();
         isStraight = true;
       }
-
-    } else {
-      // doesn't want to go straight anymore
-      isStraight = false;
-      // setpoint is anything the gyro says (error = 0, will not adjust anymore??)
-      // hopefully wont change gains with derivative/integral values
-      drivePID.setSetpoint(gyro.getAngle());
+      adjust = 1 * (gyro.getAngle() - setpoint);
+      if (adjust > 0.3)
+        adjust = 0.3;
+      if (adjust < -0.3)
+        adjust = -0.3;
+      System.out.println(adjust);
     }
     
     if (Robot.getMap().getSys("drive") == 2)
-      System.out.println("Forward power = " + fwd + ", adjust = " + drivePID.get());
+      System.out.println("Forward power = " + fwd + ", adjust = " + adjust * fwd);
     // offset rotational constant to actually move properly
-    // rot += drivePID.get();
+    // rot += adjust;
 
     drive.arcadeDrive(fwd, rot, false);
   }

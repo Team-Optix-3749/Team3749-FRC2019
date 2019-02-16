@@ -7,12 +7,21 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.junit.Test;
+import org.opencv.core.Mat;
+
 import frc.robot.subsystems.*;
 
 /**
@@ -45,7 +54,7 @@ public class Robot extends TimedRobot
     // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
-    // initCamera();
+    initCamera();
 
     if (map.getSys("drive") != 0)
       drive = new DriveBase();
@@ -66,8 +75,19 @@ public class Robot extends TimedRobot
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
     camera.setExposureManual(20);
+    camera.setResolution(800, 800);
+    VisionThread visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
+        if (!pipeline.filterContoursOutput().isEmpty()) {
+            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+            synchronized (imgLock) {
+                centerX = r.x + (r.width / 2);
+            }
+        }
+    });
+    visionThread.start();
+        
+    drive = new RobotDrive(1, 2);
   }
-
   /**
    * This method gets the Tilt subsystem
    * @return tilt

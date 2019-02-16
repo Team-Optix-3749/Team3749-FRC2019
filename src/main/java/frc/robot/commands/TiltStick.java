@@ -24,7 +24,7 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    Robot.getTilt().rawMove(Robot.getOI().getTiltY() * 0.5);
+    Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
     if (Robot.getMap().getSys("tilt") == 2)
     {
       System.out.println("Tilt Position: " + Robot.getTilt().getPosition());
