@@ -48,7 +48,7 @@ public class Elevator extends Subsystem
 
     reset();
 
-    switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
+    // switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
   }
   @Override
   public void initDefaultCommand() {

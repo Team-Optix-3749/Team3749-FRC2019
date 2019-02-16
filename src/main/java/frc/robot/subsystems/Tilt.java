@@ -41,13 +41,13 @@ public class Tilt extends Subsystem
     motor.setSensorPhase(true);
     motor.setInverted(false);
 
-    motor.configClosedloopRamp(1);
+    // motor.configClosedloopRamp(1);
 
     position = 0;
 
     reset();
 
-    switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
+    // switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -85,8 +85,8 @@ public class Tilt extends Subsystem
      if (position < 0)
        position = 0;
     motor.set(ControlMode.Position, position);
-    System.out.println(motor.getClosedLoopError());
-    System.out.println(motor.getMotorOutputPercent());
+    // System.out.println(motor.getClosedLoopError());
+    // System.out.println(motor.getMotorOutputPercent());
   }
   public boolean atTop() {
     return switchie == null ? false : switchie.get(); 

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.EmptyPIDOut;
 import frc.robot.commands.DriveStick;
@@ -35,6 +36,7 @@ public class DriveBase extends Subsystem
 {
   // leading motor controllers, have built-in closed loop control
   private SpeedControllerGroup leftSide, rightSide;
+  private DifferentialDrive drive;
   // expensive gyro from Kauai Labs, the purple board on top of the roboRIO
   // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
@@ -63,6 +65,7 @@ public class DriveBase extends Subsystem
     WPI_VictorSPX rightB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rb"));
     rightSide = new SpeedControllerGroup(rightF, rightM, rightB);
     
+    drive = new DifferentialDrive(leftSide, rightSide);
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
     gyro.reset();
@@ -121,56 +124,17 @@ public class DriveBase extends Subsystem
     // offset rotational constant to actually move properly
     // rot += drivePID.get();
 
-    // left and right output to be calculated
-    double L, R;
-    // gets bigger of either fwd or rot
-    double max = Math.abs(fwd);
-    if (Math.abs(rot) > max)
-      max = Math.abs(rot);
-    // calc sum and difference btwn
-    double sum = fwd + rot;
-    double dif = fwd - rot;
-
-    // case by case convert fwd and rot input to left and right motor output
-    if (fwd >= 0)
-    {
-      if (rot >= 0)
-      {
-        L = max;
-        R = dif;
-      }
-      else
-      {
-        L = sum;
-        R = max;
-      }
-    }
-    else
-    {
-      if (rot >= 0)
-      {
-        L = sum;
-        R = -max;
-      }
-      else
-      {
-        L = -max;
-        R = dif;
-      }
-    }
-    // use the calculated values in actual output
-    tankDrive (L, R);
+    drive.arcadeDrive(fwd, rot);
   }
 
   public double getHeading()
   {
-      return gyro.getAngle();
+    return gyro.getAngle();
   }
 
   public void tankDrive (double left, double right)
   {
-    leftSide.set(left);
-    rightSide.set(right);
+    drive.tankDrive(left, right);
   }
   public double locateTarget()
   {

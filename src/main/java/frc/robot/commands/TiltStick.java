@@ -24,7 +24,7 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
+    Robot.getTilt().rawMove(Robot.getOI().getTiltY() * 0.5);
     System.out.println("Sensor Position: " + Robot.getTilt().getPosition());
     System.out.println("Sensor Setpoint: " + Robot.getTilt().getSetpoint());
   }

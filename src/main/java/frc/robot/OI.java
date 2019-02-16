@@ -34,7 +34,7 @@ public class OI
     //JoystickButton xButton = new JoystickButton(ctrl, 3);
     // xButton.whenReleased(new SetTilt());
     
-    if(Robot.getMap().getToggle("wheelio_en"))
+    if(Robot.getMap().getSys("wheelio_en") != 0)
     {
       JoystickButton leftBumper = new JoystickButton(ctrl, 5);
       JoystickButton rightBumper = new JoystickButton(ctrl, 6);
@@ -56,20 +56,20 @@ public class OI
     //press down right stick
     JoystickButton right = new JoystickButton(ctrl,10);
 
-    if(Robot.getMap().getToggle("elevator_en"))
+    if(Robot.getMap().getSys("elevator_en") != 0)
     {
       A.whenPressed(new ElevatorSetPosition(100));
+      B.whenPressed(new ElevatorSetPosition(0));
     }
-    if(Robot.getMap().getToggle("tilt_en"))
+    if(Robot.getMap().getSys("tilt_en") != 0)
     {
       A.whenPressed(new TiltSetPosition(100));
       X.whenPressed(new TiltSetPosition(0));
       Y.whenPressed(new TiltSetPosition(100));
     
     }
-    if(Robot.getMap().getToggle("drive_en"))
+    if(Robot.getMap().getSys("drive_en") != 0)
     {
-      B.whenPressed(new ElevatorSetPosition(0));
     }
   }
 

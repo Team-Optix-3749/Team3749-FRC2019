@@ -22,7 +22,7 @@ public class RobotMap
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
 	private static HashMap <String, Integer> mapDIO; //the DIO port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
-	private static HashMap <String, Boolean> mapToggle; //the controller port map
+	private static HashMap <String, Integer> mapSys; // the subsystems mode map
 
   public RobotMap ()
   {
@@ -31,7 +31,7 @@ public class RobotMap
 	mapCAN = new HashMap<>();
     mapDIO = new HashMap<>();
     mapCTRL = new HashMap<>();
-    mapToggle = new HashMap<>();
+    mapSys = new HashMap<>();
 
 	// loading map values for drive
 	// first character = left or right
@@ -44,22 +44,23 @@ public class RobotMap
 	setCAN("drive_rb", 22);
 
 	// intake/grabber wheel map
-	setCAN("wheel_left", 24);
-	setCAN("wheel_right", 25);
+	setCAN("wheel_left", 3);
+	setCAN("wheel_right", 1);
 
 	// main subsystem srx motor ports
-	setCAN("tilt", 42);
-	setCAN("elevator", 13);
+	setCAN("tilt", 1);
+	setCAN("elevator", 2);
 
 	// limit switches
-	setDIO("switch_intake", 0);
+	setDIO("intake_switch", 0);
 	setDIO("tilt_switch", 1);
 
 	// whether a subsystem is installed and in use
-	setToggle("tilt_en", true);
-	setToggle("drive_en", true);
-	setToggle("wheelio_en", true);
-	setToggle("elevator_en", true);
+	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
+	setSys("tilt_en", 1);
+	setSys("drive_en", 1);
+	setSys("wheelio_en", 1);
+	setSys("elevator_en", 1);
   }
 
 
@@ -102,13 +103,13 @@ public class RobotMap
 		mapCTRL.put(name, port);
 	}
 	/**
-	* Method to set a toggle value
+	* Method to set a subsystem value
 	* @param String		name of what port is for (what you call it throughout the program)
-	* @param int 		the value
+	* @param int 		the value (0 = disable, 1 = enabled, 2 = debugging)
 	*/
-	public void setToggle (String name, boolean val)
+	public void setSys (String name, int val)
 	{
-		mapToggle.put(name, val);
+		mapSys.put(name, val);
 	}
 	
 	/**
@@ -149,8 +150,8 @@ public class RobotMap
 	* Method to get a toggleable setting
 	* @param String		name of setting it is for (what you call it throughout the program)
 	*/
-	public boolean getToggle (String name)
+	public int getSys (String name)
 	{
-		return mapToggle.get(name);
+		return mapSys.get(name);
 	}
 }
