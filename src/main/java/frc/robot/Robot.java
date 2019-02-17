@@ -54,7 +54,7 @@ public class Robot extends TimedRobot
     // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
-    initCamera();
+    //initCamera();
 
     if (map.getSys("drive") != 0)
       drive = new DriveBase();
@@ -75,18 +75,18 @@ public class Robot extends TimedRobot
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
     camera.setExposureManual(20);
-    camera.setResolution(800, 800);
-    VisionThread visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
-        if (!pipeline.filterContoursOutput().isEmpty()) {
-            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-            synchronized (imgLock) {
-                centerX = r.x + (r.width / 2);
-            }
-        }
-    });
-    visionThread.start();
+    // camera.setResolution(800, 800);
+    // VisionThread visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
+    //     if (!pipeline.filterContoursOutput().isEmpty()) {
+    //         Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+    //         synchronized (imgLock) {
+    //             centerX = r.x + (r.width / 2);
+    //         }
+    //     }
+    // });
+    // visionThread.start();
         
-    drive = new RobotDrive(1, 2);
+    // drive = new RobotDrive(1, 2);
   }
   /**
    * This method gets the Tilt subsystem
