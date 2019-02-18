@@ -50,6 +50,9 @@ public class RobotMap
 	// main subsystem srx motor ports
 	setCAN("tilt", 1);
 	setCAN("elevator", 2);
+	
+	// victor spx
+	setCAN("climb", 2);
 
 	// limit switches
 	setDIO("intake_switch", 0);
@@ -57,10 +60,11 @@ public class RobotMap
 
 	// whether a subsystem is installed and in use
 	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
-	setSys("tilt", 0);
-	setSys("drive", 0);
-	setSys("wheelio", 0);
-	setSys("elevator", 2);
+	setSys("tilt", 1);
+	setSys("drive", 1);
+	setSys("wheelio", 1);
+	setSys("elevator", 1);
+	setSys("climb", 1);
   }
 
 

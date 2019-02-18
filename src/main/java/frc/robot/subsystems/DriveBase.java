@@ -35,8 +35,7 @@ import frc.robot.commands.DriveStick;
 public class DriveBase extends Subsystem
 {
   // leading motor controllers, have built-in closed loop control
-  private SpeedControllerGroup leftSide, rightSide;
-  private DifferentialDrive drive;
+  private TalonSRX leftSide, rightSide;
   // expensive gyro from Kauai Labs, the purple board on top of the roboRIO
   // https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
   private AHRS gyro;
@@ -48,18 +47,21 @@ public class DriveBase extends Subsystem
 
   public DriveBase ()
   {
-    WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
-    WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
-    WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
-    leftSide = new SpeedControllerGroup(leftF, leftM, leftB);
+    leftSide = new TalonSRX(Robot.getMap().getCAN("drive_lf"));
+    VictorSPX leftM = new VictorSPX(Robot.getMap().getCAN("drive_lm"));
+    VictorSPX leftB = new VictorSPX(Robot.getMap().getCAN("drive_lb"));
+    leftM.follow(leftSide);
+    leftB.follow(leftSide);
 
     // same thing on the other side
-    WPI_TalonSRX rightF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_rf"));
-    WPI_VictorSPX rightM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rm"));
-    WPI_VictorSPX rightB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_rb"));
-    rightSide = new SpeedControllerGroup(rightF, rightM, rightB);
-    
-    drive = new DifferentialDrive(leftSide, rightSide);
+    rightSide = new TalonSRX(Robot.getMap().getCAN("drive_rf"));
+    VictorSPX rightM = new VictorSPX(Robot.getMap().getCAN("drive_rm"));
+    VictorSPX rightB = new VictorSPX(Robot.getMap().getCAN("drive_rb"));
+    rightM.follow(rightSide);
+    rightB.follow(rightSide);
+
+    leftSide.configOpenloopRamp(0.75);
+    rightSide.configOpenloopRamp(0.75);
 
     // gyro based on SPI (faster than other input)
     gyro = new AHRS(SPI.Port.kMXP);
@@ -88,7 +90,7 @@ public class DriveBase extends Subsystem
     // if user is trying to go forward, it might not be 100% accurate
     if (Math.abs(rot) < 0.1)
     {
-      // rot = 0;
+      rot = 0;
       System.out.println("Driving straight");
     }
     // if user wants robot to go straight
@@ -104,7 +106,6 @@ public class DriveBase extends Subsystem
         adjust = 0.3;
       if (adjust < -0.3)
         adjust = -0.3;
-      System.out.println(adjust);
     }
     
     if (Robot.getMap().getSys("drive") == 2)
@@ -112,7 +113,53 @@ public class DriveBase extends Subsystem
     // offset rotational constant to actually move properly
     // rot += adjust;
 
-    drive.arcadeDrive(fwd, rot, false);
+    double[] pwr = arcadeToTank(fwd, rot);
+
+    tankDrive(pwr[0], pwr[1]);
+  }
+
+  private double[] arcadeToTank(double fwd, double rot)
+  {
+    // left and right output to be calculated
+    double L, R;
+    // gets bigger of either fwd or rot
+    double max = Math.abs(fwd);
+    if (Math.abs(rot) > max)
+      max = Math.abs(rot);
+    // calc sum and difference btwn
+    double sum = fwd + rot;
+    double dif = fwd - rot;
+
+    // case by case convert fwd and rot input to left and right motor output
+    if (fwd >= 0)
+    {
+      if (rot >= 0)
+      {
+        L = max;
+        R = dif;
+      }
+      else
+      {
+        L = sum;
+        R = max;
+      }
+    }
+    else
+    {
+      if (rot >= 0)
+      {
+        L = sum;
+        R = -max;
+      }
+      else
+      {
+        L = -max;
+        R = dif;
+      }
+    }
+
+    double[] power = {L, R};
+    return power;
   }
 
   public double getHeading()
@@ -122,9 +169,10 @@ public class DriveBase extends Subsystem
 
   public void tankDrive (double left, double right)
   {
-    drive.tankDrive(left, right, false);
+    leftSide.set(ControlMode.PercentOutput, left);
+    rightSide.set(ControlMode.PercentOutput, right);
   }
-  public double locateTarget()
+  public double locateCargo()
   {
     double[] defaultValue = new double[0];
     double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
@@ -132,7 +180,7 @@ public class DriveBase extends Subsystem
     double[] sizes = NetworkTableInstance.getDefault().getTable("GRIP")
     .getSubTable("greenBlob").getEntry("size").getDoubleArray(defaultValue);
     if(xPos.length == 0) {
-      // didn't locate anything, send error flag
+      // didn't locate anything, send failed flag
       return -1;
     }
     double biggest = 0;
@@ -148,18 +196,54 @@ public class DriveBase extends Subsystem
 
     // return the position of the biggest blob found
     return xPos[i];
-
-    //adding listener code
-    // NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    // NetworkTable table = inst.getTable("GRIP").getSubTable("greenBlob");
-    // NetworkTableEntry xEntry = table.getEntry("x");
-    // inst.startClientTeam(3749);
-
-    // //what is value???????
-
-    // //src = https://wpilib.screenstepslive.com/s/currentCS/m/75361/l/843364-listening-for-value-changes
-    // table.addEntryListener("x", (table,key,entry,value,flags) -> {
-    //   System.out.println("X changed value: " + value.getValue());
-    // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+  }
+  
+  public double locateLeftTape()
+  {
+    double[] defaultValue = new double[0];
+    double[] x1 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x1").getDoubleArray(defaultValue);
+    double[] x2 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x2").getDoubleArray(defaultValue);
+    double[] angles = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("angle").getDoubleArray(defaultValue);
+    if(x1.length == 0) {
+      // didn't locate anything, send failed flag
+      return -1;
+    }
+    return 0;
+  }
+  public double locateMiddleTape()
+  {
+    double[] defaultValue = new double[0];
+    double[] x1 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x1").getDoubleArray(defaultValue);
+    double[] x2 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x2").getDoubleArray(defaultValue);
+    double[] angles = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("angle").getDoubleArray(defaultValue);
+    if(x1.length == 0) {
+      // didn't locate anything, send failed flag
+      return -1;
+    }
+    for (int i = 0; i < angles.length; i ++)
+      if (angles[i] > 360) angles[i] -= 180;
+  
+    return 0;
+  }
+  public double locateRightTape()
+  {
+    double[] defaultValue = new double[0];
+    double[] x1 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x1").getDoubleArray(defaultValue);
+    double[] x2 = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("x2").getDoubleArray(defaultValue);
+    double[] angles = NetworkTableInstance.getDefault().getTable("GRIP")
+      .getSubTable("tapeLines").getEntry("angle").getDoubleArray(defaultValue);
+    if(x1.length == 0) {
+      // didn't locate anything, send failed flag
+      return -1;
+    }
+    return 0;
   }
 }

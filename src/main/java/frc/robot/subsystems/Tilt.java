@@ -20,7 +20,7 @@ public class Tilt extends Subsystem
   private double position;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
-  private final double ENCODER_IN = 168000;
+  private final double ENCODER_IN = 176000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
@@ -80,12 +80,13 @@ public class Tilt extends Subsystem
   }
   private void update()
   {
-     if (position > ENCODER_IN)
-       position = ENCODER_IN;
-     if (position < 0)
-       position = 0;
+    if (position > ENCODER_IN)
+      position = ENCODER_IN;
+    if (position < 0)
+      position = 0;
+    
     motor.set(ControlMode.Position, position);
-
+    
     if (Robot.getMap().getSys("tilt") == 2)
     {
       System.out.println("Tilt error: " + motor.getClosedLoopError());

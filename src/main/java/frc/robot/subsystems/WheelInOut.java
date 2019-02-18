@@ -36,14 +36,14 @@ public class WheelInOut extends Subsystem
 	public double getSpeed() {
 		return speed;
 	}
-	public void intake()
+	public void intake(double in)
 	{
 		if(intakeMotor1.getInverted() && !intakeMotor2.getInverted())
 		{
 			intakeMotor1.setInverted(false);
 			intakeMotor2.setInverted(true);
 		}
-		setSpeed(1.0);
+		setSpeed(in);
 	}
 	
 	public void unload()

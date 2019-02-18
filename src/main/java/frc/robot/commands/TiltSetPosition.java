@@ -13,22 +13,23 @@ public class TiltSetPosition extends Command {
 
     @Override
     protected void initialize() {
-        
+      Robot.getElevator().setBottom(20);
     }
 
     @Override 
     protected void execute() {
-      Robot.getTilt().setPosition(position);
+      if (Robot.getElevator().getPosition() > 15)
+        Robot.getTilt().setPosition(position);
     }
 
     @Override
     protected boolean isFinished() {
-      return true;
+      return Math.abs(Robot.getTilt().getPosition() - position) < 10;
     }
 
     @Override
     protected void end() {
-
+      Robot.getElevator().setBottom(0);
     }
     
     @Override

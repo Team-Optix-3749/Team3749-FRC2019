@@ -7,20 +7,13 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.vision.VisionPipeline;
-import edu.wpi.first.vision.VisionThread;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import org.junit.Test;
-import org.opencv.core.Mat;
 
 import frc.robot.subsystems.*;
 
@@ -37,6 +30,7 @@ public class Robot extends TimedRobot
   private static WheelInOut flywheel;
   private static Tilt tilt;
   private static Elevator elevator;
+  private static Climb climb;
   
   private static OI oi;
   private static RobotMap map;
@@ -54,7 +48,7 @@ public class Robot extends TimedRobot
     // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
-    //initCamera();
+    initCamera();
 
     if (map.getSys("drive") != 0)
       drive = new DriveBase();
@@ -75,18 +69,6 @@ public class Robot extends TimedRobot
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setBrightness(20);
     camera.setExposureManual(20);
-    // camera.setResolution(800, 800);
-    // VisionThread visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
-    //     if (!pipeline.filterContoursOutput().isEmpty()) {
-    //         Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-    //         synchronized (imgLock) {
-    //             centerX = r.x + (r.width / 2);
-    //         }
-    //     }
-    // });
-    // visionThread.start();
-        
-    // drive = new RobotDrive(1, 2);
   }
   /**
    * This method gets the Tilt subsystem
@@ -113,10 +95,14 @@ public class Robot extends TimedRobot
    {
       return flywheel;
    }
+   
    /**
     * a simple getter method for the Elevator subsystem 
     * @return Elevator
     */
+  public static Elevator getElevator() {
+    return elevator;
+  }
   /**
   
    * a simple getter method for the operator interface (for controls)
@@ -125,7 +111,6 @@ public class Robot extends TimedRobot
   public static OI getOI()
   {
     return oi;
-    //minesweeper hard mode complete
   }
   /**
 
@@ -144,15 +129,10 @@ public class Robot extends TimedRobot
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
-
-  public static Elevator getElevator() {
-    return elevator;
-  }
   @Override
   public void robotPeriodic()
   {
   }
-
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when

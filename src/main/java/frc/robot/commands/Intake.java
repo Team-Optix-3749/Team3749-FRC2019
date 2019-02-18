@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class Intake extends Command
-
 {
+	private long endTime;
 	public Intake()
 	{
 		requires(Robot.getFlywheel());
+		endTime = -1;
 	}	
 	
 	protected void initialize(){}
@@ -24,18 +25,28 @@ public class Intake extends Command
 		else
 			Robot.getFlywheel().stop();
 		*/
-		Robot.getFlywheel().intake();
-			
+		Robot.getFlywheel().intake(0.5);
+
+		if (Robot.getFlywheel().hasCargo())
+			endTime = System.currentTimeMillis();
 	}
 
 	protected boolean isFinished()
 	{
-		return Robot.getFlywheel().hasCargo();
+		if (endTime == -1)
+		{
+			return false;
+		}
+		else
+		{
+			return System.currentTimeMillis() - endTime > 500;
+		}
 	}
 
 	protected void end() 
 	{
 		Robot.getFlywheel().setSpeed(0);
+		endTime = -1;
 	}	
 
 	protected void interrupted() 

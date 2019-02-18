@@ -21,26 +21,29 @@ public class Elevator extends Subsystem
   private double position;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
-  private final double ENCODER_IN = 100;//120000;
+  private final double ENCODER_IN = 1100000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
   // limit switch at top of mvmt
   private DigitalInput switchie;
+
+  // how low the elevator can go (changing based on position of tilt mechanism)
+  private double BOTTOM_LIMIT;
   
   public Elevator ()
   {
     motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0);//0.025);
+    motor.config_kP(0, 0.003);//0.025);
     motor.config_kI(0, 0);//0.0000005);
     motor.config_kD(0, 0);//0.00002);
 
     // positive input is negative sensor readings
     // need to flip sensor phase
     motor.setSensorPhase(true);
-    motor.setInverted(false);
+    motor.setInverted(true);
 
     motor.configClosedloopRamp(1);
 
@@ -66,6 +69,11 @@ public class Elevator extends Subsystem
     position = toEncoder(pos);
     update();
   }
+  public void setBottom (double pos)
+  {
+    BOTTOM_LIMIT = pos;
+    update();
+  }
   public double getPosition()
   {
     return fromEncoder(motor.getSelectedSensorPosition());
@@ -81,11 +89,13 @@ public class Elevator extends Subsystem
   }
   private void update()
   {
-     if (position > ENCODER_IN)
-       position = ENCODER_IN;
-     if (position < 0)
-       position = 0;
-    motor.set(ControlMode.Position, position);
+    if (position > ENCODER_IN)
+      position = ENCODER_IN;
+    if (position < toEncoder(5))
+      position = toEncoder(5);
+    
+    // constrain on bottom (position can potentially go all the way to 0 still)
+    motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position);
 
     if (Robot.getMap().getSys("elevator") == 2)
     {

@@ -20,52 +20,64 @@ public class OI
 {
   // controller used for main controls (xbox controller)
   private XboxController ctrl;
+  private JoystickButton[] buttons;
+
+  // how many buttons in the controller
+  private final int BUTTON_RANGE = 10;
   /**
    * constructor OI connects the controller and buttons to the different commands
    */
   public OI ()
   {
     ctrl = new XboxController(0);
-    // Button button = new JoystickButton(ctrl, 1);
-    // button.whenPressed(null);
-    // button.whileHeld(null);
-    // button.whenReleased(null);
+
+    // indexes start at 1 for buttons
+    buttons = new JoystickButton[BUTTON_RANGE+1];
+    for (int i = 1; i <= BUTTON_RANGE; i ++)
+    {
+      buttons[i] = new JoystickButton(ctrl, i);
+    }
     
-    //JoystickButton xButton = new JoystickButton(ctrl, 3);
-    // xButton.whenReleased(new SetTilt());
+    /**
+     * BUTTON MAP KEY:
+     * 1 = A
+     * 2 = B
+     * 3 = X
+     * 4 = Y
+     * 5 = left bumper
+     * 6 = right bumper
+     * 7 = select
+     * 8 = menu
+     * 9 = left stick click
+     * 10 = right stick click
+     */
     
     if(Robot.getMap().getSys("wheelio") != 0)
     {
-      JoystickButton leftBumper = new JoystickButton(ctrl, 5);
-      JoystickButton rightBumper = new JoystickButton(ctrl, 6);
-
-      rightBumper.whenPressed(new Unload());
-      rightBumper.whenReleased(new StopWheel());
+      // 6 = right bumper
+      buttons[6].whenPressed(new Unload());
+      buttons[6].whenReleased(new StopWheel());
       
-      leftBumper.whenPressed(new Intake());
-      leftBumper.whenReleased(new StopWheel());
+      // 5 = left bumper
+      buttons[5].whenPressed(new Intake());
+      buttons[5].whenReleased(new StopWheel());
     }
-    
-    JoystickButton A = new JoystickButton(ctrl, 1);
-    JoystickButton X = new JoystickButton(ctrl,3);
-    JoystickButton Y = new JoystickButton(ctrl,4);
-    JoystickButton B = new JoystickButton(ctrl,2);
-    JoystickButton menu = new JoystickButton(ctrl,8);
-    //press down left stick
-    JoystickButton select = new JoystickButton(ctrl,7);
-    //press down right stick
-    JoystickButton right = new JoystickButton(ctrl,10);
 
     if(Robot.getMap().getSys("elevator") != 0)
     {
-      A.whenPressed(new ElevatorSetPosition(100));
-      B.whenPressed(new ElevatorSetPosition(0));
+      // 1 = A
+      buttons[1].whenPressed(new ElevatorSetPosition(100));
+      // 2 = B
+      buttons[2].whenPressed(new ElevatorSetPosition(0));
     }
     if(Robot.getMap().getSys("tilt") != 0)
     {
-      A.whenPressed(new TiltSetPosition(100));
-      X.whenPressed(new TiltSetPosition(0));
-      Y.whenPressed(new TiltSetPosition(100));
+      // 1 = A
+      buttons[1].whenPressed(new TiltSetPosition(100));
+      // 3 = X
+      buttons[3].whenPressed(new TiltSetPosition(0));
+      // 4 = Y
+      buttons[4].whenPressed(new TiltSetPosition(100));
     
     }
     if(Robot.getMap().getSys("drive") != 0)
@@ -89,7 +101,7 @@ public class OI
   }
   public double getDriveX()
   {
-    return ctrl.getX(Hand.kLeft);
+    return ctrl.getX(Hand.kRight);
   }
 
   /**
@@ -104,6 +116,6 @@ public class OI
    */
   public double getElevatorY()
   {
-    return ctrl.getY(Hand.kRight);
+    return -ctrl.getY(Hand.kRight);
   }
 }
