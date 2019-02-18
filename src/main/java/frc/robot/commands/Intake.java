@@ -3,10 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Unload extends Command
+public class Intake extends Command
 {
 	private long endTime;
-	public Unload()
+	public Intake()
 	{
 		requires(Robot.getFlywheel());
 		endTime = -1;
@@ -16,8 +16,18 @@ public class Unload extends Command
 
 	protected void execute()
 	{
-		Robot.getFlywheel().unload();
-		if (!Robot.getFlywheel().hasCargo())
+		/*
+		if(!Robot.getFlywheel().hasCargo())
+		{
+			Robot.getFlywheel().intake();
+			Robot.getFlywheel().printTest();
+		}
+		else
+			Robot.getFlywheel().stop();
+		*/
+		Robot.getFlywheel().intake(0.5);
+
+		if (Robot.getFlywheel().hasCargo())
 			endTime = System.currentTimeMillis();
 	}
 

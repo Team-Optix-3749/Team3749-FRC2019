@@ -68,8 +68,9 @@ public class Robot extends TimedRobot
   {
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setBrightness(20);
-    camera.setExposureManual(20);
+    camera.setBrightness(8);
+    // camera.setExposureManual(5);
+    camera.setExposureAuto();
   }
   /**
    * This method gets the Tilt subsystem

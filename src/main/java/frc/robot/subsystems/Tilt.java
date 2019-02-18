@@ -24,17 +24,14 @@ public class Tilt extends Subsystem
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
-  // limit switch at top of mvmt
-  private DigitalInput switchie;
-  
   public Tilt ()
   {
     motor = new TalonSRX(Robot.getMap().getCAN("tilt"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0.005);//0.025);
-    motor.config_kI(0, 0);//0.0000005);
-    motor.config_kD(0, 0);//0.00002);
+    motor.config_kP(0, 0.005);
+    motor.config_kI(0, 0);
+    motor.config_kD(0, 0);
 
     // positive input is negative sensor readings
     // need to flip sensor phase
@@ -46,8 +43,6 @@ public class Tilt extends Subsystem
     position = 0;
 
     reset();
-
-    // switchie = new DigitalInput(Robot.getMap().getDIO("tilt_switch"));
   }
   @Override
   public void initDefaultCommand()
@@ -80,10 +75,10 @@ public class Tilt extends Subsystem
   }
   private void update()
   {
-    if (position > ENCODER_IN)
-      position = ENCODER_IN;
-    if (position < 0)
-      position = 0;
+    if (position > ENCODER_IN * 1.1)
+      position = ENCODER_IN * 1.1;
+    if (position < toEncoder(-10))
+      position = toEncoder(-10);
     
     motor.set(ControlMode.Position, position);
     
@@ -94,7 +89,7 @@ public class Tilt extends Subsystem
     }
   }
   public boolean atTop() {
-    return switchie == null ? false : switchie.get(); 
+    return false;
   }
   
   public void rawMove(double speed) {

@@ -25,9 +25,6 @@ public class Elevator extends Subsystem
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
-  // limit switch at top of mvmt
-  private DigitalInput switchie;
-
   // how low the elevator can go (changing based on position of tilt mechanism)
   private double BOTTOM_LIMIT;
   
@@ -36,9 +33,9 @@ public class Elevator extends Subsystem
     motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
 
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
-    motor.config_kP(0, 0.003);//0.025);
-    motor.config_kI(0, 0);//0.0000005);
-    motor.config_kD(0, 0);//0.00002);
+    motor.config_kP(0, 0.003);
+    motor.config_kI(0, 0);
+    motor.config_kD(0, 0);
 
     // positive input is negative sensor readings
     // need to flip sensor phase
@@ -50,8 +47,6 @@ public class Elevator extends Subsystem
     position = 0;
 
     reset();
-
-    // switchie = new DigitalInput(Robot.getMap().getDIO("elevator_switch"));
   }
   @Override
   public void initDefaultCommand() {
@@ -104,7 +99,7 @@ public class Elevator extends Subsystem
     }
   }
   public boolean atTop() {
-    return switchie == null ? false : switchie.get(); 
+    return false;
   }
   
   public void rawMove(double speed) {

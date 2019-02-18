@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.commands.ClimbStick;
 
 /**
@@ -23,8 +24,8 @@ public class Climb extends Subsystem {
 
   public Climb ()
   {
-    motor = new VictorSPX(2);
-    limitSwitch = new DigitalInput(1);
+    motor = new VictorSPX(Robot.getMap().getCAN("climb"));
+    limitSwitch = new DigitalInput(Robot.getMap().getDIO("climb_switch"));
   }
 
   @Override

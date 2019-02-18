@@ -56,7 +56,7 @@ public class RobotMap
 
 	// limit switches
 	setDIO("intake_switch", 0);
-	setDIO("tilt_switch", 1);
+	setDIO("climb_switch", 1);
 
 	// whether a subsystem is installed and in use
 	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
