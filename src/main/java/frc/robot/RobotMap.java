@@ -64,7 +64,7 @@ public class RobotMap
 	setSys("drive", 1);
 	setSys("wheelio", 1);
 	setSys("elevator", 1);
-	setSys("climb", 1);
+	setSys("climb", 0);
   }
 
 

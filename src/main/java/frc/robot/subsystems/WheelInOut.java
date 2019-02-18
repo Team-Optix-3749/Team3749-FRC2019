@@ -23,6 +23,7 @@ public class WheelInOut extends Subsystem
 		speed = 0;
 		intakeMotor1 = new VictorSPX(Robot.getMap().getCAN("wheel_left"));
 		intakeMotor2 = new VictorSPX(Robot.getMap().getCAN("wheel_right"));
+		intakeMotor1.setInverted(false);
 		intakeMotor2.setInverted(true);
 	}
 
@@ -38,22 +39,12 @@ public class WheelInOut extends Subsystem
 	}
 	public void intake(double in)
 	{
-		if(intakeMotor1.getInverted() && !intakeMotor2.getInverted())
-		{
-			intakeMotor1.setInverted(false);
-			intakeMotor2.setInverted(true);
-		}
 		setSpeed(in);
 	}
 	
 	public void unload()
 	{
-		if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
-		{
-			intakeMotor1.setInverted(true);
-			intakeMotor2.setInverted(false);
-		}
-		setSpeed(1.0);
+		setSpeed(-1.0);
 	}
 
 	public void stop()
@@ -63,7 +54,7 @@ public class WheelInOut extends Subsystem
 
 	public boolean hasCargo() 
 	{
-		// reversed polarity -> limit switch is usually true, but returns false if closed
+		// reversed polarity -> limit switch is true when open, false if closed (and thus has cargo)
 		return !flywheelSwitch.get();
 	}	
 

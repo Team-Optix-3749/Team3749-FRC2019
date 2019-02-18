@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.ClimbStick;
 
@@ -18,10 +19,12 @@ import frc.robot.commands.ClimbStick;
  */
 public class Climb extends Subsystem {
   private VictorSPX motor;
+  private DigitalInput limitSwitch;
 
   public Climb ()
   {
     motor = new VictorSPX(2);
+    limitSwitch = new DigitalInput(1);
   }
 
   @Override
@@ -32,5 +35,10 @@ public class Climb extends Subsystem {
   public void rawMove (double power)
   {
     motor.set(ControlMode.PercentOutput, power);
+  }
+
+  public boolean atEnd()
+  {
+    return !limitSwitch.get();
   }
 }

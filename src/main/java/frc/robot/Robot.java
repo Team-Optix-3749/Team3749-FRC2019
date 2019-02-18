@@ -58,7 +58,8 @@ public class Robot extends TimedRobot
       tilt = new Tilt();
     if (map.getSys("elevator") != 0)
       elevator = new Elevator();
-
+    if (map.getSys("climb") != 0)
+      climb = new Climb();
     // must be at end (after subsystems and RobotMap)
     oi = new OI();
   }
@@ -102,6 +103,13 @@ public class Robot extends TimedRobot
     */
   public static Elevator getElevator() {
     return elevator;
+  }
+  /**
+   * a simple getter method for the Climb subsystem 
+   * @return Climb
+   */
+  public static Climb getClimb() {
+    return climb;
   }
   /**
   
