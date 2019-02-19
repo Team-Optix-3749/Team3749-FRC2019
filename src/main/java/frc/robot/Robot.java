@@ -10,8 +10,6 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -34,7 +32,6 @@ public class Robot extends TimedRobot
   
   private static OI oi;
   private static RobotMap map;
-  private AnalogInput sensor;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -44,8 +41,6 @@ public class Robot extends TimedRobot
   public void robotInit()
   {
     map = new RobotMap();
-    // for testing a sensor
-    // sensor = new AnalogInput(1);
 
     // starts and sets up the camera with display settings
     initCamera();
@@ -201,8 +196,5 @@ public class Robot extends TimedRobot
   @Override
   public void testPeriodic()
   {
-    // System.out.println("START");
-    // System.out.println("Value: " + sensor.getValue());
-    // System.out.println("Voltage: " + sensor.getVoltage());
   }
 }

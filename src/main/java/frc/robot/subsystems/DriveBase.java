@@ -42,22 +42,6 @@ public class DriveBase extends Subsystem
 
   public DriveBase ()
   {
-    // leftSide = new TalonSRX(Robot.getMap().getCAN("drive_lf"));
-    // VictorSPX leftM = new VictorSPX(Robot.getMap().getCAN("drive_lm"));
-    // VictorSPX leftB = new VictorSPX(Robot.getMap().getCAN("drive_lb"));
-    // leftM.follow(leftSide);
-    // leftB.follow(leftSide);
-
-    // // same thing on the other side
-    // rightSide = new TalonSRX(Robot.getMap().getCAN("drive_rf"));
-    // VictorSPX rightM = new VictorSPX(Robot.getMap().getCAN("drive_rm"));
-    // VictorSPX rightB = new VictorSPX(Robot.getMap().getCAN("drive_rb"));
-    // rightM.follow(rightSide);
-    // rightB.follow(rightSide);
-
-    // leftSide.configOpenloopRamp(0.75);
-    // rightSide.configOpenloopRamp(0.75);
-
     WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
     WPI_VictorSPX leftM = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lm"));
     WPI_VictorSPX leftB = new WPI_VictorSPX(Robot.getMap().getCAN("drive_lb"));
@@ -109,7 +93,7 @@ public class DriveBase extends Subsystem
         setpoint = gyro.getAngle();
         isStraight = true;
       }
-      adjust = 1 * (gyro.getAngle() - setpoint);
+      adjust = 0.1 * (gyro.getAngle() - setpoint);
       if (adjust > 0.3)
         adjust = 0.3;
       if (adjust < -0.3)
@@ -121,54 +105,7 @@ public class DriveBase extends Subsystem
     // offset rotational constant to actually move properly
     // rot += adjust;
 
-    // double[] pwr = arcadeToTank(fwd, rot);
-
     drive.arcadeDrive(fwd, rot, false);
-    //tankDrive(pwr[0], pwr[1]);
-  }
-
-  private double[] arcadeToTank(double fwd, double rot)
-  {
-    // left and right output to be calculated
-    double L, R;
-    // gets bigger of either fwd or rot
-    double max = Math.abs(fwd);
-    if (Math.abs(rot) > max)
-      max = Math.abs(rot);
-    // calc sum and difference btwn
-    double sum = fwd + rot;
-    double dif = fwd - rot;
-
-    // case by case convert fwd and rot input to left and right motor output
-    if (fwd >= 0)
-    {
-      if (rot >= 0)
-      {
-        L = max;
-        R = dif;
-      }
-      else
-      {
-        L = sum;
-        R = max;
-      }
-    }
-    else
-    {
-      if (rot >= 0)
-      {
-        L = sum;
-        R = -max;
-      }
-      else
-      {
-        L = -max;
-        R = dif;
-      }
-    }
-
-    double[] power = {L, R};
-    return power;
   }
 
   public double getHeading()
