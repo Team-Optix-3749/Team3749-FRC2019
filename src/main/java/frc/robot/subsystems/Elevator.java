@@ -88,8 +88,8 @@ public class Elevator extends Subsystem
   {
     if (position > ENCODER_IN)
       position = ENCODER_IN;
-    if (position < toEncoder(5))
-      position = toEncoder(5);
+    if (position < toEncoder(0))
+      position = toEncoder(0);
     
     // constrain on bottom (position can potentially go all the way to 0 still)
     motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position);

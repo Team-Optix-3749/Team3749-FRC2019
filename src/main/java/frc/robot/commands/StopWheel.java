@@ -14,7 +14,7 @@ public class StopWheel extends Command
 
 	protected void execute()
 	{
-		Robot.getFlywheel().intake(0.1);
+		Robot.getFlywheel().intake(0);
 	}
 
 	protected boolean isFinished()

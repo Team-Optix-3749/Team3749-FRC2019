@@ -16,6 +16,7 @@ public class Unload extends Command
 
 	protected void execute()
 	{
+		System.out.println(Robot.getFlywheel().hasCargo());
 		Robot.getFlywheel().unload();
 		if (!Robot.getFlywheel().hasCargo())
 			endTime = System.currentTimeMillis();
