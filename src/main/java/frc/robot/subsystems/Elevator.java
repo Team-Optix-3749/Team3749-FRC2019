@@ -11,6 +11,7 @@ import frc.robot.commands.ElevatorStick;
 
 /**
  * class Elevator
+ * @author Ishita V
  */
 public class Elevator extends Subsystem
 {
@@ -36,6 +37,7 @@ public class Elevator extends Subsystem
     motor.config_kP(0, 0.003);
     motor.config_kI(0, 0);
     motor.config_kD(0, 0);
+    motor.config_kF(0, 0);
 
     // positive input is negative sensor readings
     // need to flip sensor phase

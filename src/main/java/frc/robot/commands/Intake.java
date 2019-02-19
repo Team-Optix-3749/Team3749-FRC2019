@@ -25,31 +25,30 @@ public class Intake extends Command
 		else
 			Robot.getFlywheel().stop();
 		*/
+		// usually do intake
 		Robot.getFlywheel().intake(0.5);
 
-		if (Robot.getFlywheel().hasCargo())
+		// first time it gets cargo
+		if (Robot.getFlywheel().hasCargo() && endTime != -1)
 			endTime = System.currentTimeMillis();
+		
+		// go for 0.5 more seconds, then slow intake
+		if (System.currentTimeMillis() - endTime > 500)
+			Robot.getFlywheel().intake(0.1);
 	}
 
 	protected boolean isFinished()
 	{
-		if (endTime == -1)
-		{
-			return false;
-		}
-		else
-		{
-			return System.currentTimeMillis() - endTime > 500;
-		}
+		return false;
 	}
 
 	protected void end() 
 	{
-		Robot.getFlywheel().setSpeed(0);
+		Robot.getFlywheel().intake(0);
 		endTime = -1;
 	}	
 
-	protected void interrupted() 
+	protected void interrupted()
 	{
 		end();
 	}

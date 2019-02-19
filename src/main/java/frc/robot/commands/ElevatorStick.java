@@ -23,7 +23,7 @@ public class ElevatorStick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.getElevator().setVelocity(Robot.getOI().getElevatorY());
+    Robot.getElevator().setVelocity(Robot.getOI().getElevatorY()); 
     if (Robot.getMap().getSys("elevator") == 2)
     {
       System.out.println("Elevator Position: " + Robot.getElevator().getPosition());

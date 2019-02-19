@@ -59,8 +59,7 @@ public class OI
       buttons[6].whenReleased(new StopWheel());
       
       // 5 = left bumper
-      buttons[5].whenPressed(new Intake());
-      buttons[5].whenReleased(new StopWheel());
+      buttons[5].toggleWhenPressed(new Intake());
     }
 
     if(Robot.getMap().getSys("elevator") != 0)
