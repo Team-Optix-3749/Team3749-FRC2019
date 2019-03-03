@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -90,7 +91,7 @@ public class Elevator extends Subsystem
       position = toEncoder(0);
     
     // constrain on bottom (position can potentially go all the way to 0 still)
-    motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position);
+    motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position, DemandType.ArbitraryFeedForward, 0.08);
 
     if (Robot.getMap().getSys("elevator") == 2)
     {

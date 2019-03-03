@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -84,16 +85,6 @@ public class OI
     }
   }
 
-  public void resetController ()
-  {
-
-  }
-
-  public void teleopInit()
-  {
-    
-  }
-
   public double getDriveY()
   {
     return -ctrl.getY(Hand.kLeft);
@@ -110,6 +101,15 @@ public class OI
   {
     return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
   }
+
+  public double getClimbY()
+  {
+    double speed = 0;
+    if (DriverStation.getInstance().getMatchTime() > 105)
+      speed = ctrl.getY(Hand.kLeft);
+    return speed;
+  }
+
   /**
    * This method returns the joystick tilt on the contoller
    */

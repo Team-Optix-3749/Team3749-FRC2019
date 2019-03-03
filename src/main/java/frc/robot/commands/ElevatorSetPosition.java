@@ -10,12 +10,6 @@ public class ElevatorSetPosition extends Command {
         requires(Robot.getElevator());
         position = pos;
    }
-
-    @Override
-    protected void initialize() {
-        
-    }
-
     @Override 
     protected void execute() {
         Robot.getElevator().setPosition(position);
@@ -24,15 +18,5 @@ public class ElevatorSetPosition extends Command {
     @Override
     protected boolean isFinished() {
         return true;
-    }
-
-    @Override
-    protected void end() {
-
-    }
-
-    @Override
-    protected void interrupted() {
-
     }
 }

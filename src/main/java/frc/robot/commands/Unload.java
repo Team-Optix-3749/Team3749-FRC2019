@@ -5,21 +5,31 @@ import frc.robot.Robot;
 
 public class Unload extends Command
 {
-	public Unload()
+	private long startTime;
+	private double speed;
+	public Unload(double sp)
 	{
 		requires(Robot.getFlywheel());
+		speed = sp;
+	}	
+	public Unload()
+	{
+		this(1.0);
 	}	
 	
-	protected void initialize(){}
+	protected void initialize(){
+		startTime = System.currentTimeMillis();
+	}
 
 	protected void execute()
 	{
-		Robot.getFlywheel().unload();
+		Robot.getFlywheel().unload(speed);
 	}
 
 	protected boolean isFinished()
 	{
-		return false;
+		// will shoot for 1 full second
+		return System.currentTimeMillis() - startTime > 1000;
 	}
 
 	protected void end() 

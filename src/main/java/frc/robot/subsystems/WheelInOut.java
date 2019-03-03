@@ -14,27 +14,35 @@ public class WheelInOut extends Subsystem
 	private VictorSPX intakeMotor1;
 	private VictorSPX intakeMotor2;
 	private DigitalInput flywheelSwitch;
-	private double speed;
+
+	// when it started clicking loading up power
+	private long startTime;
 
 	public WheelInOut()
 	{
 		flywheelSwitch = new DigitalInput(Robot.getMap().getDIO("intake_switch"));
-		speed = 0;
+
 		intakeMotor1 = new VictorSPX(Robot.getMap().getCAN("wheel_left"));
 		intakeMotor2 = new VictorSPX(Robot.getMap().getCAN("wheel_right"));
 		intakeMotor2.setInverted(true);
 	}
 
+	public void setStartTime(long in)
+	{
+		startTime = in;
+	}
+	
+	public long getStartTime()
+	{
+		return startTime;
+	}
+
 	public void setSpeed(double newSpeed) 
 	{
-		speed = newSpeed;
 		intakeMotor1.set(ControlMode.PercentOutput, newSpeed);
 		intakeMotor2.set(ControlMode.PercentOutput, newSpeed);
 	}
 
-	public double getSpeed() {
-		return speed;
-	}
 	public void intake(double in)
 	{
 		if(intakeMotor1.getInverted() && !intakeMotor2.getInverted())
@@ -45,14 +53,14 @@ public class WheelInOut extends Subsystem
 		setSpeed(in);
 	}
 	
-	public void unload()
+	public void unload(double in)
 	{
 		if(!intakeMotor1.getInverted() && intakeMotor2.getInverted())
 		{
 			intakeMotor1.setInverted(true);
 			intakeMotor2.setInverted(false);
 		}
-		setSpeed(1.0);
+		setSpeed(in);
 	}
 
 	public void stop()
@@ -69,6 +77,7 @@ public class WheelInOut extends Subsystem
 	@Override
 	protected void initDefaultCommand()
 	{
-		
+		// no default command operation
+		// could do set speed 0 but that is redundant and wastes resources
 	}
 }

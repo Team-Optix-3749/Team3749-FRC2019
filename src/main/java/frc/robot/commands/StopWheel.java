@@ -19,7 +19,7 @@ public class StopWheel extends Command
 
 	protected boolean isFinished()
 	{
-		return Robot.getFlywheel().getSpeed() == 0;
+		return true;
 	}
 
 	protected void end() 

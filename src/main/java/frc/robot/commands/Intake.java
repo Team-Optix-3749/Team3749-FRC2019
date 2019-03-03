@@ -2,40 +2,49 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.WheelInOut;
 
 public class Intake extends Command
 {
-	private long endTime;
+	// seconds to go from max to min speed and vice versa
+	private final double adjustSec = 0.5;
+
+	private final double minSpeed = 0.05;
+	private final double maxSpeed = 0.5;
+
+	private double percent;
+	private WheelInOut fly;
+
 	public Intake()
 	{
-		requires(Robot.getFlywheel());
-		endTime = -1;
+		fly = Robot.getFlywheel();
+		requires(fly);
 	}	
 	
-	protected void initialize(){}
+	protected void initialize()
+	{
+		percent = fly.hasCargo() ? 0 : 100;
+	}
 
 	protected void execute()
 	{
-		System.out.println(Robot.getFlywheel().hasCargo());
-		/*
-		if(!Robot.getFlywheel().hasCargo())
+		if (fly.hasCargo())
 		{
-			Robot.getFlywheel().intake();
-			Robot.getFlywheel().printTest();
+			if (percent < 100)
+				// will take exactly adjustSec seconds to switch
+				percent += 100 / adjustSec * 0.02;
+			else
+				percent = 100;
 		}
 		else
-			Robot.getFlywheel().stop();
-		*/
-		// usually do intake
-		Robot.getFlywheel().intake(0.5);
-
-		// first time it gets cargo
-		if (Robot.getFlywheel().hasCargo() && endTime == -1)
-			endTime = System.currentTimeMillis();
-		
-		// go for 0.5 more seconds, then slow intake
-		if (endTime != -1 && System.currentTimeMillis() - endTime > 500)
-			Robot.getFlywheel().intake(0.1);
+		{
+			if (percent > 0)
+				// will take exactly adjustSec seconds to switch
+				percent -= 100 / adjustSec * 0.02;
+			else
+				percent = 0;
+		}
+		Robot.getFlywheel().intake(percent / 100 * (maxSpeed - minSpeed) + minSpeed);
 	}
 
 	protected boolean isFinished()
@@ -46,7 +55,6 @@ public class Intake extends Command
 	protected void end() 
 	{
 		Robot.getFlywheel().intake(0);
-		endTime = -1;
 	}	
 
 	protected void interrupted()

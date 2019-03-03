@@ -77,10 +77,9 @@ public class DriveBase extends Subsystem
   public void arcadeDrive (double fwd, double rot)
   {
     // if user is trying to go forward, it might not be 100% accurate
-    if (Math.abs(rot) < 0.1)
+    if (Math.abs(rot) < 0.05)
     {
       rot = 0;
-      System.out.println("Driving straight");
     }
     // if user wants robot to go straight
     if(rot == 0) {
@@ -90,7 +89,7 @@ public class DriveBase extends Subsystem
         setpoint = gyro.getAngle();
         isStraight = true;
       }
-      adjust = 0.1 * (gyro.getAngle() - setpoint);
+      adjust += 0.01 * (setpoint - gyro.getAngle());
       if (adjust > 0.3)
         adjust = 0.3;
       if (adjust < -0.3)
@@ -100,6 +99,7 @@ public class DriveBase extends Subsystem
     if (Robot.getMap().getSys("drive") == 2)
       System.out.println("Forward power = " + fwd + ", adjust = " + adjust * fwd);
     // offset rotational constant to actually move properly
+    // WILL APPLY WHEN NEEDED
     // rot += adjust;
 
     drive.arcadeDrive(fwd, rot, false);
@@ -118,9 +118,9 @@ public class DriveBase extends Subsystem
   {
     double[] defaultValue = new double[0];
     double[] xPos = NetworkTableInstance.getDefault().getTable("GRIP")
-        .getSubTable("greenBlob").getEntry("x").getDoubleArray(defaultValue);
+        .getSubTable("cargoBlobs").getEntry("x").getDoubleArray(defaultValue);
     double[] sizes = NetworkTableInstance.getDefault().getTable("GRIP")
-    .getSubTable("greenBlob").getEntry("size").getDoubleArray(defaultValue);
+    .getSubTable("cargoBlobs").getEntry("size").getDoubleArray(defaultValue);
     if(xPos.length == 0) {
       // didn't locate anything, send failed flag
       return -1;
@@ -160,6 +160,28 @@ public class DriveBase extends Subsystem
     }
     return (x1[midLine] + x2[midLine])/2;
   }
+  
+  private double locateRightTape(double[] x1, double[] x2, double[] angles, double center)
+  {
+    if(x1.length == 0) {
+      // didn't locate anything, send failed flag
+      return -1;
+    }
+    int midLine = -1;
+    for (int i = 0; i < x1.length; i ++)
+    {
+      if (angles[i] > 90 && angles[i] < 135)
+      {
+        if (midLine == -1)
+          midLine = i;
+        else 
+          if (Math.abs(x1[i] + x2[i] - center * 2) < Math.abs(x1[midLine] + x2[midLine] - center * 2))
+            midLine = i;
+      }
+    }
+    return (x1[midLine] + x2[midLine])/2;
+  }
+
   public double locateTape(boolean hatch)
   {
     double centerPos = 60;
@@ -201,30 +223,10 @@ public class DriveBase extends Subsystem
         else
           // wrong order, realign based on which it's closer to
           if (Math.abs(left - centerPos) < Math.abs(right - centerPos))
-            return (left - right) + left;
+            return (left - right)/2 + left; // "left" tape was closer
           else
-            return right - (left - right);
+            return right - (left - right)/2; // right tape was closer
       }
     }
-  }
-  private double locateRightTape(double[] x1, double[] x2, double[] angles, double center)
-  {
-    if(x1.length == 0) {
-      // didn't locate anything, send failed flag
-      return -1;
-    }
-    int midLine = -1;
-    for (int i = 0; i < x1.length; i ++)
-    {
-      if (angles[i] > 90 && angles[i] < 135)
-      {
-        if (midLine == -1)
-          midLine = i;
-        else 
-          if (Math.abs(x1[i] + x2[i] - center * 2) < Math.abs(x1[midLine] + x2[midLine] - center * 2))
-            midLine = i;
-      }
-    }
-    return (x1[midLine] + x2[midLine])/2;
   }
 }

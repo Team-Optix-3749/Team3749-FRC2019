@@ -34,6 +34,6 @@ public class TiltSetPosition extends Command {
     
     @Override
     protected void interrupted() {
-
+      end();
     }
 }
