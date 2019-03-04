@@ -108,12 +108,12 @@ public class OI
       // left joystick click should toggle fast/slow speed modes
       buttons[10].whenPressed(new TargetAlign());
     }
-    // needs to enable/disable the subsystem (setup command)
+    // needs to enable/disable the climb subsystem (setup command)
     // select (middle button left)
-    buttons[7].whenPressed(null);
+    buttons[7].whenPressed(new ToggleClimb());
     // needs to toggle PID control modes for elevator and tilt subsystems
     // menu (middle button right)
-    buttons[8].whenPressed(null);
+    buttons[8].whenPressed(new TogglePID());
   }
 
   public double getDriveY()

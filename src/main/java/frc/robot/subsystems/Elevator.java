@@ -127,6 +127,15 @@ public class Elevator extends Subsystem
     motor.set(ControlMode.PercentOutput, speed);
   }
 
+  public boolean usingPid()
+  {
+    return pidEnabled;
+  }
+  public void setPidEnabled(boolean en)
+  {
+    pidEnabled = en;
+  }
+
   private double fromEncoder (double in)
   {
     // become bigger
