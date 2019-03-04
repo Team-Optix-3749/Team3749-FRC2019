@@ -15,8 +15,13 @@ public class Tilt extends Subsystem
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
 
-  // setpoint for motor in encoder units
+  // setpoint for motor in encoder units (closed loop control)
   private double position;
+  // setpoint for motor percent output (open loop control)
+  private double motorOut;
+
+  // whether to used pid closed loop position control
+  private boolean pidEnabled;
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
   private final double ENCODER_IN = 176000;
@@ -37,9 +42,11 @@ public class Tilt extends Subsystem
     motor.setSensorPhase(true);
     motor.setInverted(true);
 
-    // motor.configClosedloopRamp(1);
+    motor.configClosedloopRamp(1);
 
     position = 0;
+    motorOut = 0;
+    pidEnabled = true;
 
     reset();
   }
@@ -50,7 +57,10 @@ public class Tilt extends Subsystem
   }
   public void setVelocity(double pos)
   {
-    position += toEncoder(pos);
+    if (pidEnabled)
+      motorOut = pos * 0.3;
+    else
+      position += toEncoder(pos);
     update();
   }
   
@@ -74,23 +84,24 @@ public class Tilt extends Subsystem
   }
   private void update()
   {
-    if (position > ENCODER_IN * 1.1)
-      position = ENCODER_IN * 1.1;
-    if (position < toEncoder(-10))
-      position = toEncoder(-10);
-    
-    motor.set(ControlMode.Position, position);
-    
-    if (Robot.getMap().getSys("tilt") == 2)
+    if (pidEnabled)
     {
-      System.out.println("Tilt error: " + motor.getClosedLoopError());
-      System.out.println("Tilt motor output" + motor.getMotorOutputPercent());
+      if (position > ENCODER_IN * 1.1)
+        position = ENCODER_IN * 1.1;
+      if (position < toEncoder(-10))
+        position = toEncoder(-10);
+      
+      motor.set(ControlMode.Position, position);
+      
+      if (Robot.getMap().getSys("tilt") == 2)
+      {
+        System.out.println("Tilt error: " + motor.getClosedLoopError());
+        System.out.println("Tilt motor output" + motor.getMotorOutputPercent());
+      }
     }
+    else
+      rawMove(motorOut);
   }
-  public boolean atTop() {
-    return false;
-  }
-  
   public void rawMove(double speed) {
     motor.set(ControlMode.PercentOutput, speed);
   }

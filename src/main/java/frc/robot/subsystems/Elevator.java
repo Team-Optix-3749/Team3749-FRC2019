@@ -14,19 +14,26 @@ import frc.robot.commands.ElevatorStick;
  */
 public class Elevator extends Subsystem
 {
-  // leading motor controllers, have built-in closed loop control
-  private TalonSRX motor;
-
-  // setpoint for motor in encoder units
-  private double position;
-
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
   private final double ENCODER_IN = 1100000;
   // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
   private final double ENCODER_OUT = 100;
 
+  // arbitrary feed forward constant (to counter gravity)
+  private final double kAF = 0.08;
+
+  // leading motor controllers, have built-in closed loop control
+  private TalonSRX motor;
+
+  // setpoint for motor in encoder units (closed loop control)
+  private double position;
+  // setpoint for motor in percent motor output (open loop control)
+  private double motorOut;
+
   // how low the elevator can go (changing based on position of tilt mechanism)
   private double BOTTOM_LIMIT;
+
+  private boolean pidEnabled;
   
   public Elevator ()
   {
@@ -46,6 +53,8 @@ public class Elevator extends Subsystem
     motor.configClosedloopRamp(1);
 
     position = 0;
+    motorOut = 0;
+    pidEnabled = true;
 
     reset();
   }
@@ -56,7 +65,14 @@ public class Elevator extends Subsystem
 
   public void setVelocity(double pos)
   {
-    position += toEncoder(pos);
+    if (pidEnabled)
+    {
+      position += toEncoder(pos);
+    }
+    else
+    {
+      motorOut = kAF + pos * 0.4;
+    }
     update();
   }
   
@@ -85,22 +101,26 @@ public class Elevator extends Subsystem
   }
   private void update()
   {
-    if (position > ENCODER_IN)
-      position = ENCODER_IN;
-    if (position < toEncoder(0))
-      position = toEncoder(0);
-    
-    // constrain on bottom (position can potentially go all the way to 0 still)
-    motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position, DemandType.ArbitraryFeedForward, 0.08);
-
-    if (Robot.getMap().getSys("elevator") == 2)
+    if (pidEnabled)
     {
-      System.out.println("Elevator error: " + motor.getClosedLoopError());
-      System.out.println("Elevator motor out: " + motor.getMotorOutputPercent());
+      if (position > ENCODER_IN)
+        position = ENCODER_IN;
+      if (position < toEncoder(0))
+        position = toEncoder(0);
+      
+      // constrain on bottom (position can potentially go all the way to 0 still)
+      motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position, DemandType.ArbitraryFeedForward, kAF);
+
+      if (Robot.getMap().getSys("elevator") == 2)
+      {
+        System.out.println("Elevator error: " + motor.getClosedLoopError());
+        System.out.println("Elevator motor out: " + motor.getMotorOutputPercent());
+      }
     }
-  }
-  public boolean atTop() {
-    return false;
+    else
+    {
+      rawMove(motorOut);
+    }
   }
   
   public void rawMove(double speed) {
