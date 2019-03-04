@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.*;
 
@@ -22,6 +23,7 @@ public class OI
   // controller used for main controls (xbox controller)
   private XboxController ctrl;
   private JoystickButton[] buttons;
+  private POVButton[] dpad;
 
   // how many buttons in the controller
   private final int BUTTON_RANGE = 10;
@@ -35,9 +37,9 @@ public class OI
     // indexes start at 1 for buttons
     buttons = new JoystickButton[BUTTON_RANGE+1];
     for (int i = 1; i <= BUTTON_RANGE; i ++)
-    {
       buttons[i] = new JoystickButton(ctrl, i);
-    }
+    for (int i = 0; i < 4; i ++)
+      dpad[i] = new POVButton(ctrl, i * 90);
     
     /**
      * BUTTON MAP KEY:
@@ -55,34 +57,63 @@ public class OI
     
     if(Robot.getMap().getSys("wheelio") != 0)
     {
-      // 6 = right bumper
-      buttons[6].whenPressed(new Unload());
-      buttons[6].whenReleased(new StopWheel());
+      // right bumper - init the timer start, and shoot
+      buttons[6].whenPressed(null);
+      buttons[6].whenReleased(new Unload());
       
-      // 5 = left bumper
+      // left bumper - toggle the intake
       buttons[5].toggleWhenPressed(new Intake());
     }
 
     if(Robot.getMap().getSys("elevator") != 0)
     {
-      // 1 = A
-      buttons[1].whenPressed(new ElevatorSetPosition(100));
-      // 2 = B
+      // A
+      buttons[1].whenPressed(new ElevatorSetPosition(0));
+      // B
       buttons[2].whenPressed(new ElevatorSetPosition(0));
+      // X
+      buttons[3].whenPressed(new ElevatorSetPosition(30));
+      // Y
+      buttons[4].whenPressed(new ElevatorSetPosition(100));
+
+      // dpad up - hatch pickup
+      dpad[1].whenPressed(new ElevatorSetPosition(60));
+      // dpad down - hatch dropoff
+      dpad[3].whenPressed(new ElevatorSetPosition(50));
     }
     if(Robot.getMap().getSys("tilt") != 0)
     {
-      // 1 = A
+      // A
       buttons[1].whenPressed(new TiltSetPosition(100));
-      // 3 = X
-      buttons[3].whenPressed(new TiltSetPosition(0));
-      // 4 = Y
-      buttons[4].whenPressed(new TiltSetPosition(100));
-    
+      // B
+      buttons[2].whenPressed(new TiltSetPosition(0));
+      // X - shoot cargo to rocket
+      buttons[3].whenPressed(new TiltSetPosition(100));
+      // Y - shoot cargo into hab (higher!)
+      buttons[4].whenPressed(new TiltSetPosition(45));
+
+      // dpad up - hatch carry
+      dpad[1].whenPressed(new TiltSetPosition(100));
+      // dpad down - hatch carry
+      dpad[3].whenPressed(new TiltSetPosition(100));
+      // dpad left - tilt in
+      dpad[2].whenPressed(new TiltSetPosition(0));
+      // dpad right - tilt out
+      dpad[0].whenPressed(new TiltSetPosition(100));
     }
     if(Robot.getMap().getSys("drive") != 0)
     {
+      // left joystick click should toggle fast/slow speed modes
+      buttons[9].whenPressed(null);
+      // left joystick click should toggle fast/slow speed modes
+      buttons[10].whenPressed(new TargetAlign());
     }
+    // needs to enable/disable the subsystem (setup command)
+    // select (middle button left)
+    buttons[7].whenPressed(null);
+    // needs to toggle PID control modes for elevator and tilt subsystems
+    // menu (middle button right)
+    buttons[8].whenPressed(null);
   }
 
   public double getDriveY()
