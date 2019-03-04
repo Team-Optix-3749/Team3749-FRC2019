@@ -10,9 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TiltStick extends Command {
-  public TiltStick() {
-    requires(Robot.getTilt());
+public class ClimbStick extends Command {
+  public ClimbStick() {
+    requires(Robot.getClimb());
   }
 
   // Called just before this Command runs the first time
@@ -22,36 +22,18 @@ public class TiltStick extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() 
-  {
-    // if (Robot.getTilt().getPosition() > 5 && Robot.getTilt().getPosition() < 95)
-    // {
-    //   Robot.getElevator().setBottom(20);
-    //   if (Robot.getElevator().getPosition() > 15)
-    //     Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
-    // }
-    // else
-    // {
-    //   Robot.getElevator().setBottom(0);
-    //   Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
-    // }
-    Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 2);
-    // System.out.println(Robot.getOI().getTiltY() * 0.5);
-
-    if (Robot.getMap().getSys("tilt") == 2)
-    {
-      System.out.println("Tilt Position: " + Robot.getTilt().getPosition());
-      System.out.println("Tilt Setpoint: " + Robot.getTilt().getSetpoint());
-    }
+  protected void execute() {
+    double input = Robot.getOI().getTiltY() * 1.0;
+    if (Robot.getClimb().atEnd() && input > 0 )
+      Robot.getClimb().rawMove(0);
+    else
+      Robot.getClimb().rawMove(input);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
-    //we shoud actually use a wii remote instead of x box.
-    //lemme explain - tilt for turning robot, 1, for back, 2 for go
-    //front pad for height of ball, low for hatch, a for flywheels
   }
 
   // Called once after isFinished returns true

@@ -22,17 +22,20 @@ public class RobotMap
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
 	private static HashMap <String, Integer> mapDIO; //the DIO port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
-	private static HashMap <String, Boolean> mapToggle; //the controller port map
+	private static HashMap <String, Integer> mapSys; // the subsystems mode map
 
   public RobotMap ()
   {
+	// get the 5 different maps
     mapPWM = new HashMap<>();
 	mapCAN = new HashMap<>();
     mapDIO = new HashMap<>();
     mapCTRL = new HashMap<>();
-    mapToggle = new HashMap<>();
+    mapSys = new HashMap<>();
 
 	// loading map values for drive
+	// first character = left or right
+	// second character = front, middle, or back
 	setCAN("drive_lf", 10);
 	setCAN("drive_lm", 21);
 	setCAN("drive_lb", 23);
@@ -41,15 +44,27 @@ public class RobotMap
 	setCAN("drive_rb", 22);
 
 	// intake/grabber wheel map
-	setCAN("wheel_left", 24);
-	setCAN("wheel_right", 25);
+	setCAN("wheel_left", 3);
+	setCAN("wheel_right", 1);
 
-	setDIO("switch_intake", 1);
+	// main subsystem srx motor ports
+	setCAN("tilt", 1);
+	setCAN("elevator", 2);
+	
+	// victor spx
+	setCAN("climb", 2);
 
-	setToggle("tilt_en", false);
-	setToggle("drive_en", false);
-	setToggle("wheelio_en", false);
-	setToggle("elevator_en", false);
+	// limit switches
+	setDIO("intake_switch", 0);
+	setDIO("climb_switch", 1);
+
+	// whether a subsystem is installed and in use
+	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
+	setSys("tilt", 1);
+	setSys("drive", 1);
+	setSys("wheelio", 1);
+	setSys("elevator", 1);
+	setSys("climb", 0);
   }
 
 
@@ -92,13 +107,13 @@ public class RobotMap
 		mapCTRL.put(name, port);
 	}
 	/**
-	* Method to set a toggle value
+	* Method to set a subsystem value
 	* @param String		name of what port is for (what you call it throughout the program)
-	* @param int 		the value
+	* @param int 		the value (0 = disable, 1 = enabled, 2 = debugging)
 	*/
-	public void setToggle (String name, boolean val)
+	public void setSys (String name, int val)
 	{
-		mapToggle.put(name, val);
+		mapSys.put(name, val);
 	}
 	
 	/**
@@ -128,7 +143,7 @@ public class RobotMap
 		return mapDIO.get(name);
 	}
 	/**
-	* Method to get a CTRL port
+	* Method to get a controller port
 	* @param String		name of what port is for (what you call it throughout the program)
 	*/
 	public int getCTRL (String name)
@@ -139,8 +154,8 @@ public class RobotMap
 	* Method to get a toggleable setting
 	* @param String		name of setting it is for (what you call it throughout the program)
 	*/
-	public boolean getToggle (String name)
+	public int getSys (String name)
 	{
-		return mapToggle.get(name);
+		return mapSys.get(name);
 	}
 }

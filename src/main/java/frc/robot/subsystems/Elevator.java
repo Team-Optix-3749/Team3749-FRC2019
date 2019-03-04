@@ -1,99 +1,119 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.DriveStick;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
+import frc.robot.commands.ElevatorStick;
 
-public class Elevator extends Subsystem {
+/**
+ * class Elevator
+ * @author Ishita V
+ */
+public class Elevator extends Subsystem
+{
+  // leading motor controllers, have built-in closed loop control
+  private TalonSRX motor;
 
-    private TalonSRX elevatorMotor; 
-    private DigitalInput limitSwitch;
+  // setpoint for motor in encoder units
+  private double position;
 
-    private int maxPos = 1; //the maximum position to which the elevator can go to
-    final int minPos = 0; //the minimum position to which the elevator can go to 
-    private double encoderScale = 99.999; //need to CHANGE used last year's number but number may need to change
-    /*
-    * This method will be used to determine
-    * what position we want the elevator to 
-    * move to
-    */
-    @Override    
-    protected void initDefaultCommand() {
-        setDefaultCommand(new DriveStick());
-    }
+  // range of encoder raw values -> 0 to ENCODER_IN are the limits
+  private final double ENCODER_IN = 1100000;
+  // preferred range of encoder values (for degrees, percent, etc) -> 0 to ENCODER_OUT
+  private final double ENCODER_OUT = 100;
 
-    public Elevator() {
-        
-        elevatorMotor = new TalonSRX(42); 
-        //instantiate the elevator motor idk what id to use so I used the one from last year
-        limitSwitch = new DigitalInput(1);
-    }
-    
-    public TalonSRX getElevator() {
-        return elevatorMotor;
-    }
-    
-    public DigitalInput getLimitSwitch() {
-        return limitSwitch;
-    }
-    
-    public double getMaxPosition() {
-        return maxPos; 
-    }
-    
-    public void moveMotor(double speed) {
-    elevatorMotor.set(ControlMode.PercentOutput, speed);
-    }
-    
-    public void setMaxPosition(int max) {
-        if(max<=1 && max>=0){
-            maxPos = max; 
-        }
-    }
-    public double getMotorEncoderValue()
-    {
-        return elevatorMotor.getSelectedSensorPosition();
-    }
-    
-    public boolean isSwitchClosed() {
-    return limitSwitch.get(); 
+  // how low the elevator can go (changing based on position of tilt mechanism)
+  private double BOTTOM_LIMIT;
+  
+  public Elevator ()
+  {
+    motor = new TalonSRX(Robot.getMap().getCAN("elevator"));
+
+    // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
+    motor.config_kP(0, 0.003);
+    motor.config_kI(0, 0);
+    motor.config_kD(0, 0);
+    motor.config_kF(0, 0);
+
+    // positive input is negative sensor readings
+    // need to flip sensor phase
+    motor.setSensorPhase(true);
+    motor.setInverted(true);
+
+    motor.configClosedloopRamp(1);
+
+    position = 0;
+
+    reset();
   }
+  @Override
+  public void initDefaultCommand() {
+    setDefaultCommand(new ElevatorStick());
+  }
+
+  public void setVelocity(double pos)
+  {
+    position += toEncoder(pos);
+    update();
+  }
+  
+  public void setPosition(double pos)
+  {
+    position = toEncoder(pos);
+    update();
+  }
+  public void setBottom (double pos)
+  {
+    BOTTOM_LIMIT = pos;
+    update();
+  }
+  public double getPosition()
+  {
+    return fromEncoder(motor.getSelectedSensorPosition());
+  }
+  public double getSetpoint ()
+  {
+    return fromEncoder(position);
+  }
+  public void reset()
+  {
+    motor.setSelectedSensorPosition(0);
+    setPosition(0);
+  }
+  private void update()
+  {
+    if (position > ENCODER_IN)
+      position = ENCODER_IN;
+    if (position < toEncoder(0))
+      position = toEncoder(0);
     
-    public void setPosition(double pos) { //set a value from 0-1
+    // constrain on bottom (position can potentially go all the way to 0 still)
+    motor.set(ControlMode.Position, position < BOTTOM_LIMIT ? BOTTOM_LIMIT : position);
 
-        //check to make sure position is within requirements(set by calibrate())
-        if(pos > maxPos && pos > 1) {
-            pos = maxPos;
-        } else if(pos < minPos && pos < 0) {
-            pos = minPos;
-        }
-        int scaledPos = (int)(pos * encoderScale);
-        //use the current position and an encoder to move the elevator to the position
-        //asked by the method
-        elevatorMotor.set(ControlMode.Position, scaledPos); } }
-    //Add a get method?
-    /*
-    * This method will be used to set the maximum 
-    * and minimum positions for the elevator range
-    * using limit switches
-    */
-    /*
-    void calibrate() {
-        //use current position and set it to the minimum
-        while (limitSwitch.get()) {
-            Timer.delay(10);
-            //continuously move up until limit switch is hit
-        }
-        //check current position of the robot and hold it 
-        
+    if (Robot.getMap().getSys("elevator") == 2)
+    {
+      System.out.println("Elevator error: " + motor.getClosedLoopError());
+      System.out.println("Elevator motor out: " + motor.getMotorOutputPercent());
+    }
+  }
+  public boolean atTop() {
+    return false;
+  }
+  
+  public void rawMove(double speed) {
+    motor.set(ControlMode.PercentOutput, speed);
+  }
 
-    } */ 
-
- 
-    
-
-//Add command later on once position/encoder stuff is figured out
+  private double fromEncoder (double in)
+  {
+    // become bigger
+    return in * ENCODER_OUT / ENCODER_IN;
+  }
+  private double toEncoder (double in)
+  {
+    // become smaller
+    return in * ENCODER_IN / ENCODER_OUT;
+  }
+}

@@ -1,46 +1,50 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
 
-class ElevatorStick extends Command {
-    TalonSRX elevatorMotorInnter; 
-    DigitalInput limitSwitchInner;
+public class ElevatorStick extends Command {
+  public ElevatorStick() {
+    requires(Robot.getElevator());
+  }
 
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+  }
 
-    ElevatorStick(TalonSRX EM, DigitalInput LS ) {
-        elevatorMotorInnter = EM;
-        limitSwitchInner = LS;
-        requires(Robot.getDrive());
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    Robot.getElevator().setVelocity(Robot.getOI().getElevatorY()); 
+    if (Robot.getMap().getSys("elevator") == 2)
+    {
+      System.out.println("Elevator Position: " + Robot.getElevator().getPosition());
+      System.out.println("Elevator Setpoint: " + Robot.getElevator().getSetpoint());
     }
+  }
 
-    @Override
-    protected void initialize() {
-        
-    }
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    @Override 
-    protected void execute() {
-        
-    }
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-    @Override
-    protected void end() {
-
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    
-    @Override
-    protected void interrupted() {
-
-    }
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
 }

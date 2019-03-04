@@ -6,8 +6,7 @@ import frc.robot.Robot;
 
 class CalibrateTilt extends Command
 {
-private double encoderconstant;
-private Tilt t = Robot.getTilt(); 
+   private Tilt t = Robot.getTilt(); 
 
    CalibrateTilt()
    {
@@ -22,21 +21,19 @@ private Tilt t = Robot.getTilt();
    @Override
    protected void execute()
    {
-   t.moveMotor(0.3);
+      t.rawMove(0.3);
    }
    
    @Override
    protected boolean isFinished()
    {
-      return t.isSwitchieClosed();
+      return t.atTop();
    }
    
    @Override 
    protected void end()
    {
-   encoderconstant = t.getMotorEncoderValue(); 
-   encoderconstant = encoderconstant/90; 
-   System.out.println(encoderconstant);
+      System.out.println(t.getPosition());
    }
    
    void calibrate()

@@ -9,9 +9,10 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.AnalogInput;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+
 import frc.robot.subsystems.*;
 
 /**
@@ -27,10 +28,10 @@ public class Robot extends TimedRobot
   private static WheelInOut flywheel;
   private static Tilt tilt;
   private static Elevator elevator;
+  private static Climb climb;
   
   private static OI oi;
   private static RobotMap map;
-  private AnalogInput sensor;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -40,28 +41,21 @@ public class Robot extends TimedRobot
   public void robotInit()
   {
     map = new RobotMap();
-    sensor = new AnalogInput(0);
 
     // starts and sets up the camera with display settings
-    // initCamera();
+    initCamera();
 
-    if (map.getToggle("drive_en"))
-    {
+    if (map.getSys("drive") != 0)
       drive = new DriveBase();
-    }
-    if (map.getToggle("wheelio_en"))
-    {
+    if (map.getSys("wheelio") != 0)
       flywheel = new WheelInOut();
-    }
-    if (map.getToggle("tilt_en"))
-    {
+    if (map.getSys("tilt") != 0)
       tilt = new Tilt();
-    }
-    if (map.getToggle("elevator_en"))
-    {
+    if (map.getSys("elevator") != 0)
       elevator = new Elevator();
-    }
-
+    if (map.getSys("climb") != 0)
+      climb = new Climb();
+    // must be at end (after subsystems and RobotMap)
     oi = new OI();
   }
 
@@ -69,10 +63,10 @@ public class Robot extends TimedRobot
   {
     // start running camera from roboRIO
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setBrightness(20);
-    camera.setExposureManual(20);
+    camera.setBrightness(8);
+    // camera.setExposureManual(5);
+    camera.setExposureAuto();
   }
-
   /**
    * This method gets the Tilt subsystem
    * @return tilt
@@ -98,23 +92,33 @@ public class Robot extends TimedRobot
    {
       return flywheel;
    }
+   
    /**
     * a simple getter method for the Elevator subsystem 
     * @return Elevator
     */
+  public static Elevator getElevator() {
+    return elevator;
+  }
+  /**
+   * a simple getter method for the Climb subsystem 
+   * @return Climb
+   */
+  public static Climb getClimb() {
+    return climb;
+  }
   /**
   
-   * a simple getter method for the DriveBase subsystem
+   * a simple getter method for the operator interface (for controls)
    * @return drive base
    */
   public static OI getOI()
   {
     return oi;
   }
-
   /**
 
-   * a simple getter method for the DriveBase subsystem
+   * a simple getter method for the robot map
    * @return drive base
    */
   public static RobotMap getMap()
@@ -129,16 +133,10 @@ public class Robot extends TimedRobot
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
-
-  public static Elevator getElevator() {
-    return elevator;
-  }
-
   @Override
   public void robotPeriodic()
   {
   }
-
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when
@@ -148,7 +146,6 @@ public class Robot extends TimedRobot
   public void disabledInit()
   {
   }
-
   @Override
   public void disabledPeriodic()
   {
@@ -171,7 +168,6 @@ public class Robot extends TimedRobot
   {
     
   }
-
   /**
    * This function is called periodically during autonomous.
    */
@@ -180,7 +176,6 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-
   @Override
   public void teleopInit()
   {
@@ -195,16 +190,11 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
   }
-
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic()
   {
-    System.out.println("START");
-    System.out.println(sensor.getVoltage());
-    System.out.println(sensor.pidGet());
-    System.out.println(sensor.getValue());
   }
 }
