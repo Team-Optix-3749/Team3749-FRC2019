@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Matrix",
+      "request": "launch",
+      "mainClass": "frc.robot.Matrix",
+      "projectName": "2019 Official code"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Tester",
       "request": "launch",
       "mainClass": "frc.robot.Tester",
