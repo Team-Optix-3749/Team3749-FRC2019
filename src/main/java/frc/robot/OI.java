@@ -58,7 +58,7 @@ public class OI
     if(Robot.getMap().getSys("wheelio") != 0)
     {
       // right bumper - init the timer start, and shoot
-      buttons[6].whenPressed(null);
+      buttons[6].whenPressed(new StartUnload());
       buttons[6].whenReleased(new Unload());
       
       // left bumper - toggle the intake

@@ -7,18 +7,17 @@ public class Unload extends Command
 {
 	private long startTime;
 	private double speed;
-	public Unload(double sp)
-	{
-		requires(Robot.getFlywheel());
-		speed = sp;
-	}	
 	public Unload()
 	{
-		this(1.0);
-	}	
+		requires(Robot.getFlywheel());
+	}
 	
 	protected void initialize(){
 		startTime = System.currentTimeMillis();
+		speed = 1.0;
+		// checks if the click was super short, if so slow down shot
+		if (System.currentTimeMillis() - Robot.getFlywheel().getStartTime() < 500)
+			speed = 0.5;
 	}
 
 	protected void execute()

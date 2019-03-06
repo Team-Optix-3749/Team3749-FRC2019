@@ -27,9 +27,9 @@ public class WheelInOut extends Subsystem
 		intakeMotor2.setInverted(true);
 	}
 
-	public void setStartTime(long in)
+	public void updateStart()
 	{
-		startTime = in;
+		startTime = System.currentTimeMillis();
 	}
 	
 	public long getStartTime()
