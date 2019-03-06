@@ -19,18 +19,18 @@ public class TiltStick extends Command {
   @Override
   protected void execute() 
   {
-    // if (Robot.getTilt().getPosition() > 15 && Robot.getTilt().getPosition() < 85)
-    // {
-    //   Robot.getElevator().setBottom(20);
-    //   if (Robot.getElevator().getPosition() > 15)
-    //     Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
-    // }
-    // else
-    // {
-    //   Robot.getElevator().setBottom(0);
-    //   Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 0.5);
-    // }
-    Robot.getTilt().setVelocity(Robot.getOI().getTiltY() * 2);
+    double speed = Robot.getOI().getTiltY() * 2;
+    if (Robot.getTilt().getPosition() > 15 && Robot.getTilt().getPosition() < 85)
+    {
+      Robot.getElevator().setBottom(20);
+      if (Robot.getElevator().getPosition() > 15)
+        Robot.getTilt().setVelocity(speed);
+    }
+    else
+    {
+      Robot.getElevator().setBottom(0);
+      Robot.getTilt().setVelocity(speed);
+    }
 
     if (Robot.getMap().getSys("tilt") == 2)
     {
