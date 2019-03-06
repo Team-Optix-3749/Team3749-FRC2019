@@ -104,7 +104,7 @@ public class OI
     if(Robot.getMap().getSys("drive") != 0)
     {
       // left joystick click should toggle fast/slow speed modes
-      buttons[9].whenPressed(null);
+      buttons[9].whenPressed(new ToggleDriveMode());
       // left joystick click should toggle fast/slow speed modes
       buttons[10].whenPressed(new TargetAlign());
     }

@@ -37,6 +37,8 @@ public class DriveBase extends Subsystem
   private double setpoint;
   private double adjust;
 
+  private boolean fastMode;
+
   public DriveBase ()
   {
     WPI_TalonSRX leftF = new WPI_TalonSRX(Robot.getMap().getCAN("drive_lf"));
@@ -58,6 +60,8 @@ public class DriveBase extends Subsystem
 
     setpoint = 0;
     adjust = 0;
+
+    fastMode = true;
   }
 
   @Override
@@ -114,6 +118,17 @@ public class DriveBase extends Subsystem
   {
     drive.tankDrive(left, right, false);
   }
+
+  public void setFastMode(boolean fast)
+  {
+    fastMode = fast;
+  }
+
+  public boolean isFastMode()
+  {
+    return fastMode;
+  }
+
   public double locateCargo()
   {
     double[] defaultValue = new double[0];
