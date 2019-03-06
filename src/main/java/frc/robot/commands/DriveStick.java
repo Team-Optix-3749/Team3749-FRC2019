@@ -21,7 +21,10 @@ public class DriveStick extends Command
   @Override
   protected void execute()
   {
-    Robot.getDrive().arcadeDrive(Robot.getOI().getDriveY() * 1.0, Robot.getOI().getDriveX() * 0.4);
+    if (Robot.getDrive().isFastMode())
+      Robot.getDrive().arcadeDrive(Robot.getOI().getDriveY() * 1.0, Robot.getOI().getDriveX() * 0.4);
+    else
+      Robot.getDrive().arcadeDrive(Robot.getOI().getDriveY() * 0.5, Robot.getOI().getDriveX() * 0.2);
   }
 
   // Make this return true when this Command no longer needs to run execute()

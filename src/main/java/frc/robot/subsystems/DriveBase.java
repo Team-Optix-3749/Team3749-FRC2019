@@ -80,11 +80,6 @@ public class DriveBase extends Subsystem
    */
   public void arcadeDrive (double fwd, double rot)
   {
-    // if user is trying to go forward, it might not be 100% accurate
-    if (Math.abs(rot) < 0.05)
-    {
-      rot = 0;
-    }
     // if user wants robot to go straight
     if(rot == 0) {
       // if it wasn't already going straight
@@ -93,6 +88,7 @@ public class DriveBase extends Subsystem
         setpoint = gyro.getAngle();
         isStraight = true;
       }
+      // essentially a kI to compensate for mechanical errors (should balance out other parts)
       adjust += 0.01 * (setpoint - gyro.getAngle());
       if (adjust > 0.3)
         adjust = 0.3;
