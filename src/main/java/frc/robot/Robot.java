@@ -24,13 +24,16 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot
 {
+  // all 5 subsystems
   private static DriveBase drive;
   private static WheelInOut flywheel;
   private static Tilt tilt;
   private static Elevator elevator;
   private static Climb climb;
   
+  // operator interface
   private static OI oi;
+  // map of ports and other info
   private static RobotMap map;
 
   /**

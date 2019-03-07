@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class RobotMap
 {
-    private static HashMap <String, Integer> mapPWM; //the PWM port map
+	private static HashMap <String, Integer> mapPWM; //the PWM port map
 	private static HashMap <String, Integer> mapCAN; //the CAN port map
 	private static HashMap <String, Integer> mapDIO; //the DIO port map
 	private static HashMap <String, Integer> mapCTRL; //the controller port map
@@ -26,7 +26,7 @@ public class RobotMap
 
   public RobotMap ()
   {
-	// get the 5 different maps
+	// make the 5 different maps
     mapPWM = new HashMap<>();
 	mapCAN = new HashMap<>();
     mapDIO = new HashMap<>();
@@ -64,7 +64,7 @@ public class RobotMap
 	setSys("drive", 1);
 	setSys("wheelio", 1);
 	setSys("elevator", 1);
-	setSys("climb", 0);
+	setSys("climb", 1);
   }
 
 
@@ -151,7 +151,7 @@ public class RobotMap
 		return mapCTRL.get(name);
 	}
 	/**
-	* Method to get a toggleable setting
+	* Method to get a toggleable setting (for subsystems mostly)
 	* @param String		name of setting it is for (what you call it throughout the program)
 	*/
 	public int getSys (String name)

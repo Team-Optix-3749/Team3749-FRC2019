@@ -16,7 +16,7 @@ public class Unload extends Command
 		startTime = System.currentTimeMillis();
 		speed = 1.0;
 		// checks if the click was super short, if so slow down shot
-		if (System.currentTimeMillis() - Robot.getFlywheel().getStartTime() < 500)
+		if (Robot.getFlywheel().getHoldingTime() < 500)
 			speed = 0.5;
 	}
 
@@ -33,7 +33,7 @@ public class Unload extends Command
 
 	protected void end() 
 	{
-		Robot.getFlywheel().setSpeed(0);
+		Robot.getFlywheel().stop();
 	}	
 
 	protected void interrupted() 

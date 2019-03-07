@@ -14,7 +14,7 @@ public class ToggleClimb extends Command {
   @Override
   protected void execute() {
     // flip from non-0 to 0 or 0 to 1
-    Robot.getMap().setSys("climb", Robot.getMap().getSys("climb") > 0 ? 0 : 1);
+    Robot.getClimb().setEnabled(!Robot.getClimb().getEnabled());
   }
 
   // Make this return true when this Command no longer needs to run execute()

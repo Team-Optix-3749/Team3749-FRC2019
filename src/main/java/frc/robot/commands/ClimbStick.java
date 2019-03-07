@@ -20,7 +20,7 @@ public class ClimbStick extends Command {
   protected void execute() {
     double input = Robot.getOI().getClimbY();
     // if enabled
-    if (Robot.getMap().getSys("climb") > 0)
+    if (Robot.getClimb().getEnabled())
     {
       if (Robot.getClimb().atEnd() && input > 0)
         Robot.getClimb().rawMove(0);

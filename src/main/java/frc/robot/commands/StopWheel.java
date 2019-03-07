@@ -24,7 +24,7 @@ public class StopWheel extends Command
 
 	protected void end() 
 	{
-		Robot.getFlywheel().setSpeed(0);
+		Robot.getFlywheel().stop();
 	}	
 
 	protected void interrupted() 

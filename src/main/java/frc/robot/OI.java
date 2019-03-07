@@ -116,10 +116,18 @@ public class OI
     buttons[8].whenPressed(new TogglePID());
   }
 
+  /**
+   * method getDriveY gets the forward axis from controller for drive mvmt
+   * @return axis value for controller
+   */
   public double getDriveY()
   {
     return -ctrl.getY(Hand.kLeft);
   }
+  /**
+   * method getDriveX gets the left/right axis from contorller for drive mvmt
+   * @return axis value from controller
+   */
   public double getDriveX()
   {
     return ctrl.getX(Hand.kRight);
@@ -127,12 +135,18 @@ public class OI
 
   /**
    * This method returns the joystick tilt on the contoller
+   * @return axis value from triggers
    */
   public double getTiltY()
   {
     return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
   }
 
+  /**
+   * method returns the climb value for movement (near the drive, so only used when climb subsystem enabled, and after a certain time)
+   * see Climb class for more info
+   * @return axis value from controller
+   */
   public double getClimbY()
   {
     double speed = 0;
@@ -142,7 +156,8 @@ public class OI
   }
 
   /**
-   * This method returns the joystick tilt on the contoller
+   * method returns the joystick tilt on the contoller (inverted, up = positive)
+   * @return axis value from controller
    */
   public double getElevatorY()
   {

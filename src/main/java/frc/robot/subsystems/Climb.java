@@ -21,11 +21,13 @@ import frc.robot.commands.ClimbStick;
 public class Climb extends Subsystem {
   private VictorSPX motor;
   private DigitalInput limitSwitch;
+  private boolean enabled;
 
   public Climb ()
   {
     motor = new VictorSPX(Robot.getMap().getCAN("climb"));
     limitSwitch = new DigitalInput(Robot.getMap().getDIO("climb_switch"));
+    enabled = false;
   }
 
   @Override
@@ -41,5 +43,13 @@ public class Climb extends Subsystem {
   public boolean atEnd()
   {
     return !limitSwitch.get();
+  }
+  public void setEnabled(boolean en)
+  {
+    enabled = en;
+  }
+  public boolean getEnabled()
+  {
+    return enabled;
   }
 }
