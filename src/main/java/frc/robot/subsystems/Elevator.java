@@ -20,7 +20,7 @@ public class Elevator extends Subsystem
   private final double ENCODER_OUT = 100;
 
   // arbitrary feed forward constant (to counter gravity)
-  private final double kAF = 0.08;
+  private final double kAF = 0.1;
 
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
@@ -42,7 +42,7 @@ public class Elevator extends Subsystem
     // PID constants (from/to encoder is reversed since it's multiplied by encoder error)
     motor.config_kP(0, 0.003);
     motor.config_kI(0, 0);
-    motor.config_kD(0, 0);
+    motor.config_kD(0, 0.00003);
     motor.config_kF(0, 0);
 
     // positive input is negative sensor readings
