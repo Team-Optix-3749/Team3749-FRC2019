@@ -1,13 +1,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.commands.TiltStick;
-import java.lang.IllegalArgumentException;
 
 /**
  * class Tilt
@@ -24,8 +22,6 @@ public class Tilt extends Subsystem
 
   // whether to used pid closed loop position control
   private boolean pidEnabled;
-
-  private int cosAngleff; 
 
   // range of encoder raw values -> 0 to ENCODER_IN are the limits
   private final double ENCODER_IN = 176000;
@@ -61,8 +57,8 @@ public class Tilt extends Subsystem
   }
   public void setVelocity(double pos)
   {
-    if (pidEnabled)
-      motorOut = pos * 0.3;
+    if (! pidEnabled)
+      motorOut = pos * 0.06;
     else
       position += toEncoder(pos);
     update();
@@ -95,8 +91,7 @@ public class Tilt extends Subsystem
       if (position < toEncoder(-10))
         position = toEncoder(-10);
       
-      //theres an error here and idk how to fix it bc ff doesn't output an int/double
-      motor.set(ControlMode.Position, DemandType.ArbitraryFeedForward * getCosAngle(toEncoder(position)));
+      motor.set(ControlMode.Position, position);
       
       if (Robot.getMap().getSys("tilt") == 2)
       {
@@ -129,14 +124,5 @@ public class Tilt extends Subsystem
   {
     // become smaller
     return in * ENCODER_IN / ENCODER_OUT;
-  }
-
-  private double getCosAngle(double input) {
-    if(input > 90 || input <0) 
-      {
-        // throw an exception
-      } 
-
-    return java.lang.Math.cos(input); 
   }
 }
