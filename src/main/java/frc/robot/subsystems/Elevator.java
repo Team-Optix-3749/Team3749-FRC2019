@@ -20,7 +20,7 @@ public class Elevator extends Subsystem
   private final double ENCODER_OUT = 100;
 
   // arbitrary feed forward constant (to counter gravity)
-  private final double kAF = 0.1;
+  private final double kAF = 0.08;
 
   // leading motor controllers, have built-in closed loop control
   private TalonSRX motor;
