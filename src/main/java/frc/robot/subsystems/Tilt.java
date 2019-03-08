@@ -95,6 +95,7 @@ public class Tilt extends Subsystem
       if (position < toEncoder(-10))
         position = toEncoder(-10);
       
+      //theres an error here and idk how to fix it bc ff doesn't output an int/double
       motor.set(ControlMode.Position, DemandType.ArbitraryFeedForward * getCosAngle(toEncoder(position)));
       
       if (Robot.getMap().getSys("tilt") == 2)
