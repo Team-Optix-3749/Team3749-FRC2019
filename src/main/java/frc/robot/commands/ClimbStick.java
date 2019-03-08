@@ -20,13 +20,15 @@ public class ClimbStick extends Command {
   protected void execute() {
     double input = Robot.getOI().getClimbY();
     // if enabled
-    if (Robot.getClimb().getEnabled())
-    {
-      if (Robot.getClimb().atEnd() && input > 0)
-        Robot.getClimb().rawMove(0);
-      else
-        Robot.getClimb().rawMove(input);
-    }
+    // if (Robot.getClimb().getEnabled() || 1 == 1)
+    // {
+    //   if (Robot.getClimb().atEnd() && input > 0)
+    //     Robot.getClimb().rawMove(0);
+    //   else
+    //     Robot.getClimb().rawMove(input);
+    // }
+    
+    Robot.getClimb().rawMove(input);
   }
 
   // Make this return true when this Command no longer needs to run execute()

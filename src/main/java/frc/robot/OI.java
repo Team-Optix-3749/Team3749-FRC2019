@@ -36,6 +36,7 @@ public class OI
 
     // indexes start at 1 for buttons
     buttons = new JoystickButton[BUTTON_RANGE+1];
+    dpad = new POVButton[4];
     for (int i = 1; i <= BUTTON_RANGE; i ++)
       buttons[i] = new JoystickButton(ctrl, i);
     for (int i = 0; i < 4; i ++)
@@ -150,8 +151,8 @@ public class OI
   public double getClimbY()
   {
     double speed = 0;
-    if (DriverStation.getInstance().getMatchTime() > 105)
-      speed = ctrl.getY(Hand.kLeft);
+    // if (DriverStation.getInstance().getMatchTime() > 105)
+      speed = ctrl.getX(Hand.kLeft);
     return speed;
   }
 
