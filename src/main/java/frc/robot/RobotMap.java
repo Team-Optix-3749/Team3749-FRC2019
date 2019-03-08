@@ -62,9 +62,9 @@ public class RobotMap
 	// 0 = disabled, 1 = enabled, 2 = enabled and debugging (print sensor vals, etc)
 	setSys("tilt", 0);
 	setSys("drive", 0);
-	setSys("wheelio", 0);
-	setSys("elevator", 0);
-	setSys("climb", 1);
+	setSys("wheelio", 1);
+	setSys("elevator", 2);
+	setSys("climb", 0);
   }
 
 
