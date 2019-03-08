@@ -162,6 +162,9 @@ public class OI
    */
   public double getElevatorY()
   {
-    return -ctrl.getY(Hand.kRight);
+    double tempVariable = -ctrl.getY(Hand.kRight);
+    if (Math.abs(tempVariable) < 0.1)
+      tempVariable = 0;
+    return tempVariable;
   }
 }
