@@ -23,6 +23,7 @@ public class ElevatorStick extends Command {
     {
       System.out.println("Elevator Position: " + Robot.getElevator().getPosition());
       System.out.println("Elevator Setpoint: " + Robot.getElevator().getSetpoint());
+      System.out.println("Elevator Y: " + Robot.getOI().getElevatorY());
     }
   }
 
