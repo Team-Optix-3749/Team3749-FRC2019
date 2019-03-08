@@ -73,7 +73,7 @@ public class OI
       // B
       buttons[2].whenPressed(new ElevatorSetPosition(0));
       // X
-      buttons[3].whenPressed(new ElevatorSetPosition(30));
+      buttons[3].whenPressed(new ElevatorSetPosition(65));
       // Y
       buttons[4].whenPressed(new ElevatorSetPosition(100));
 
@@ -140,7 +140,9 @@ public class OI
    */
   public double getTiltY()
   {
-    return ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
+    double in = ctrl.getTriggerAxis(Hand.kRight) - ctrl.getTriggerAxis(Hand.kLeft);
+    System.out.println("input: " + in);
+    return in;
   }
 
   /**
